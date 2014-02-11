@@ -1,0 +1,24 @@
+{
+    "name": "indatus/laravel-command-scheduler",
+    "description": "Schedule your artisan commands within your application",
+    "authors": [
+        {
+            "name": "Indatus",
+            "email": "bkuhl@indatus.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.1.*",
+        "hellogerard/jobby": "dev-master"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "Indatus\\LaravelCommandScheduler\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
