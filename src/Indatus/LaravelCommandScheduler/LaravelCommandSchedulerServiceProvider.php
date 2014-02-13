@@ -1,8 +1,11 @@
-<?php namespace Indatus\LaravelCommandScheduler;
+<?php
+
+namespace Indatus\LaravelCommandScheduler;
 
 use Illuminate\Support\ServiceProvider;
 
-class LaravelCommandSchedulerServiceProvider extends ServiceProvider {
+class LaravelCommandSchedulerServiceProvider extends ServiceProvider
+{
 
 	/**
 	 * Indicates if loading of the provider is deferred.
