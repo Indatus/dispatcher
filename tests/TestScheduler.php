@@ -74,6 +74,14 @@ class TestScheduler extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->scheduler->getSchedule(), $minutes.','.($minutes+1).' '.Scheduler::$ANY.' '.Scheduler::$ANY.' '.Scheduler::$ANY.' '.Scheduler::$ANY);
     }
 
+    public function testEveryMinutes()
+    {
+        $minutes = 30;
+        $this->assertInstanceOf($this->schedularClass, $this->scheduler->everyMinutes($minutes));
+
+        $this->assertEquals($this->scheduler->getSchedule(), '*/'.$minutes.' '.Scheduler::$ANY.' '.Scheduler::$ANY.' '.Scheduler::$ANY.' '.Scheduler::$ANY);
+    }
+
     public function testHours()
     {
         $hours = 15;
@@ -83,6 +91,14 @@ class TestScheduler extends \PHPUnit_Framework_TestCase
         //test that we can specify arrays of times
         $this->scheduler->hours([$hours, $hours+1]);
         $this->assertEquals($this->scheduler->getSchedule(), Scheduler::$ANY.' '.$hours.','.($hours+1).' '.Scheduler::$ANY.' '.Scheduler::$ANY.' '.Scheduler::$ANY);
+    }
+
+    public function testEveryHours()
+    {
+        $hours = 6;
+        $this->assertInstanceOf($this->schedularClass, $this->scheduler->everyHours($hours));
+
+        $this->assertEquals($this->scheduler->getSchedule(), Scheduler::$ANY.' */'.$hours.' '.Scheduler::$ANY.' '.Scheduler::$ANY.' '.Scheduler::$ANY);
     }
 
     public function testDaysOfTheMonth()
@@ -105,6 +121,20 @@ class TestScheduler extends \PHPUnit_Framework_TestCase
         //test that we can specify arrays of times
         $this->scheduler->months([$months, $months+1]);
         $this->assertEquals($this->scheduler->getSchedule(), Scheduler::$ANY.' '.Scheduler::$ANY.' '.Scheduler::$ANY.' '.$months.','.($months+1).' '.Scheduler::$ANY);
+    }
+
+    public function testEveryMonths()
+    {
+        $months = 6;
+        $this->assertInstanceOf($this->schedularClass, $this->scheduler->everyMonths($months));
+
+        $this->assertEquals($this->scheduler->getSchedule(), Scheduler::$ANY.' '.Scheduler::$ANY.' '.Scheduler::$ANY.' */'.$months.' '.Scheduler::$ANY);
+    }
+
+    public function testEveryWeekday()
+    {
+        $this->assertInstanceOf($this->schedularClass, $this->scheduler->everyWeekday());
+        $this->assertEquals($this->scheduler->getSchedule(), Scheduler::$ANY.' '.Scheduler::$ANY.' '.Scheduler::$ANY.' '.Scheduler::$ANY.' '.Scheduler::$MONDAY.'-'.Scheduler::$FRIDAY);
     }
 
 } 

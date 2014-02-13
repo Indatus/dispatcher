@@ -13,6 +13,14 @@ class Scheduler implements Scheduleable {
      */
     public static $ANY = '*';
 
+    public static $SUNDAY = 0;
+    public static $MONDAY = 1;
+    public static $TUESDAY = 2;
+    public static $WEDNESDAY = 3;
+    public static $THURSDAY = 4;
+    public static $FRIDAY = 5;
+    public static $SATURDAY = 6;
+
     private $scheduleDayOfWeek = '*';
     private $scheduleMonth = '*';
     private $scheduleDayOfMonth = '*';
@@ -152,6 +160,18 @@ class Scheduler implements Scheduleable {
     }
 
     /**
+     * Run a command every X minutes
+     * @param $minutes
+     * @return $this
+     */
+    public function everyMinutes($minutes)
+    {
+        $this->setScheduleMinute('*/'.$minutes);
+
+        return $this;
+    }
+
+    /**
      * Set the hours under which this command will run
      * @param mixed $hoursIntoTheDay
      * @return $this
@@ -159,6 +179,18 @@ class Scheduler implements Scheduleable {
     public function hours($hoursIntoTheDay)
     {
         $this->setScheduleHour($this->parseTimeParameter($hoursIntoTheDay));
+
+        return $this;
+    }
+
+    /**
+     * Run a command every X hours
+     * @param $hours
+     * @return $this
+     */
+    public function everyHours($hours)
+    {
+        $this->setScheduleHour('*/'.$hours);
 
         return $this;
     }
@@ -188,6 +220,18 @@ class Scheduler implements Scheduleable {
     }
 
     /**
+     * Run a command every X months
+     * @param $months
+     * @return $this
+     */
+    public function everyMonths($months)
+    {
+        $this->setScheduleMonth('*/'.$months);
+
+        return $this;
+    }
+
+    /**
      * Set the days of the week under which this command will run
      * @param mixed $daysOfTheWeek
      * @return $this
@@ -195,6 +239,13 @@ class Scheduler implements Scheduleable {
     public function daysOfTheWeek($daysOfTheWeek)
     {
         $this->setScheduleDayOfWeek($this->parseTimeParameter($daysOfTheWeek));
+
+        return $this;
+    }
+
+    public function everyWeekday()
+    {
+        $this->daysOfTheWeek(Scheduler::$MONDAY.'-'.Scheduler::$FRIDAY);
 
         return $this;
     }

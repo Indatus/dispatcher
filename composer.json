@@ -12,10 +12,10 @@
         "illuminate/support": "4.1.*",
         "hellogerard/jobby": "dev-master"
     },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*@dev"
+    },
     "autoload": {
-        "classmap": [
-            "src/migrations"
-        ],
         "psr-0": {
             "Indatus\\LaravelCommandScheduler\\": "src/"
         }
