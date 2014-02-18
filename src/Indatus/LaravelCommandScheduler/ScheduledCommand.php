@@ -6,6 +6,7 @@
 namespace Indatus\LaravelCommandScheduler;
 
 use Illuminate\Console\Command;
+use App;
 
 abstract class ScheduledCommand extends Command {
 
@@ -14,11 +15,11 @@ abstract class ScheduledCommand extends Command {
      */
     private $scheduler;
 
-    public function __construct(Scheduler $scheduler)
+    public function __construct()
     {
         parent::__construct();
 
-        $this->scheduler = $scheduler;
+        $this->scheduler = App::make('Indatus\LaravelCommandScheduler\Scheduler');
     }
 
     /**
@@ -37,15 +38,22 @@ abstract class ScheduledCommand extends Command {
     }
 
     /**
+     * User to run the command as
+     * @return string
+     */
+    public function user()
+    {
+        return 'root';
+    }
+
+    /**
      * Should this command be run when scheduled?
      *
      * @return bool
      */
-    public function isEnabled()
+    /*public function isEnabled()
     {
         return true;
-    }
+    }*/
 
 }
-
-//$this->every(4)->hours()->at()

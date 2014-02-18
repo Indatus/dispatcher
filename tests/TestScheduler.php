@@ -4,8 +4,9 @@
  */
 
 use \Indatus\LaravelCommandScheduler\Scheduler;
+use \Orchestra\Testbench\TestCase;
 
-class TestScheduler extends \PHPUnit_Framework_TestCase
+class TestScheduler extends TestCase
 {
     /**
      * @var Indatus\LaravelCommandScheduler\Scheduler

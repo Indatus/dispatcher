@@ -6,7 +6,8 @@
 namespace Indatus\LaravelCommandScheduler;
 
 
-class Scheduler implements Scheduleable {
+class Scheduler implements Schedulable
+{
 
     /**
      * @var string Any of the contextual timeframe
@@ -273,7 +274,7 @@ class Scheduler implements Scheduleable {
     /**
      * @return string
      */
-    private function getScheduleDayOfMonth()
+    public function getScheduleDayOfMonth()
     {
         return $this->scheduleDayOfMonth;
     }
@@ -289,7 +290,7 @@ class Scheduler implements Scheduleable {
     /**
      * @return string
      */
-    private function getScheduleDayOfWeek()
+    public function getScheduleDayOfWeek()
     {
         return $this->scheduleDayOfWeek;
     }
@@ -321,7 +322,7 @@ class Scheduler implements Scheduleable {
     /**
      * @return string
      */
-    private function getScheduleMinute()
+    public function getScheduleMinute()
     {
         return $this->scheduleMinute;
     }
@@ -337,7 +338,7 @@ class Scheduler implements Scheduleable {
     /**
      * @return string
      */
-    private function getScheduleMonth()
+    public function getScheduleMonth()
     {
         return $this->scheduleMonth;
     }
