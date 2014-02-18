@@ -16,6 +16,7 @@ use Indatus\LaravelCommandScheduler\Services\ScheduleService;
 class ScheduleSummary extends Command
 {
 
+    /** @var \Indatus\LaravelCommandScheduler\Services\ScheduleService|null  */
     private $scheduleService = null;
 
     public function __construct(ScheduleService $scheduleService)
@@ -48,6 +49,7 @@ class ScheduleSummary extends Command
     {
         $output = $this->scheduleService->getSummary();
 
+        //@todo does this comment need to be here?
         $this->comment($output);
     }
 } 

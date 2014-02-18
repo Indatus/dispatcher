@@ -8,7 +8,8 @@ namespace Indatus\LaravelCommandScheduler;
 use Illuminate\Console\Command;
 use App;
 
-abstract class ScheduledCommand extends Command {
+abstract class ScheduledCommand extends Command implements ScheduledCommandInterface
+{
 
     /**
      * @var \Indatus\LaravelCommandScheduler\Scheduler
@@ -25,7 +26,7 @@ abstract class ScheduledCommand extends Command {
     /**
      * When a command should run
      */
-    abstract function schedule();
+    abstract public function schedule();
 
     /**
      * Customize the schedule for this command
@@ -45,15 +46,5 @@ abstract class ScheduledCommand extends Command {
     {
         return 'root';
     }
-
-    /**
-     * Should this command be run when scheduled?
-     *
-     * @return bool
-     */
-    /*public function isEnabled()
-    {
-        return true;
-    }*/
 
 }

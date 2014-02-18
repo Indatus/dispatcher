@@ -7,9 +7,17 @@ namespace Indatus\LaravelCommandScheduler\Services;
 
 use \Artisan;
 use cli\Table;
-use Indatus\LaravelCommandScheduler\ScheduledCommand;
+use Indatus\LaravelCommandScheduler\ScheduledCommandInterface;
 
 class ScheduleService {
+
+    /** @var  \cli\Table */
+    private $table;
+
+    public function __construct(Table $table)
+    {
+        $this->table = $table;
+    }
 
     /**
      * Get all commands that are scheduled
@@ -23,7 +31,7 @@ class ScheduleService {
         //look at all the registered commands
         foreach (Artisan::all() as $command) {
             //see which ones are scheduled
-            if ($command instanceOf ScheduledCommand) {
+            if ($command instanceOf ScheduledCommandInterface) {
                 $scheduledCommands[] = $command;
             }
         }
@@ -38,14 +46,13 @@ class ScheduleService {
      */
     public function getSummary()
     {
-        $table = new Table();
-        $table->setHeaders(['Active', 'Name', 'Minute', 'Hour', 'Day of Month', 'Month', 'Day of Week', 'Run as']);
+        $this->table->setHeaders(['Active', 'Name', 'Minute', 'Hour', 'Day of Month', 'Month', 'Day of Week', 'Run as']);
         /** @var $command \Indatus\LaravelCommandScheduler\ScheduledCommand */
         foreach ($this->getScheduledCommands() as $command) {
 
             $scheduler = $command->getScheduler();
 
-            $table->addRow([
+            $this->table->addRow([
                     ($command->isEnabled() ?  'Y' : 'N'),
                     $command->getName(),
                     $scheduler->getScheduleMinute(),
@@ -58,9 +65,9 @@ class ScheduleService {
         }
 
         //sort by first column
-        $table->sort(0);
+        $this->table->sort(0);
 
-        $table->display();
+        $this->table->display();
     }
 
 }
