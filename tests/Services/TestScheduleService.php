@@ -3,21 +3,24 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Indatus\LaravelCommandScheduler\ScheduleService;
-use \Orchestra\Testbench\TestCase;
+use Orchestra\Testbench\TestCase;
 use Mockery as m;
-use Indatus\LaravelCommandScheduler\Scheduler;
+use Indatus\CommandScheduler\Services\ScheduleService;
+use Indatus\CommandScheduler\Table;
+use Indatus\CommandScheduler\Scheduler;
 
 class TestScheduleService extends TestCase
 {
     /**
-     * @var Indatus\LaravelCommandScheduler\ScheduleService
+     * @var Indatus\CommandScheduler\ScheduleService
      */
     private $scheduleService;
 
     public function setUp()
     {
-        $this->scheduleService = new ScheduleService();
+        parent::setUp();
+
+        $this->scheduleService = new ScheduleService(new Table());
     }
 
     public function tearDown()
@@ -28,26 +31,27 @@ class TestScheduleService extends TestCase
 
     public function testGetScheduledCommands()
     {
-        $this->assertSameSize([], $this->scheduleService->getScheduledCommands());
+        $scheduledCommands = [$class = m::mock('Indatus\CommandScheduler\ScheduledCommand', function ($m) {
+                $m->shouldReceive('schedule')->andReturn(m::mock('Indatus\CommandScheduler\Schedulable'));
+            })];
 
-        $service = m::mock('Indatus\LaravelCommandScheduler\ScheduleService', function($m) {
-                $class = m::mock('Indatus\LaravelCommandScheduler\ScheduledCommand', function ($m) {
-                        $schedule = new Scheduler();
-                        $schedule->yearly();
-                        $m->shouldReceive('schedule')->andReturn($schedule);
-                    });
-                $m->shouldReceive('getScheduledCommands')->andReturn([$class]);
-            });
+        Artisan::shouldReceive('all')->once()->andReturn($scheduledCommands);
 
-        $this->assertSameSize([''], $service->getScheduledCommands());
+        $this->assertSameSize($scheduledCommands, $this->scheduleService->getScheduledCommands());
     }
 
     /**
      * Test that a summary is properly generated
      */
-    /*public function testGetSummary()
+    public function testPrintSummary()
     {
-        $this->assertEquals($this->scheduleService->getSchedule(), '');
-    }*/
+        $m = m::mock('Indatus\CommandScheduler\Table', function ($m) {
+                $m->shouldReceive('setHeaders')->once();
+                $m->shouldReceive('sort')->once();
+                $m->shouldReceive('display')->once();
+            });
+        $scheduleService = new ScheduleService($m);
+        $scheduleService->printSummary();
+    }
 
 } 

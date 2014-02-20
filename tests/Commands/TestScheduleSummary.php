@@ -3,10 +3,9 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Indatus\LaravelCommandScheduler\ScheduleService;
 use \Orchestra\Testbench\TestCase;
 use Mockery as m;
-use Indatus\LaravelCommandScheduler\Commands\ScheduleSummary;
+use Indatus\CommandScheduler\Commands\ScheduleSummary;
 
 class TestScheduleSummary extends TestCase
 {
@@ -14,12 +13,14 @@ class TestScheduleSummary extends TestCase
     /** @var  \Mockery\MockInterface */
     private $scheduleService;
 
-    /** @var  \Indatus\LaravelCommandScheduler\Commands\ScheduleSummary */
+    /** @var  \Indatus\CommandScheduler\Commands\ScheduleSummary */
     private $scheduleSummary;
 
     public function setUp()
     {
-        $this->scheduleService = m::mock('Indatus\LaravelCommandScheduler\ScheduleService');
+        parent::setUp();
+
+        $this->scheduleService = m::mock('Indatus\CommandScheduler\Services\ScheduleServiceInterface');
 
         $this->scheduleSummary = new ScheduleSummary($this->scheduleService);
     }
@@ -32,7 +33,7 @@ class TestScheduleSummary extends TestCase
 
     public function testName()
     {
-        $this->assertEquals('crontab:summary', $this->scheduleSummary->getName());
+        $this->assertEquals('scheduled:summary', $this->scheduleSummary->getName());
     }
 
     public function testDescription()
@@ -42,9 +43,9 @@ class TestScheduleSummary extends TestCase
 
     public function testFire()
     {
-        $this->scheduleService->shouldReceive('getSummary')->once();
-
-        $scheduleService = new ScheduleSummary($this->scheduleService);
+        $scheduleService = new ScheduleSummary(m::mock('Indatus\CommandScheduler\Services\ScheduleService', function ($m) {
+                $m->shouldReceive('printSummary')->once();
+            }));
         $scheduleService->fire();
     }
 

@@ -1,5 +1,5 @@
 {
-    "name": "indatus/laravel-command-scheduler",
+    "name": "indatus/command-scheduler",
     "description": "Schedule your artisan commands within your application",
     "keywords": ["laravel"],
     "authors": [
@@ -15,12 +15,19 @@
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*@dev",
-        "mockery/mockery": "dev-master@dev"
+        "mockery/mockery": "dev-master@dev",
+        "orchestra/testbench": "2.1.*"
     },
     "autoload": {
         "psr-0": {
-            "Indatus\\LaravelCommandScheduler\\": "src/"
+            "Indatus\\CommandScheduler\\": "src/"
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git://github.com/orchestral/phpseclib.git"
+        }
+    ],
     "minimum-stability": "stable"
 }
