@@ -3,7 +3,6 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use \Orchestra\Testbench\TestCase;
 use Mockery as m;
 use Indatus\CommandScheduler\Commands\ScheduleSummary;
 
@@ -38,7 +37,7 @@ class TestScheduleSummary extends TestCase
 
     public function testDescription()
     {
-        $this->assertEquals('View a summary for all scheduled artisan commands', $this->scheduleSummary->getDescription());
+        $this->assertEquals('View a summary of all scheduled artisan commands', $this->scheduleSummary->getDescription());
     }
 
     public function testFire()

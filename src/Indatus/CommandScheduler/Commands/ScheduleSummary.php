@@ -38,7 +38,7 @@ class ScheduleSummary extends Command
      *
      * @var string
      */
-    protected $description = 'View a summary for all scheduled artisan commands';
+    protected $description = 'View a summary of all scheduled artisan commands';
 
     /**
      * Execute the console command.

@@ -1,0 +1,9 @@
+parent::__construct();
+	}
+
+	/**
+	 * When a command should run
+	 */
+	public function schedule()
+	{
+		//return $this->getScheduler(); This must be scheduled

@@ -4,7 +4,6 @@
  */
 
 use \Indatus\CommandScheduler\Drivers\Cron\Scheduler;
-use \Orchestra\Testbench\TestCase;
 
 class TestScheduler extends TestCase
 {

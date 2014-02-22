@@ -3,7 +3,6 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Orchestra\Testbench\TestCase;
 use Mockery as m;
 use Indatus\CommandScheduler\Services\ScheduleService;
 use Indatus\CommandScheduler\Table;

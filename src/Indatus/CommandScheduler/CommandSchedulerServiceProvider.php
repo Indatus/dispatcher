@@ -3,6 +3,7 @@
 namespace Indatus\CommandScheduler;
 
 use Illuminate\Support\ServiceProvider;
+use Indatus\CommandScheduler\Commands\Make;
 use Indatus\CommandScheduler\Commands\ScheduleSummary;
 use Indatus\CommandScheduler\Drivers\Cron\Scheduler;
 use Indatus\CommandScheduler\Services\ScheduleService;
@@ -61,7 +62,10 @@ class CommandSchedulerServiceProvider extends ServiceProvider
 	 */
 	public function provides()
 	{
-        return array('command.scheduled.summary');
+        return [
+            'command.scheduled.summary',
+            'command.scheduled.make'
+        ];
 	}
 
     /**
@@ -74,6 +78,12 @@ class CommandSchedulerServiceProvider extends ServiceProvider
                 return new ScheduleSummary(App::make('Indatus\CommandScheduler\Services\SchedulerService'));
             });
         $this->commands('command.scheduled.summary');
+
+        $this->app['command.scheduled.make'] = $this->app->share(function($app)
+            {
+                return App::make('Indatus\CommandScheduler\Commands\Make');
+            });
+        $this->commands('command.scheduled.make');
     }
 
 }
