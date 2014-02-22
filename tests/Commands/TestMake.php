@@ -18,9 +18,6 @@ class TestMake extends TestCase
     {
         parent::setUp();
 
-        $this->app->instance('InputInterface', App::mock('Symfony\Component\Console\Input\InputInterface'));
-        $this->app->instance('OutputInterface', App::mock('Symfony\Component\Console\Input\OutputInterface'));
-
         $this->make = new Make(m::mock('Illuminate\Filesystem\Filesystem'));
     }
 
@@ -37,7 +34,7 @@ class TestMake extends TestCase
 
     public function testDescription()
     {
-        $this->assertEquals('View a summary of all scheduled artisan commands', $this->scheduleSummary->getDescription());
+        $this->assertEquals('Create a new scheduled artisan command', $this->make->getDescription());
     }
 
 } 
