@@ -19,6 +19,9 @@
         "orchestra/testbench": "2.1.*"
     },
     "autoload": {
+        "classmap": [
+            "tests/TestCase.php"
+        ],
         "psr-0": {
             "Indatus\\CommandScheduler\\": "src/"
         }

@@ -4,8 +4,10 @@ namespace Indatus\CommandScheduler;
 
 use Illuminate\Support\ServiceProvider;
 use Indatus\CommandScheduler\Commands\ScheduleSummary;
+use Indatus\CommandScheduler\Drivers\Cron\Scheduler;
 use Indatus\CommandScheduler\Services\ScheduleService;
 use App;
+use Config;
 
 class CommandSchedulerServiceProvider extends ServiceProvider
 {
@@ -39,12 +41,15 @@ class CommandSchedulerServiceProvider extends ServiceProvider
             });
 
         //load the scheduler of the appropriate driver
-        App::bind('Indatus\CommandScheduler\Scheduler', function () {
-                $schedulerClass = Config::get('indatus/command-scheduler::driver');
+        App::bind('Indatus\CommandScheduler\Schedulable', function () {
+                /*$schedulerClass = Config::get('indatus/command-scheduler::driver');
                 var_dump($schedulerClass);
                 exit;
-                return new $schedulerClass();
+                return new $schedulerClass();*/
+                return new Scheduler();
             });
+
+        //App::make('Indatus\CommandScheduler\Schedulable');
 
         $this->registerCommands();
 	}

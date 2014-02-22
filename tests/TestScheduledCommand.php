@@ -3,11 +3,8 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Orchestra\Testbench\TestCase;
 use Mockery as m;
-use Indatus\CommandScheduler\Services\ScheduleService;
-use Indatus\CommandScheduler\Table;
-use Indatus\CommandScheduler\Scheduler;
+use Indatus\CommandScheduler\Drivers\Cron\Scheduler;
 
 class TestScheduledCommand extends TestCase
 {
@@ -22,7 +19,7 @@ class TestScheduledCommand extends TestCase
 
         $this->scheduledCommand = m::mock('Indatus\CommandScheduler\ScheduledCommand[schedule]');
 
-        $this->app->instance('Indatus\CommandScheduler\Scheduler', new \Indatus\CommandScheduler\Drivers\Cron\Scheduler());
+        $this->app->instance('Indatus\CommandScheduler\Schedulable', new Scheduler());
     }
 
     public function tearDown()

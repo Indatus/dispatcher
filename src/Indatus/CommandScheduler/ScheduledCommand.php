@@ -27,7 +27,7 @@ abstract class ScheduledCommand extends Command implements ScheduledCommandInter
     {
         parent::__construct();
 
-        $this->scheduler = App::make('Indatus\CommandScheduler\Scheduler');
+        $this->scheduler = App::make('Indatus\CommandScheduler\Schedulable');
     }
 
     /**
