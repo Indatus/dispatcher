@@ -245,6 +245,10 @@ class Scheduler implements Schedulable
         return $this;
     }
 
+    /**
+     * Run every weekday
+     * @return $this
+     */
     public function everyWeekday()
     {
         $this->daysOfTheWeek(Scheduler::$MONDAY.'-'.Scheduler::$FRIDAY);

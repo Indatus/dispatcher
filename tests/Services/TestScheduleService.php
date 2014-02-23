@@ -53,4 +53,18 @@ class TestScheduleService extends TestCase
         $scheduleService->printSummary();
     }
 
+    public function testGetDueCommands()
+    {
+        $scheduleService = m::mock('Indatus\CommandScheduler\Services\ScheduleService[getScheduledCommands,isDue]', [
+                new Table()
+            ], function ($m) {
+                $m->shouldReceive('getScheduledCommands')->once()
+                    ->andReturn([m::mock('Indatus\CommandScheduler\ScheduledCommand')]);
+                $m->shouldReceive('isDue')->once()->andReturn(true);
+
+            });
+
+        $this->assertEquals(1, count($scheduleService->getDueCommands()));
+    }
+
 } 

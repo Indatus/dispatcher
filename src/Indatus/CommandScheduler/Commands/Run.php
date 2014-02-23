@@ -6,24 +6,25 @@
 namespace Indatus\CommandScheduler\Commands;
 
 use Illuminate\Console\Command;
+use Indatus\CommandScheduler\Services\CommandService;
 use Indatus\CommandScheduler\Services\ScheduleService;
 
 /**
- * View a summary for all scheduled artisan commands
+ * Run any commands that should be run
  * @author Ben Kuhl <bkuhl@indatus.com>
  * @package Indatus\CommandScheduler\Commands
  */
-class ScheduleSummary extends Command
+class Run extends Command
 {
 
-    /** @var \Indatus\CommandScheduler\Services\ScheduleService|null  */
-    private $scheduleService = null;
+    /** @var \Indatus\CommandScheduler\Services\CommandService|null  */
+    private $commandService = null;
 
-    public function __construct(ScheduleService $scheduleService)
+    public function __construct(CommandService $commandService)
     {
         parent::__construct();
 
-        $this->scheduleService = $scheduleService;
+        $this->commandService = $commandService;
     }
 
     /**
@@ -31,14 +32,14 @@ class ScheduleSummary extends Command
      *
      * @var string
      */
-    protected $name = 'scheduled:summary';
+    protected $name = 'scheduled:run';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'View a summary of all scheduled artisan commands';
+    protected $description = 'Run scheduled commands';
 
     /**
      * Execute the console command.
@@ -47,6 +48,6 @@ class ScheduleSummary extends Command
      */
     public function fire()
     {
-        $this->scheduleService->printSummary();
+        $this->commandService->runDue();
     }
 } 

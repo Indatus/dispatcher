@@ -5,32 +5,33 @@
 
 namespace Indatus\CommandScheduler\Services;
 
+use \App;
 use \Artisan;
-use cli\Table;
-use Indatus\CommandScheduler\ScheduledCommandInterface;
-use Indatus\CommandScheduler\TableInterface;
+use \Cron\CronExpression;
+use Indatus\CommandScheduler\ScheduledCommand;
+use Indatus\CommandScheduler\Table;
 
-class ScheduleService implements ScheduleServiceInterface
+class ScheduleService
 {
 
     /** @var  \Indatus\CommandScheduler\Table */
     private $table;
 
-    public function __construct(TableInterface $table)
+    public function __construct(Table $table)
     {
         $this->table = $table;
     }
 
     /**
      * Get all commands that are scheduled
-     * @todo test
+     *
      * @return array
      */
     public function getScheduledCommands()
     {
         $scheduledCommands = [];
         foreach (Artisan::all() as $command) {
-            if ($command instanceOf ScheduledCommandInterface) {
+            if ($command instanceOf ScheduledCommand) {
                 $scheduledCommands[] = $command;
             }
         }
@@ -39,8 +40,36 @@ class ScheduleService implements ScheduleServiceInterface
     }
 
     /**
+     * Get all commands that are due to be run
+     *
+     * @return \Indatus\CommandScheduler\ScheduledCommand[]
+     */
+    public function getDueCommands()
+    {
+        $commands = [];
+        foreach ($this->getScheduledCommands() as $command) {
+            if ($this->isDue($command)) {
+                $commands[] = $command;
+            }
+        }
+        return $commands;
+    }
+
+    /**
+     * Determine if a command is due to be run
+     *
+     * @return bool
+     */
+    public function isDue(ScheduledCommand $command)
+    {
+        $scheduler = App::make('Indatus\CommandScheduler\Schedulable');
+        $cron = CronExpression::factory($command->schedule($scheduler)->getSchedule());
+        return $cron->isDue();
+    }
+
+    /**
      * Review scheduled commands schedule, active status, etc.
-     * @todo refactor this... it feels ugly
+     * @todo refactor this... it's ugly.  The output goes directly to STDOUT
      * @return void
      */
     public function printSummary()

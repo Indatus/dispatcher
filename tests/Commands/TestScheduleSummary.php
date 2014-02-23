@@ -13,15 +13,15 @@ class TestScheduleSummary extends TestCase
     private $scheduleService;
 
     /** @var  \Indatus\CommandScheduler\Commands\ScheduleSummary */
-    private $scheduleSummary;
+    private $command;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->scheduleService = m::mock('Indatus\CommandScheduler\Services\ScheduleServiceInterface');
+        $this->scheduleService = m::mock('Indatus\CommandScheduler\Services\ScheduleService');
 
-        $this->scheduleSummary = new ScheduleSummary($this->scheduleService);
+        $this->command = new ScheduleSummary($this->scheduleService);
     }
 
     public function tearDown()
@@ -32,12 +32,12 @@ class TestScheduleSummary extends TestCase
 
     public function testName()
     {
-        $this->assertEquals('scheduled:summary', $this->scheduleSummary->getName());
+        $this->assertEquals('scheduled:summary', $this->command->getName());
     }
 
     public function testDescription()
     {
-        $this->assertEquals('View a summary of all scheduled artisan commands', $this->scheduleSummary->getDescription());
+        $this->assertEquals('View a summary of all scheduled artisan commands', $this->command->getDescription());
     }
 
     public function testFire()

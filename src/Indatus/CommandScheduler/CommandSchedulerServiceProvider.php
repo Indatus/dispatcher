@@ -43,14 +43,9 @@ class CommandSchedulerServiceProvider extends ServiceProvider
 
         //load the scheduler of the appropriate driver
         App::bind('Indatus\CommandScheduler\Schedulable', function () {
-                /*$schedulerClass = Config::get('indatus/command-scheduler::driver');
-                var_dump($schedulerClass);
-                exit;
-                return new $schedulerClass();*/
-                return new Scheduler();
+                $driver = ucwords(strtolower(Config::get('command-scheduler::driver')));
+                return App::make('Indatus\CommandScheduler\Drivers\\'.$driver.'\Scheduler');
             });
-
-        //App::make('Indatus\CommandScheduler\Schedulable');
 
         $this->registerCommands();
 	}
@@ -64,7 +59,8 @@ class CommandSchedulerServiceProvider extends ServiceProvider
 	{
         return [
             'command.scheduled.summary',
-            'command.scheduled.make'
+            'command.scheduled.make',
+            'command.scheduled.run'
         ];
 	}
 
@@ -73,17 +69,26 @@ class CommandSchedulerServiceProvider extends ServiceProvider
      */
     private function registerCommands()
     {
+        //scheduled:summary
         $this->app['command.scheduled.summary'] = $this->app->share(function($app)
             {
                 return new ScheduleSummary(App::make('Indatus\CommandScheduler\Services\SchedulerService'));
             });
         $this->commands('command.scheduled.summary');
 
+        //scheduled:make
         $this->app['command.scheduled.make'] = $this->app->share(function($app)
             {
                 return App::make('Indatus\CommandScheduler\Commands\Make');
             });
         $this->commands('command.scheduled.make');
+
+        //scheduled:run
+        $this->app['command.scheduled.run'] = $this->app->share(function($app)
+            {
+                return App::make('Indatus\CommandScheduler\Commands\Run');
+            });
+        $this->commands('command.scheduled.run');
     }
 
 }

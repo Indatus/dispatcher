@@ -6,6 +6,10 @@ namespace Indatus\CommandScheduler;
 
 interface Schedulable
 {
+    /**
+     * Run every weekday
+     * @return $this
+     */
     public function everyWeekday();
 
     /**
@@ -62,13 +66,6 @@ interface Schedulable
     public function monthly();
 
     /**
-     * Get the scheduling definition for the crontab
-     *
-     * @return string
-     */
-    public function getSchedule();
-
-    /**
      * Set the hours under which this command will run
      * @param mixed $hoursIntoTheDay
      * @return $this
@@ -111,9 +108,41 @@ interface Schedulable
     public function yearly();
 
     /**
+     * Get the scheduling definition for the crontab
+     *
+     * @return string
+     */
+    public function getSchedule();
+
+    /**
      * Run a command every X minutes
      * @param $minutes
      * @return $this
      */
     public function everyMinutes($minutes);
+
+    /**
+     * @return string
+     */
+    public function getScheduleDayOfMonth();
+
+    /**
+     * @return string
+     */
+    public function getScheduleDayOfWeek();
+
+    /**
+     * @return string
+     */
+    public function getScheduleHour();
+
+    /**
+     * @return string
+     */
+    public function getScheduleMinute();
+
+    /**
+     * @return string
+     */
+    public function getScheduleMonth();
 }

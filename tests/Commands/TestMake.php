@@ -12,13 +12,13 @@ class TestMake extends TestCase
     /**
      * @var Indatus\CommandScheduler\Commands\Make
      */
-    private $make;
+    private $command;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->make = new Make(m::mock('Illuminate\Filesystem\Filesystem'));
+        $this->command = new Make(m::mock('Illuminate\Filesystem\Filesystem'));
     }
 
     public function tearDown()
@@ -29,12 +29,12 @@ class TestMake extends TestCase
 
     public function testName()
     {
-        $this->assertEquals('scheduled:make', $this->make->getName());
+        $this->assertEquals('scheduled:make', $this->command->getName());
     }
 
     public function testDescription()
     {
-        $this->assertEquals('Create a new scheduled artisan command', $this->make->getDescription());
+        $this->assertEquals('Create a new scheduled artisan command', $this->command->getDescription());
     }
 
 } 

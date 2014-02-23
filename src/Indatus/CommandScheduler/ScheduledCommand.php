@@ -8,7 +8,7 @@ namespace Indatus\CommandScheduler;
 use Illuminate\Console\Command;
 use App;
 
-abstract class ScheduledCommand extends Command implements ScheduledCommandInterface
+abstract class ScheduledCommand extends Command
 {
 
     /**
@@ -19,39 +19,20 @@ abstract class ScheduledCommand extends Command implements ScheduledCommandInter
     protected $name = 'scheduledCommand';
 
     /**
-     * @var \Indatus\CommandScheduler\Scheduler
-     */
-    private $scheduler;
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->scheduler = App::make('Indatus\CommandScheduler\Schedulable');
-    }
-
-    /**
      * When a command should run
-     */
-    abstract public function schedule();
-
-    /**
-     * Customize the schedule for this command
      *
-     * @return \Indatus\CommandScheduler\Scheduler
+     * @return \Indatus\CommandScheduler\Schedulable
      */
-    public function getScheduler()
-    {
-        return $this->scheduler;
-    }
+    abstract public function schedule(Schedulable $scheduler);
 
     /**
      * User to run the command as
-     * @return string
+     *
+     * @return string Defaults to false to run as default user
      */
     public function user()
     {
-        return 'root';
+        return false;
     }
 
     /**
@@ -65,6 +46,5 @@ abstract class ScheduledCommand extends Command implements ScheduledCommandInter
     {
         return '*';
     }
-
 
 }

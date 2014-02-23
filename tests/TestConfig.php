@@ -3,11 +3,10 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Orchestra\Testbench\TestCase;
 use Mockery as m;
 use Indatus\CommandScheduler\Scheduler;
 
-/*class TestConfig extends TestCase
+class TestConfig extends TestCase
 {
 
     public function tearDown()
@@ -18,9 +17,7 @@ use Indatus\CommandScheduler\Scheduler;
 
     public function testDefaultDriver()
     {
-        var_dump(Config::get('indatus-command-scheduler::driver'));
-        exit;
-        $this->assertEquals(Config::get('indatus-command-scheduler::driver'), 'cron');
+        $this->assertEquals(Config::get('command-scheduler::driver'), 'cron');
     }
 
-} */
+}

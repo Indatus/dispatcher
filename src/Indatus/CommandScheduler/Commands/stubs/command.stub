@@ -3,7 +3,9 @@ parent::__construct();
 
 	/**
 	 * When a command should run
+	 *
+	 * @return \Indatus\CommandScheduler\Schedulable
 	 */
-	public function schedule()
+	public function schedule(Schedulable $scheduler)
 	{
-		//return $this->getScheduler(); This must be scheduled
+		//return $scheduler; This must be scheduled
