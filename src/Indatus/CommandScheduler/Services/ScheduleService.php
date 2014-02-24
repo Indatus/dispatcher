@@ -57,7 +57,7 @@ class ScheduleService
 
     /**
      * Determine if a command is due to be run
-     *
+     * @param ScheduledCommand $command
      * @return bool
      */
     public function isDue(ScheduledCommand $command)

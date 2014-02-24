@@ -40,7 +40,7 @@ abstract class ScheduledCommand extends Command
      *
      * Defaults to *
      *
-     * @return []|string
+     * @return string
      */
     public function environment()
     {

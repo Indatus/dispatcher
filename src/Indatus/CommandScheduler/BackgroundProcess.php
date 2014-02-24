@@ -40,6 +40,10 @@ class BackgroundProcess
         $this->runAs = $user;
     }
 
+    /**
+     * Is the current command being run as root?
+     * @return bool
+     */
     private function isRoot()
     {
         return (posix_getuid() === 0);

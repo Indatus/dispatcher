@@ -48,6 +48,7 @@ class CommandService
      * Determine if a scheduled command is in the correct environment
      *
      * @param \Indatus\CommandScheduler\ScheduledCommand $command
+     * @return bool
      */
     public function runnableInEnvironment(ScheduledCommand $command)
     {

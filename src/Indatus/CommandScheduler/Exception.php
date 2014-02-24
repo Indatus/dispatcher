@@ -5,7 +5,6 @@
 
 namespace Indatus\CommandScheduler;
 
-
 class Exception extends \Exception {
 
 } 
