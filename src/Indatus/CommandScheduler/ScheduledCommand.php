@@ -11,6 +11,7 @@ use App;
 abstract class ScheduledCommand extends Command
 {
 
+
     /**
      * Unfortunately, this has to be here for unit testing
      *
@@ -20,7 +21,7 @@ abstract class ScheduledCommand extends Command
 
     /**
      * When a command should run
-     *
+     * @param Schedulable $scheduler
      * @return \Indatus\CommandScheduler\Schedulable
      */
     abstract public function schedule(Schedulable $scheduler);

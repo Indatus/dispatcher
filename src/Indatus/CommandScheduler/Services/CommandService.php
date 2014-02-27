@@ -26,22 +26,12 @@ class CommandService
      */
     public function runDue()
     {
+        $backgroundProcessRunner = App::make('Indatus\CommandScheduler\BackgroundProcessRunner');
         foreach ($this->scheduleService->getDueCommands() as $command) {
             if ($command->isEnabled() && $this->runnableInEnvironment($command)) {
-                $this->run($command);
+                $backgroundProcessRunner->run($command);
             }
         }
-    }
-
-    /**
-     * Run a scheduled command
-     *
-     * @param \Indatus\CommandScheduler\ScheduledCommand $command
-     */
-    public function run(ScheduledCommand $command)
-    {
-        $backgroundProcess = App::make('Indatus\ScheduledCommand\BackgroundProcess');
-        $backgroundProcess->run($command);
     }
 
     /**
@@ -66,5 +56,25 @@ class CommandService
         return false;
     }
 
+    /**
+     * Get a command to run this application
+     * @param ScheduledCommand $scheduledCommand
+     * @return string
+     */
+    public function getRunCommand(ScheduledCommand $scheduledCommand)
+    {
+        $commandPieces = [
+            'php',
+            base_path().'/artisan',
+            $scheduledCommand->getName()
+        ];
+
+        //run the command as a different user
+        if (is_string($scheduledCommand->user())) {
+            array_unshift($commandPieces, 'sudo -u '.$scheduledCommand->user());
+        }
+
+        return implode(' ', $commandPieces);
+    }
 
 }

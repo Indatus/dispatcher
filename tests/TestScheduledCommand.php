@@ -32,4 +32,5 @@ class TestScheduledCommand extends TestCase
     {
         $this->assertFalse($this->scheduledCommand->user());
     }
+
 } 

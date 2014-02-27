@@ -9,7 +9,7 @@ use Indatus\CommandScheduler\Services\ScheduleService;
 use Indatus\CommandScheduler\Table;
 use Indatus\CommandScheduler\Scheduler;
 
-class TestCommandService extends TestCase
+class BackgroundProcessService extends TestCase
 {
     /**
      * @var Indatus\CommandScheduler\Services\CommandService
