@@ -20,4 +20,10 @@ class TestConfig extends TestCase
         $this->assertEquals(Config::get('command-scheduler::driver'), 'cron');
     }
 
+    public function testDefaultSchedulerClass()
+    {
+        $serviceProvider = App::make('Indatus\CommandScheduler\Schedulable');
+        $this->assertInstanceOf('Indatus\CommandScheduler\Drivers\Cron\Scheduler', $serviceProvider);
+    }
+
 }

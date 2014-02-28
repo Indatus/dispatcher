@@ -5,8 +5,9 @@
 
 use Mockery as m;
 use Indatus\CommandScheduler\Drivers\Cron\Scheduler;
+use Indatus\CommandScheduler\BackgroundProcess;
 
-class TestScheduledCommand extends TestCase
+class TestBackgroundProcess extends TestCase
 {
     /**
      * @var Indatus\CommandScheduler\ScheduledCommand
@@ -28,14 +29,18 @@ class TestScheduledCommand extends TestCase
         m::close();
     }
 
-    public function testDefaultUser()
+    public function testSomething()
     {
-        $this->assertFalse($this->scheduledCommand->user());
+
     }
 
-    public function testDefaultEnvironment()
+    /*public function testRunAsOnWindows()
     {
-        $this->assertEquals('*', $this->scheduledCommand->environment());
-    }
+        $platform = m::mock('Indatus\CommandScheduler\Platform');
+        $platform->shouldReceive('isWindows')->once()->andReturn(false);
+        $this->app->instance('Indatus\CommandScheduler\Platform', $platform);
 
+        $backgroundProcess = new BackgroundProcess();
+        //$backgroundProcess->run();
+    }*/
 } 

@@ -75,6 +75,14 @@ class TestCommandService extends TestCase
         $this->assertTrue($this->commandService->runnableInEnvironment($scheduledCommand));
     }
 
+    public function testNotRunnableInEnvironment()
+    {
+        $scheduledCommand = $this->mockCommand(['local', 'development']);
+
+        App::shouldReceive('environment')->andReturn('amazonAWS');
+        $this->assertFalse($this->commandService->runnableInEnvironment($scheduledCommand));
+    }
+
     public function testGetRunCommand()
     {
         $commandName = 'test:command';

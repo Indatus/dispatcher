@@ -2,15 +2,12 @@
 
 namespace Indatus\CommandScheduler;
 
-use Illuminate\Support\ServiceProvider;
-use Indatus\CommandScheduler\Commands\Make;
 use Indatus\CommandScheduler\Commands\ScheduleSummary;
-use Indatus\CommandScheduler\Drivers\Cron\Scheduler;
 use Indatus\CommandScheduler\Services\ScheduleService;
 use App;
 use Config;
 
-class CommandSchedulerServiceProvider extends ServiceProvider
+class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
 
 	/**
@@ -37,10 +34,6 @@ class CommandSchedulerServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-        App::bind('Indatus\CommandScheduler\Services\SchedulerService', function ($app) {
-                return new ScheduleService(new Table());
-            });
-
         //load the scheduler of the appropriate driver
         App::bind('Indatus\CommandScheduler\Schedulable', function () {
                 $driver = ucwords(strtolower(Config::get('command-scheduler::driver')));
@@ -72,7 +65,7 @@ class CommandSchedulerServiceProvider extends ServiceProvider
         //scheduled:summary
         $this->app['command.scheduled.summary'] = $this->app->share(function($app)
             {
-                return new ScheduleSummary(App::make('Indatus\CommandScheduler\Services\SchedulerService'));
+                return App::make('Indatus\CommandScheduler\Commands\ScheduleSummary');
             });
         $this->commands('command.scheduled.summary');
 
