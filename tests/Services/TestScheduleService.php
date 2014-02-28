@@ -54,9 +54,10 @@ class TestScheduleService extends TestCase
                 $table->shouldReceive('addRow')->once();
 
                 $m->shouldReceive('isEnabled')->once();
-                $m->shouldReceive('getName')->twice();
+                $m->shouldReceive('getName')->once();
                 $m->shouldReceive('user')->once();
-                $m->shouldReceive('getScheduler')->once()->andReturn(m::mock('Indatus\CommandScheduler\Drivers\Cron\Scheduler', function ($m) {
+                $m->shouldReceive('environment')->twice();
+                $m->shouldReceive('schedule')->once()->andReturn(m::mock('Indatus\CommandScheduler\Drivers\Cron\Scheduler', function ($m) {
                             $m->shouldReceive('getScheduleMinute');
                             $m->shouldReceive('getScheduleHour');
                             $m->shouldReceive('getScheduleDayOfMonth');

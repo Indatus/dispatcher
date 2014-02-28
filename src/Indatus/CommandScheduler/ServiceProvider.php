@@ -30,6 +30,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 	/**
 	 * Register the service provider.
 	 *
+     * @codeCoverageIgnore
 	 * @return void
 	 */
 	public function register()
@@ -59,6 +60,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
     /**
      * Register artisan commands
+     * @codeCoverageIgnore
      */
     private function registerCommands()
     {

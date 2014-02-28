@@ -30,6 +30,11 @@ class Make extends CommandMakeCommand
      */
     protected $description = 'Create a new scheduled artisan command';
 
+    /**
+     * @param string $file
+     * @param string $stub
+     * @codeCoverageIgnore
+     */
     protected function writeCommand($file, $stub) {
         return parent::writeCommand($file, $this->extendStub($stub));
     }

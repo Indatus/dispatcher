@@ -8,4 +8,4 @@ parent::__construct();
 	 */
 	public function schedule(Schedulable $scheduler)
 	{
-		//return $scheduler; This must be scheduled
+		return $scheduler;

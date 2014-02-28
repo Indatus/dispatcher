@@ -74,17 +74,17 @@ class ScheduleService
      */
     public function printSummary()
     {
-        $this->table->setHeaders(['Active', 'Environment(s)', 'Name', 'Minute', 'Hour', 'Day of Month', 'Month', 'Day of Week', 'Run as']);
+        $this->table->setHeaders(['Enabled', 'Environment(s)', 'Name', 'Minute', 'Hour', 'Day of Month', 'Month', 'Day of Week', 'Run as']);
         /** @var $command \Indatus\CommandScheduler\ScheduledCommand */
         $commands = 0;
         $activeCommands = 0;
         foreach ($this->getScheduledCommands() as $command) {
-
-            $scheduler = $command->getScheduler();
+            /** @var $command \Indatus\CommandScheduler\ScheduledCommand */
+            $scheduler = $command->schedule(App::make('Indatus\CommandScheduler\Schedulable'));
 
             $this->table->addRow([
-                    ($command->isEnabled() ?  'Y' : 'N'),
-                    $command->getName(),
+                    ($command->isEnabled() ?  'Yes' : 'No'),
+                    is_array($command->environment()) ? implode(',', $command->environment()) : $command->environment(),
                     $command->getName(),
                     $scheduler->getScheduleMinute(),
                     $scheduler->getScheduleHour(),

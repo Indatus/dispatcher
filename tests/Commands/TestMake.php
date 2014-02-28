@@ -18,7 +18,7 @@ class TestMake extends TestCase
     {
         parent::setUp();
 
-        $this->command = new Make(m::mock('Illuminate\Filesystem\Filesystem'));
+        $this->command = $this->makeFactory();
     }
 
     public function tearDown()
@@ -35,6 +35,58 @@ class TestMake extends TestCase
     public function testDescription()
     {
         $this->assertEquals('Create a new scheduled artisan command', $this->command->getDescription());
+    }
+
+    public function testStubExists()
+    {
+        $this->assertFileExists($this->getStubPath('command.stub'));
+    }
+
+    public function testStub()
+    {
+        //force visibility for testing
+        $class = new ReflectionClass('Indatus\CommandScheduler\Commands\Make');
+        $method = $class->getMethod('getStub');
+        $method->setAccessible(true);
+
+        $stubContents = file_get_contents($this->getStubPath('command.stub'));
+        $this->assertEquals($stubContents, $method->invoke($this->makeFactory(), 'getStub'));
+    }
+
+    public function testExtendStub()
+    {
+        //force visibility for testing
+        $class = new ReflectionClass('Indatus\CommandScheduler\Commands\Make');
+        $method = $class->getMethod('extendStub');
+        $method->setAccessible(true);
+
+        $stubContents = file_get_contents($this->getStubPath('command.stub'));
+
+        $replacements = [
+            'use Illuminate\Console\Command' => 'use Indatus\CommandScheduler\ScheduledCommand',
+            'extends Command {' => 'extends ScheduledCommand {',
+            'parent::__construct();' => $stubContents
+        ];
+
+        $delimeter = '*****';
+        $extendedStub = $method->invoke($this->makeFactory(), implode($delimeter, array_keys($replacements)));
+
+        $this->assertEquals(implode($delimeter, array_values($replacements)), $extendedStub);
+    }
+
+    private function getStubPath($filename)
+    {
+        return implode(DIRECTORY_SEPARATOR, [
+                $this->getPackagePath(),
+                'Commands',
+                'stubs',
+                $filename
+            ]);
+    }
+
+    private function makeFactory()
+    {
+        return new Make(m::mock('Illuminate\Filesystem\Filesystem'));
     }
 
 } 

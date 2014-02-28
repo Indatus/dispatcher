@@ -6,9 +6,10 @@ Laravel Command Scheduler
  * Scheduling is maintained within your version control system
  * Run commands as other users
 
-## Pitfalls
+## Roadmap
 
- * No Rcron driver yet
+ * Accomidate scheduling parameterized commands
+ * Handle exceptions individually, so one exception in a command doesn't stop all scheduled commands from running
 
 ## Installation
 
@@ -41,3 +42,9 @@ If commands are not visible via `php artisan` then they cannot be scheduled
 #### Generating New Scheduled Commands
 
 Use `php artisan scheduled:make` to generate a new scheduled command, the same way you would use artisan's `command:make`.
+
+## FAQ
+
+**Why do I see a RuntimeExceptionWhen I use `php artisan scheduled:run`?**
+
+When running scheduled commands, exceptions from a command will appear as if they came from `scheduled:run`.  More than likely, it's one of your commands that is throwing the exception.

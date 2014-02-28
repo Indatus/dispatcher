@@ -21,6 +21,7 @@ abstract class ScheduledCommand extends Command
 
     /**
      * When a command should run
+     *
      * @param Schedulable $scheduler
      * @return \Indatus\CommandScheduler\Schedulable
      */
@@ -38,8 +39,6 @@ abstract class ScheduledCommand extends Command
 
     /**
      * Environment(s) under which the given command should run
-     *
-     * Defaults to *
      *
      * @return string
      */
