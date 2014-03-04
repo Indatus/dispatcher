@@ -43,6 +43,23 @@ If commands are not visible via `php artisan` then they cannot be scheduled
 
 Use `php artisan scheduled:make` to generate a new scheduled command, the same way you would use artisan's `command:make`.
 
+## Scheduling
+
+The `Schedulable` interface provides some incredibly useful methods for scheduling your cron commands.
+
+```
+//every day at 4:17am
+return $scheduler->daily()->hours(4)->minutes(17);
+```
+
+
+```
+//every Tuesday/Thursday at 5:03am
+return $scheduler->daysOfTheWeek([Scheduler::$TUESDAY, Scheduler::$THURSDAY])->hours(5)->minutes(3);
+```
+
+
+
 ## FAQ
 
 **Why do I see a RuntimeExceptionWhen I use `php artisan scheduled:run`?**

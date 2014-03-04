@@ -53,7 +53,6 @@ class TestScheduleService extends TestCase
         $scheduledCommand = m::mock('Indatus\CommandScheduler\ScheduledCommand', function ($m) use ($table) {
                 $table->shouldReceive('addRow')->once();
 
-                $m->shouldReceive('isEnabled')->once();
                 $m->shouldReceive('getName')->once();
                 $m->shouldReceive('user')->once();
                 $m->shouldReceive('environment')->twice();
