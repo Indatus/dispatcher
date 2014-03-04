@@ -93,7 +93,9 @@ class TestCommandService extends TestCase
         $this->assertEquals($this->commandService->getRunCommand($scheduledCommand), implode(' ', [
                     'php',
                     base_path().'/artisan',
-                    $commandName
+                    $commandName,
+                    '&',
+                    '> /dev/null 2>&1'
                 ]));
     }
     public function testGetRunCommandAsUser()
@@ -107,7 +109,9 @@ class TestCommandService extends TestCase
                     'sudo -u '.$user,
                     'php',
                     base_path().'/artisan',
-                    $commandName
+                    $commandName,
+                    '&',
+                    '> /dev/null 2>&1'
                 ]));
     }
 

@@ -1,4 +1,4 @@
-Laravel Command Scheduler
+# Laravel Command Scheduler
 
 Quit editing the crontab when you deploy and schedule your artisan commands within your project.
 
@@ -10,12 +10,11 @@ Quit editing the crontab when you deploy and schedule your artisan commands with
 
 ## Roadmap
 
- * Accomidate scheduling parameterized commands
- * Handle exceptions individually, so one exception in a command doesn't stop all scheduled commands from running
+ * Accomidate a single command with various parameter sets
 
 ## Installation
 
- - ADD INSTRUCTIONS FOR COMPOSER INSTALL -
+ [ADD INSTRUCTIONS FOR COMPOSER INSTALL]
 
 Add this line to the providers array in your `app/config/app.php` file :
 
