@@ -2,6 +2,8 @@
 
 Quit editing the crontab when you deploy and schedule your artisan commands within your project.
 
+Current version: 1.0
+
 ## Features
 
  * Schedule artisan commands to run automatically
