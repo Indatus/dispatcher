@@ -5,8 +5,8 @@
 
 namespace Indatus\CommandScheduler;
 
-use Illuminate\Console\Command;
 use App;
+use Illuminate\Console\Command;
 
 abstract class ScheduledCommand extends Command
 {

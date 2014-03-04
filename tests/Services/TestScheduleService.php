@@ -4,7 +4,7 @@
  */
 
 use Mockery as m;
-use Indatus\CommandScheduler\Services\ScheduleService;
+use Indatus\CommandScheduler\Drivers\Cron\ScheduleService;
 use Indatus\CommandScheduler\Table;
 use Indatus\CommandScheduler\Scheduler;
 
@@ -64,7 +64,7 @@ class TestScheduleService extends TestCase
                             $m->shouldReceive('getScheduleDayOfWeek');
                         }));
             });
-        $scheduleService = m::mock('Indatus\CommandScheduler\Services\ScheduleService[getScheduledCommands]', [
+        $scheduleService = m::mock('Indatus\CommandScheduler\Drivers\Cron\ScheduleService[getScheduledCommands]', [
                 $table
             ], function ($m) use ($scheduledCommand) {
                 $m->shouldReceive('getScheduledCommands')->once()->andReturn([
@@ -76,7 +76,7 @@ class TestScheduleService extends TestCase
 
     public function testGetDueCommands()
     {
-        $scheduleService = m::mock('Indatus\CommandScheduler\Services\ScheduleService[getScheduledCommands,isDue]', [
+        $scheduleService = m::mock('Indatus\CommandScheduler\Drivers\Cron\ScheduleService[getScheduledCommands,isDue]', [
                 new Table()
             ], function ($m) {
                 $m->shouldReceive('getScheduledCommands')->once()

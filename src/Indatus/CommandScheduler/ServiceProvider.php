@@ -2,8 +2,6 @@
 
 namespace Indatus\CommandScheduler;
 
-use Indatus\CommandScheduler\Commands\ScheduleSummary;
-use Indatus\CommandScheduler\Services\ScheduleService;
 use App;
 use Config;
 
@@ -35,10 +33,16 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 	 */
 	public function register()
 	{
+        $resolver = App::make('\Indatus\CommandScheduler\ConfigResolver');
+
         //load the scheduler of the appropriate driver
-        App::bind('Indatus\CommandScheduler\Schedulable', function () {
-                $driver = ucwords(strtolower(Config::get('command-scheduler::driver')));
-                return App::make('Indatus\CommandScheduler\Drivers\\'.$driver.'\Scheduler');
+        App::bind('Indatus\CommandScheduler\Schedulable', function () use ($resolver) {
+                return $resolver->resolveDriverClass('Scheduler');
+            });
+
+        //load the scheduler of the appropriate driver
+        App::bind('Indatus\CommandScheduler\Services\ScheduleService', function () use ($resolver) {
+                return $resolver->resolveDriverClass('ScheduleService');
             });
 
         $this->registerCommands();

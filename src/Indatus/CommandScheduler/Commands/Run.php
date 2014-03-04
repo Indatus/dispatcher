@@ -7,7 +7,6 @@ namespace Indatus\CommandScheduler\Commands;
 
 use Illuminate\Console\Command;
 use Indatus\CommandScheduler\Services\CommandService;
-use Indatus\CommandScheduler\Services\ScheduleService;
 
 /**
  * Run any commands that should be run

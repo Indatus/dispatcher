@@ -5,7 +5,6 @@
 
 namespace Indatus\CommandScheduler\Services;
 
-use Indatus\CommandScheduler\ScheduledCommand;
 use App;
 
 class BackgroundProcessService
@@ -15,6 +14,7 @@ class BackgroundProcessService
      * @var \Indatus\CommandScheduler\Services\ScheduleService
      */
     private $scheduleService;
+
     /**
      * @var \Indatus\CommandScheduler\Services\CommandService
      */

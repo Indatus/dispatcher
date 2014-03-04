@@ -5,7 +5,7 @@
 
 use Mockery as m;
 use Indatus\CommandScheduler\Services\CommandService;
-use Indatus\CommandScheduler\Services\ScheduleService;
+use Indatus\CommandScheduler\Drivers\Cron\ScheduleService;
 use Indatus\CommandScheduler\Table;
 use Indatus\CommandScheduler\Scheduler;
 
@@ -38,8 +38,9 @@ class BackgroundProcessService extends TestCase
         $scheduledCommand->shouldReceive('getName')->once()->andReturn('test:command');
         $scheduledCommand->shouldReceive('user')->once()->andReturn(false);
 
-        $scheduleService = m::mock('Indatus\CommandScheduler\Services\ScheduleService');
+        $scheduleService = m::mock('Indatus\CommandScheduler\Drivers\Cron\ScheduleService');
         $scheduleService->shouldReceive('getDueCommands')->once()->andReturn([$scheduledCommand]);
+        $this->app->instance('Indatus\CommandScheduler\Services\ScheduleService', $scheduleService);
 
         $commandService = m::mock('Indatus\CommandScheduler\Services\CommandService[runnableInEnvironment,run]',
             [$scheduleService],

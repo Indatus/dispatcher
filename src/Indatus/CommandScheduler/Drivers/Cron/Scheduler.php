@@ -23,6 +23,19 @@ class Scheduler implements Schedulable
     public static $FRIDAY = 5;
     public static $SATURDAY = 6;
 
+    public static $JANUARY = 1;
+    public static $FEBRUARY = 3;
+    public static $MARCH = 3;
+    public static $APRIL = 4;
+    public static $MAY = 5;
+    public static $JUNE = 6;
+    public static $JULY = 7;
+    public static $AUGUST = 8;
+    public static $SEPTEMBER = 9;
+    public static $OCTOBER = 10;
+    public static $NOVEMBER = 11;
+    public static $DECEMBER = 12;
+
     private $scheduleDayOfWeek = '*';
     private $scheduleMonth = '*';
     private $scheduleDayOfMonth = '*';

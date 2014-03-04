@@ -18,7 +18,7 @@ class TestRun extends TestCase
     {
         parent::setUp();
 
-        $this->command = new Run(m::mock('Indatus\CommandScheduler\Services\CommandService'), m::mock('Indatus\CommandScheduler\Services\ScheduleService'));
+        $this->command = new Run(m::mock('Indatus\CommandScheduler\Services\CommandService'), m::mock('Indatus\CommandScheduler\Drivers\Cron\ScheduleService'));
     }
 
     public function tearDown()

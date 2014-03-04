@@ -5,7 +5,7 @@
 
 namespace Indatus\CommandScheduler;
 
-use \App;
+use App;
 use Indatus\CommandScheduler\Services\CommandService;
 
 class BackgroundProcessRunner

@@ -5,22 +5,28 @@
 
 namespace Indatus\CommandScheduler\Services;
 
-use \App;
-use \Artisan;
-use \Cron\CronExpression;
+use App;
+use Artisan;
 use Indatus\CommandScheduler\ScheduledCommand;
 use Indatus\CommandScheduler\Table;
 
-class ScheduleService
+abstract class ScheduleService
 {
 
     /** @var  \Indatus\CommandScheduler\Table */
-    private $table;
+    protected $table;
 
     public function __construct(Table $table)
     {
         $this->table = $table;
     }
+
+    /**
+     * Determine if a command is due to be run
+     * @param ScheduledCommand $command
+     * @return bool
+     */
+    abstract public function isDue(ScheduledCommand $command);
 
     /**
      * Get all commands that are scheduled
@@ -53,18 +59,6 @@ class ScheduleService
             }
         }
         return $commands;
-    }
-
-    /**
-     * Determine if a command is due to be run
-     * @param ScheduledCommand $command
-     * @return bool
-     */
-    public function isDue(ScheduledCommand $command)
-    {
-        $scheduler = App::make('Indatus\CommandScheduler\Schedulable');
-        $cron = CronExpression::factory($command->schedule($scheduler)->getSchedule());
-        return $cron->isDue();
     }
 
     /**

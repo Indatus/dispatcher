@@ -5,8 +5,8 @@
 
 namespace Indatus\CommandScheduler\Services;
 
-use Indatus\CommandScheduler\ScheduledCommand;
 use App;
+use Indatus\CommandScheduler\ScheduledCommand;
 
 class CommandService
 {
