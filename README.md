@@ -7,10 +7,7 @@ Quit editing the crontab when you deploy and schedule your artisan commands with
  * Schedule artisan commands to run automatically
  * Scheduling is maintained within your version control system
  * Run commands as other users
-
-## Roadmap
-
- * Accommodate a single command with various parameter sets
+ * Run commands in certain environments
 
 ## Installation
 
@@ -99,6 +96,10 @@ You can build your own drivers or extend a driver that's included.  Create a pac
 ```
     'driver' => '\MyApp\ScheduleDriver'
 ```
+
+## Roadmap
+
+ * Accommodate a single command with various parameter sets
 
 ## FAQ
 
