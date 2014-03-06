@@ -80,7 +80,7 @@ You may override `environment()` to ensure your command is only scheduled in spe
 ```
     public function environment()
     {
-        return '*';
+        return ['development','staging'];
     }
 ```
 
