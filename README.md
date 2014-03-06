@@ -78,7 +78,7 @@ You may override `user()` to run a given artisan command as a specific user.  En
 
 ### Environment-specific commands
 
-You may override `environment()` to ensure your command is only scheduled in specific environments.  It should provide either a string, representing a single environment or an array of environments.
+You may override `environment()` to ensure your command is only scheduled in specific environments.  It should provide a single environment or an array of environments.
 
 ```
     public function environment()
