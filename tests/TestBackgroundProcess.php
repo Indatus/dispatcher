@@ -4,13 +4,13 @@
  */
 
 use Mockery as m;
-use Indatus\CommandScheduler\Drivers\Cron\Scheduler;
-use Indatus\CommandScheduler\BackgroundProcess;
+use Indatus\Dispatcher\Drivers\Cron\Scheduler;
+use Indatus\Dispatcher\BackgroundProcess;
 
 class TestBackgroundProcess extends TestCase
 {
     /**
-     * @var Indatus\CommandScheduler\ScheduledCommand
+     * @var Indatus\Dispatcher\ScheduledCommand
      */
     private $scheduledCommand;
 
@@ -18,9 +18,9 @@ class TestBackgroundProcess extends TestCase
     {
         parent::setUp();
 
-        $this->scheduledCommand = m::mock('Indatus\CommandScheduler\ScheduledCommand[schedule]');
+        $this->scheduledCommand = m::mock('Indatus\Dispatcher\ScheduledCommand[schedule]');
 
-        $this->app->instance('Indatus\CommandScheduler\Schedulable', new Scheduler());
+        $this->app->instance('Indatus\Dispatcher\Schedulable', new Scheduler());
     }
 
     public function tearDown()
@@ -36,9 +36,9 @@ class TestBackgroundProcess extends TestCase
 
     /*public function testRunAsOnWindows()
     {
-        $platform = m::mock('Indatus\CommandScheduler\Platform');
+        $platform = m::mock('Indatus\Dispatcher\Platform');
         $platform->shouldReceive('isWindows')->once()->andReturn(false);
-        $this->app->instance('Indatus\CommandScheduler\Platform', $platform);
+        $this->app->instance('Indatus\Dispatcher\Platform', $platform);
 
         $backgroundProcess = new BackgroundProcess();
         //$backgroundProcess->run();

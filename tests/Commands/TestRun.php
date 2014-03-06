@@ -4,13 +4,13 @@
  */
 
 use Mockery as m;
-use Indatus\CommandScheduler\Commands\Run;
+use Indatus\Dispatcher\Commands\Run;
 
 class TestRun extends TestCase
 {
 
     /**
-     * @var Indatus\CommandScheduler\Commands\Run
+     * @var Indatus\Dispatcher\Commands\Run
      */
     private $command;
 
@@ -18,7 +18,7 @@ class TestRun extends TestCase
     {
         parent::setUp();
 
-        $this->command = new Run(m::mock('Indatus\CommandScheduler\Services\CommandService'), m::mock('Indatus\CommandScheduler\Drivers\Cron\ScheduleService'));
+        $this->command = new Run(m::mock('Indatus\Dispatcher\Services\CommandService'), m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService'));
     }
 
     public function tearDown()
@@ -39,7 +39,7 @@ class TestRun extends TestCase
 
     public function testFire()
     {
-        $commandService = m::mock('Indatus\CommandScheduler\Services\CommandService', function ($m) {
+        $commandService = m::mock('Indatus\Dispatcher\Services\CommandService', function ($m) {
                 $m->shouldReceive('runDue')->once();
             });
         $command = new Run($commandService);

@@ -3,20 +3,20 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-namespace Indatus\CommandScheduler\Commands;
+namespace Indatus\Dispatcher\Commands;
 
 use Illuminate\Console\Command;
-use Indatus\CommandScheduler\Services\ScheduleService;
+use Indatus\Dispatcher\Services\ScheduleService;
 
 /**
  * View a summary for all scheduled artisan commands
  * @author Ben Kuhl <bkuhl@indatus.com>
- * @package Indatus\CommandScheduler\Commands
+ * @package Indatus\Dispatcher\Commands
  */
 class ScheduleSummary extends Command
 {
 
-    /** @var \Indatus\CommandScheduler\Services\ScheduleService|null  */
+    /** @var \Indatus\Dispatcher\Services\ScheduleService|null  */
     private $scheduleService = null;
 
     public function __construct(ScheduleService $scheduleService)

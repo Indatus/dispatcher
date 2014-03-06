@@ -3,7 +3,7 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-namespace Indatus\CommandScheduler;
+namespace Indatus\Dispatcher;
 
 
 class Platform {

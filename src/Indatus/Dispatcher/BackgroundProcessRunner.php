@@ -3,16 +3,16 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-namespace Indatus\CommandScheduler;
+namespace Indatus\Dispatcher;
 
 use App;
-use Indatus\CommandScheduler\Services\CommandService;
+use Indatus\Dispatcher\Services\CommandService;
 
 class BackgroundProcessRunner
 {
 
     /**
-     * @var \Indatus\CommandScheduler\Services\CommandService
+     * @var \Indatus\Dispatcher\Services\CommandService
      */
     private $commandService;
 

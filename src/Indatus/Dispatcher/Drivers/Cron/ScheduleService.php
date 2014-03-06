@@ -3,13 +3,13 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-namespace Indatus\CommandScheduler\Drivers\Cron;
+namespace Indatus\Dispatcher\Drivers\Cron;
 
 use App;
 use Cron\CronExpression;
-use Indatus\CommandScheduler\ScheduledCommand;
+use Indatus\Dispatcher\ScheduledCommand;
 
-class ScheduleService extends \Indatus\CommandScheduler\Services\ScheduleService {
+class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
 
     /**
      * Determine if a command is due to be run
@@ -18,7 +18,7 @@ class ScheduleService extends \Indatus\CommandScheduler\Services\ScheduleService
      */
     public function isDue(ScheduledCommand $command)
     {
-        $scheduler = App::make('Indatus\CommandScheduler\Schedulable');
+        $scheduler = App::make('Indatus\Dispatcher\Schedulable');
         $cron = CronExpression::factory($command->schedule($scheduler)->getSchedule());
         return $cron->isDue();
     }

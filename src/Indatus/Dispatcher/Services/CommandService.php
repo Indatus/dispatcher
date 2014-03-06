@@ -3,16 +3,16 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-namespace Indatus\CommandScheduler\Services;
+namespace Indatus\Dispatcher\Services;
 
 use App;
-use Indatus\CommandScheduler\ScheduledCommand;
+use Indatus\Dispatcher\ScheduledCommand;
 
 class CommandService
 {
 
     /**
-     * @var /Indatus\CommandScheduler\Services\ScheduleService
+     * @var /Indatus\Dispatcher\Services\ScheduleService
      */
     private $scheduleService;
 
@@ -26,7 +26,7 @@ class CommandService
      */
     public function runDue()
     {
-        $backgroundProcessRunner = App::make('Indatus\CommandScheduler\BackgroundProcessRunner');
+        $backgroundProcessRunner = App::make('Indatus\Dispatcher\BackgroundProcessRunner');
         foreach ($this->scheduleService->getDueCommands() as $command) {
             if ($command->isEnabled() && $this->runnableInEnvironment($command)) {
                 $backgroundProcessRunner->run($command);
@@ -37,7 +37,7 @@ class CommandService
     /**
      * Determine if a scheduled command is in the correct environment
      *
-     * @param \Indatus\CommandScheduler\ScheduledCommand $command
+     * @param \Indatus\Dispatcher\ScheduledCommand $command
      * @return bool
      */
     public function runnableInEnvironment(ScheduledCommand $command)

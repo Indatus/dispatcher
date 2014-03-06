@@ -4,7 +4,7 @@ parent::__construct();
 	/**
 	 * When a command should run
 	 *
-	 * @return \Indatus\CommandScheduler\Schedulable
+	 * @return \Indatus\Dispatcher\Schedulable
 	 */
 	public function schedule(Schedulable $scheduler)
 	{

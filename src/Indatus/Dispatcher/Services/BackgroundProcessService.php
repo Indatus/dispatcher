@@ -3,7 +3,7 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-namespace Indatus\CommandScheduler\Services;
+namespace Indatus\Dispatcher\Services;
 
 use App;
 
@@ -11,12 +11,12 @@ class BackgroundProcessService
 {
 
     /**
-     * @var \Indatus\CommandScheduler\Services\ScheduleService
+     * @var \Indatus\Dispatcher\Services\ScheduleService
      */
     private $scheduleService;
 
     /**
-     * @var \Indatus\CommandScheduler\Services\CommandService
+     * @var \Indatus\Dispatcher\Services\CommandService
      */
     private $commandService;
 
@@ -32,7 +32,7 @@ class BackgroundProcessService
      */
     public function canRunAsUser()
     {
-        $platform = App::make('Indatus\CommandScheduler\Platform');
+        $platform = App::make('Indatus\Dispatcher\Platform');
 
         return !$platform->isWindows() && $this->isRoot();
     }

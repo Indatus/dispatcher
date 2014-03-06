@@ -3,16 +3,16 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use \Indatus\CommandScheduler\Drivers\Cron\Scheduler;
+use \Indatus\Dispatcher\Drivers\Cron\Scheduler;
 
 class TestScheduler extends TestCase
 {
     /**
-     * @var Indatus\CommandScheduler\Scheduler
+     * @var Indatus\Dispatcher\Scheduler
      */
     private $scheduler;
 
-    private $schedularClass = 'Indatus\CommandScheduler\Schedulable';
+    private $schedularClass = 'Indatus\Dispatcher\Schedulable';
 
     public function setUp()
     {

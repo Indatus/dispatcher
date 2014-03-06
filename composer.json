@@ -1,5 +1,5 @@
 {
-    "name": "indatus/command-scheduler",
+    "name": "indatus/dispatcher",
     "description": "Schedule your artisan commands within your application",
     "keywords": ["laravel"],
     "authors": [
@@ -24,7 +24,7 @@
             "tests/TestCase.php"
         ],
         "psr-0": {
-            "Indatus\\CommandScheduler\\": "src/"
+            "Indatus\\Dispatcher\\": "src/"
         }
     },
     "repositories": [

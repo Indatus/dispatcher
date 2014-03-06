@@ -4,15 +4,15 @@
  */
 
 use Mockery as m;
-use Indatus\CommandScheduler\Services\CommandService;
-use Indatus\CommandScheduler\Drivers\Cron\ScheduleService;
-use Indatus\CommandScheduler\Table;
-use Indatus\CommandScheduler\Scheduler;
+use Indatus\Dispatcher\Services\CommandService;
+use Indatus\Dispatcher\Drivers\Cron\ScheduleService;
+use Indatus\Dispatcher\Table;
+use Indatus\Dispatcher\Scheduler;
 
 class TestCommandService extends TestCase
 {
     /**
-     * @var Indatus\CommandScheduler\Services\CommandService
+     * @var Indatus\Dispatcher\Services\CommandService
      */
     private $commandService;
 
@@ -38,11 +38,11 @@ class TestCommandService extends TestCase
         $scheduledCommand->shouldReceive('getName')->once()->andReturn('test:command');
         $scheduledCommand->shouldReceive('user')->once()->andReturn(false);
 
-        $scheduleService = m::mock('Indatus\CommandScheduler\Drivers\Cron\ScheduleService');
+        $scheduleService = m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService');
         $scheduleService->shouldReceive('getDueCommands')->once()->andReturn([$scheduledCommand]);
-        $this->app->instance('Indatus\CommandScheduler\Services\ScheduleService', $scheduleService);
+        $this->app->instance('Indatus\Dispatcher\Services\ScheduleService', $scheduleService);
 
-        $commandService = m::mock('Indatus\CommandScheduler\Services\CommandService[runnableInEnvironment,run]',
+        $commandService = m::mock('Indatus\Dispatcher\Services\CommandService[runnableInEnvironment,run]',
             [$scheduleService],
             function ($m) {
                 $m->shouldReceive('runnableInEnvironment')->andReturn(true);
@@ -117,7 +117,7 @@ class TestCommandService extends TestCase
 
     private function mockCommand ($environment = '*')
     {
-        return $class = m::mock('Indatus\CommandScheduler\ScheduledCommand', function ($m) use ($environment) {
+        return $class = m::mock('Indatus\Dispatcher\ScheduledCommand', function ($m) use ($environment) {
                 $m->shouldReceive('environment')->andReturn($environment);
             });
     }

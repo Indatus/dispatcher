@@ -3,17 +3,17 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-namespace Indatus\CommandScheduler\Services;
+namespace Indatus\Dispatcher\Services;
 
 use App;
 use Artisan;
-use Indatus\CommandScheduler\ScheduledCommand;
-use Indatus\CommandScheduler\Table;
+use Indatus\Dispatcher\ScheduledCommand;
+use Indatus\Dispatcher\Table;
 
 abstract class ScheduleService
 {
 
-    /** @var  \Indatus\CommandScheduler\Table */
+    /** @var  \Indatus\Dispatcher\Table */
     protected $table;
 
     public function __construct(Table $table)
@@ -48,7 +48,7 @@ abstract class ScheduleService
     /**
      * Get all commands that are due to be run
      *
-     * @return \Indatus\CommandScheduler\ScheduledCommand[]
+     * @return \Indatus\Dispatcher\ScheduledCommand[]
      */
     public function getDueCommands()
     {
@@ -69,12 +69,12 @@ abstract class ScheduleService
     public function printSummary()
     {
         $this->table->setHeaders(['Environment(s)', 'Name', 'Minute', 'Hour', 'Day of Month', 'Month', 'Day of Week', 'Run as']);
-        /** @var $command \Indatus\CommandScheduler\ScheduledCommand */
+        /** @var $command \Indatus\Dispatcher\ScheduledCommand */
         $commands = 0;
         $activeCommands = 0;
         foreach ($this->getScheduledCommands() as $command) {
-            /** @var $command \Indatus\CommandScheduler\ScheduledCommand */
-            $scheduler = $command->schedule(App::make('Indatus\CommandScheduler\Schedulable'));
+            /** @var $command \Indatus\Dispatcher\ScheduledCommand */
+            $scheduler = $command->schedule(App::make('Indatus\Dispatcher\Schedulable'));
 
             $this->table->addRow([
                     is_array($command->environment()) ? implode(',', $command->environment()) : $command->environment(),

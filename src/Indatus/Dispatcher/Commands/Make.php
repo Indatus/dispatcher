@@ -3,7 +3,7 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-namespace Indatus\CommandScheduler\Commands;
+namespace Indatus\Dispatcher\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Console\CommandMakeCommand;
@@ -11,7 +11,7 @@ use Illuminate\Foundation\Console\CommandMakeCommand;
 /**
  * View a summary for all scheduled artisan commands
  * @author Ben Kuhl <bkuhl@indatus.com>
- * @package Indatus\CommandScheduler\Commands
+ * @package Indatus\Dispatcher\Commands
  */
 class Make extends CommandMakeCommand
 {
@@ -47,7 +47,7 @@ class Make extends CommandMakeCommand
     protected function extendStub($stub)
     {
         $replacements = [
-            'use Illuminate\Console\Command' => 'use Indatus\CommandScheduler\ScheduledCommand',
+            'use Illuminate\Console\Command' => 'use Indatus\Dispatcher\ScheduledCommand',
             'extends Command {' => 'extends ScheduledCommand {',
             'parent::__construct();' => $this->getStub()
         ];

@@ -4,8 +4,8 @@
  */
 
 use Mockery as m;
-use Indatus\CommandScheduler\ServiceProvider;
-use Indatus\CommandScheduler\BackgroundProcess;
+use Indatus\Dispatcher\ServiceProvider;
+use Indatus\Dispatcher\BackgroundProcess;
 
 class TestServiceProvider extends TestCase
 {

@@ -3,7 +3,7 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-namespace Indatus\CommandScheduler;
+namespace Indatus\Dispatcher;
 
 use App;
 use Illuminate\Console\Command;
@@ -23,7 +23,7 @@ abstract class ScheduledCommand extends Command
      * When a command should run
      *
      * @param Schedulable $scheduler
-     * @return \Indatus\CommandScheduler\Schedulable
+     * @return \Indatus\Dispatcher\Schedulable
      */
     abstract public function schedule(Schedulable $scheduler);
 

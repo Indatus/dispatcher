@@ -4,7 +4,7 @@
  */
 
 use Mockery as m;
-use \Indatus\CommandScheduler\BackgroundProcessRunner;
+use \Indatus\Dispatcher\BackgroundProcessRunner;
 
 class TestBackgroundProcessRunner extends TestCase
 {
@@ -22,10 +22,10 @@ class TestBackgroundProcessRunner extends TestCase
 
     public function testRun()
     {
-        $commandService = m::mock('Indatus\CommandScheduler\Services\CommandService', function ($m) {
+        $commandService = m::mock('Indatus\Dispatcher\Services\CommandService', function ($m) {
                 $m->shouldReceive('getRunCommand')->once()->andReturn('echo "this is a test"');
             });
-        $scheduledCommand = m::mock('Indatus\CommandScheduler\ScheduledCommand');
+        $scheduledCommand = m::mock('Indatus\Dispatcher\ScheduledCommand');
 
         $backgroundProcessRunner = new BackgroundProcessRunner($commandService);
         $this->assertTrue($backgroundProcessRunner->run($scheduledCommand));

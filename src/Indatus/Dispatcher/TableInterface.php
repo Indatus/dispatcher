@@ -2,7 +2,7 @@
 /**
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
-namespace Indatus\CommandScheduler;
+namespace Indatus\Dispatcher;
 
 use cli\table\Renderer;
 
@@ -10,7 +10,7 @@ use cli\table\Renderer;
 /**
  * Table class, only here so we can unit test our app
  * @author Ben Kuhl <bkuhl@indatus.com>
- * @package Indatus\CommandScheduler
+ * @package Indatus\Dispatcher
  */
 interface TableInterface
 {

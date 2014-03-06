@@ -4,13 +4,13 @@
  */
 
 use Mockery as m;
-use Indatus\CommandScheduler\Commands\Make;
+use Indatus\Dispatcher\Commands\Make;
 
 class TestMake extends TestCase
 {
 
     /**
-     * @var Indatus\CommandScheduler\Commands\Make
+     * @var Indatus\Dispatcher\Commands\Make
      */
     private $command;
 
@@ -45,7 +45,7 @@ class TestMake extends TestCase
     public function testStub()
     {
         //force visibility for testing
-        $class = new ReflectionClass('Indatus\CommandScheduler\Commands\Make');
+        $class = new ReflectionClass('Indatus\Dispatcher\Commands\Make');
         $method = $class->getMethod('getStub');
         $method->setAccessible(true);
 
@@ -56,14 +56,14 @@ class TestMake extends TestCase
     public function testExtendStub()
     {
         //force visibility for testing
-        $class = new ReflectionClass('Indatus\CommandScheduler\Commands\Make');
+        $class = new ReflectionClass('Indatus\Dispatcher\Commands\Make');
         $method = $class->getMethod('extendStub');
         $method->setAccessible(true);
 
         $stubContents = file_get_contents($this->getStubPath('command.stub'));
 
         $replacements = [
-            'use Illuminate\Console\Command' => 'use Indatus\CommandScheduler\ScheduledCommand',
+            'use Illuminate\Console\Command' => 'use Indatus\Dispatcher\ScheduledCommand',
             'extends Command {' => 'extends ScheduledCommand {',
             'parent::__construct();' => $stubContents
         ];

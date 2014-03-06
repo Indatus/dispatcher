@@ -4,7 +4,7 @@
  */
 
 use Mockery as m;
-use Indatus\CommandScheduler\Scheduler;
+use Indatus\Dispatcher\Scheduler;
 
 class TestConfig extends TestCase
 {
@@ -17,13 +17,13 @@ class TestConfig extends TestCase
 
     public function testDefaultDriver()
     {
-        $this->assertEquals(Config::get('command-scheduler::driver'), 'cron');
+        $this->assertEquals(Config::get('dispatcher::driver'), 'cron');
     }
 
     public function testDefaultSchedulerClass()
     {
-        $serviceProvider = App::make('Indatus\CommandScheduler\Schedulable');
-        $this->assertInstanceOf('Indatus\CommandScheduler\Drivers\Cron\Scheduler', $serviceProvider);
+        $serviceProvider = App::make('Indatus\Dispatcher\Schedulable');
+        $this->assertInstanceOf('Indatus\Dispatcher\Drivers\Cron\Scheduler', $serviceProvider);
     }
 
 }

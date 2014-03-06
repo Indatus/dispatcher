@@ -3,9 +3,9 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-namespace Indatus\CommandScheduler\Drivers\Cron;
+namespace Indatus\Dispatcher\Drivers\Cron;
 
-use Indatus\CommandScheduler\Schedulable;
+use Indatus\Dispatcher\Schedulable;
 
 class Scheduler implements Schedulable
 {

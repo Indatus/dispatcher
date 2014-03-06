@@ -3,20 +3,20 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-namespace Indatus\CommandScheduler\Commands;
+namespace Indatus\Dispatcher\Commands;
 
 use Illuminate\Console\Command;
-use Indatus\CommandScheduler\Services\CommandService;
+use Indatus\Dispatcher\Services\CommandService;
 
 /**
  * Run any commands that should be run
  * @author Ben Kuhl <bkuhl@indatus.com>
- * @package Indatus\CommandScheduler\Commands
+ * @package Indatus\Dispatcher\Commands
  */
 class Run extends Command
 {
 
-    /** @var \Indatus\CommandScheduler\Services\CommandService|null  */
+    /** @var \Indatus\Dispatcher\Services\CommandService|null  */
     private $commandService = null;
 
     public function __construct(CommandService $commandService)

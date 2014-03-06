@@ -8,7 +8,7 @@ class TestCase extends Orchestra\Testbench\TestCase
 
     protected function getPackageProviders()
     {
-        return array('Indatus\CommandScheduler\ServiceProvider');
+        return array('Indatus\Dispatcher\ServiceProvider');
     }
 
     /**
@@ -23,7 +23,7 @@ class TestCase extends Orchestra\Testbench\TestCase
             '..',
             'src',
             'Indatus',
-            'CommandScheduler'
+            'Dispatcher'
         ]));
     }
 
