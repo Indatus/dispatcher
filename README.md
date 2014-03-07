@@ -52,7 +52,7 @@ class MyCommand extends ScheduledCommand {
 You can install the library via [Composer](http://getcomposer.org) by adding the following line to the **require** block of your *composer.json* file:
 
 ````
-"indatus/trucker": "dev-master"
+"indatus/dispatcher": "dev-master"
 ````
 
 Next run `composer update`.
