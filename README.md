@@ -7,14 +7,19 @@ Dispatcher allows you to schedule your artisan commands within your Laravel proj
 ```php
 <?php
 
-class MyCommand extends Indatus\Dispatcher\ScheduledCommand {
+use Indatus\Dispatcher\ScheduledCommand;
+
+class MyCommand extends ScheduledCommand {
 
     //your command name, description etc.
 
 	public function schedule(Schedulable $scheduler)
 	{
         //every day at 4:17am
-        return $scheduler->daily()->hours(4)->minutes(17);
+        return $scheduler
+            ->daily()
+            ->hours(4)
+            ->minutes(17);
     }
 
 }
@@ -60,7 +65,7 @@ Add this line to the providers array in your `app/config/app.php` file :
 
 Add the following cron.  If you'd like for scheduled commands to be able to run as different users, be sure to add this to the root crontab.  Otherwise all commands run as the user whose crontab you've added this to.
 
-```
+```php
 * * * * * php /path/to/artisan scheduled:run 1>> /dev/null 2>&
 ```
 
@@ -86,7 +91,7 @@ Use `php artisan scheduled:make` to generate a new scheduled command, the same w
 
 Simply `extend \Indatus\Dispatcher\ScheduledCommand` and implement the `schedule()` method within your command.  This method is injected with a `Schedulable` interface provides some incredibly useful methods for scheduling your commands.
 
-```
+```php
 	public function schedule(Schedulable $scheduler)
 	{
         //every day at 4:17am
@@ -95,7 +100,7 @@ Simply `extend \Indatus\Dispatcher\ScheduledCommand` and implement the `schedule
 ```
 
 
-```
+```php
 	public function schedule(Schedulable $scheduler)
 	{
         //every Tuesday/Thursday at 5:03am
@@ -111,7 +116,7 @@ Simply `extend \Indatus\Dispatcher\ScheduledCommand` and implement the `schedule
 
 You may override `user()` to run a given artisan command as a specific user.  Ensure your `scheduled:run` artisan command is running as root.
 
-```
+```php
     public function user()
     {
         return 'backup';
@@ -123,7 +128,7 @@ You may override `user()` to run a given artisan command as a specific user.  En
 
 You may override `environment()` to ensure your command is only scheduled in specific environments.  It should provide a single environment or an array of environments.
 
-```
+```php
     public function environment()
     {
         return ['development','staging'];
@@ -140,7 +145,7 @@ You can build your own drivers or extend a driver that's included.  Create a pac
 
  Then update your driver configuration to reference the package in which these 2 classes are included (do not include a trailing slash):
 
-```
+```php
     'driver' => '\MyApp\ScheduleDriver'
 ```
 
