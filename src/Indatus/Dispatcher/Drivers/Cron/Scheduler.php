@@ -181,7 +181,12 @@ class Scheduler implements Schedulable
      */
     public function everyMinutes($minutes)
     {
-        $this->setScheduleMinute('*/'.$minutes);
+        $minutesSchedule = self::$ANY;
+        if ($minutes != 1) {
+            $minutesSchedule .= '/'.$minutes;
+        }
+
+        $this->setScheduleMinute($minutesSchedule);
 
         return $this;
     }

@@ -47,7 +47,8 @@ class Make extends CommandMakeCommand
     protected function extendStub($stub)
     {
         $replacements = [
-            'use Illuminate\Console\Command' => 'use Indatus\Dispatcher\ScheduledCommand',
+            'use Illuminate\Console\Command' => "use Indatus\\Dispatcher\\ScheduledCommand;\n".
+                "use Indatus\\Dispatcher\\Scheduler",
             'extends Command {' => 'extends ScheduledCommand {',
             'parent::__construct();' => $this->getStub()
         ];
