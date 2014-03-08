@@ -82,6 +82,14 @@ class TestScheduler extends TestCase
         $this->assertEquals($this->scheduler->getSchedule(), '*/'.$minutes.' '.Scheduler::$ANY.' '.Scheduler::$ANY.' '.Scheduler::$ANY.' '.Scheduler::$ANY);
     }
 
+    public function testEverySingleMinute()
+    {
+        $minutes = 1;
+        $this->assertInstanceOf($this->schedularClass, $this->scheduler->everyMinutes($minutes));
+
+        $this->assertEquals($this->scheduler->getSchedule(), '* '.Scheduler::$ANY.' '.Scheduler::$ANY.' '.Scheduler::$ANY.' '.Scheduler::$ANY);
+    }
+
     public function testHours()
     {
         $hours = 15;
