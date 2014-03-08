@@ -60,7 +60,7 @@ Next run `composer update`.
 Add this line to the providers array in your `app/config/app.php` file :
 
 ```php
-        'Indatus\Dispatcher\DispatcherServiceProvider',
+        'Indatus\Dispatcher\ServiceProvider',
 ```
 
 Add the following cron.  If you'd like for scheduled commands to be able to run as different users, be sure to add this to the root crontab.  Otherwise all commands run as the user whose crontab you've added this to.

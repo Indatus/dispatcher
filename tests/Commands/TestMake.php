@@ -63,7 +63,8 @@ class TestMake extends TestCase
         $stubContents = file_get_contents($this->getStubPath('command.stub'));
 
         $replacements = [
-            'use Illuminate\Console\Command' => 'use Indatus\Dispatcher\ScheduledCommand',
+            'use Illuminate\Console\Command' => "use Indatus\\Dispatcher\\ScheduledCommand;\n".
+                "use Indatus\\Dispatcher\\Scheduler",
             'extends Command {' => 'extends ScheduledCommand {',
             'parent::__construct();' => $stubContents
         ];

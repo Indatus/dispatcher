@@ -94,8 +94,6 @@ abstract class ScheduleService
         $this->table->sort(0);
 
         $this->table->display();
-
-        \cli\line($activeCommands.' active of '.$commands.' scheduled commands');
     }
 
 }
