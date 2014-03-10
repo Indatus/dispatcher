@@ -157,6 +157,10 @@ You can build your own drivers or extend a driver that's included.  Create a pac
 <a name="faq" />
 ## FAQ
 
+**Why are my commands not running when I've scheduled them correctly?  I'm also not seeing any error output**
+
+Verify that mcrypt is installed and working correctly via the command `php -i | mcrypt`.
+
 **Why do I see a RuntimeExceptionWhen I use `php artisan scheduled:run`?**
 
 When running scheduled commands, exceptions from a command will appear as if they came from `scheduled:run`.  More than likely, it's one of your commands that is throwing the exception.
