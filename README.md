@@ -35,7 +35,6 @@ class MyCommand extends ScheduledCommand {
   * [Running Commands As Users](#commands-as-users)
   * [Environment-specific commands](#environment-commands)
 * [Custom Schedule Drivers](#customer-drivers)
-* [Roadmap](#roadmap)
 * [FAQ](#faq)
 
 <a name="features" />
@@ -89,7 +88,7 @@ Use `php artisan scheduled:make` to generate a new scheduled command, the same w
 <a name="scheduling-commands" />
 ### Scheduling Existing Commands
 
-Simply `extend \Indatus\Dispatcher\ScheduledCommand` and implement the `schedule()` method within your command.  This method is injected with a `Schedulable` interface provides some incredibly useful methods for scheduling your commands.
+Simply `extend \Indatus\Dispatcher\ScheduledCommand` and implement the `schedule()` method within your command.  This method is injected with a `Schedulable` which provides a simple interface for scheduling your commands.
 
 ```php
 	public function schedule(Schedulable $scheduler)
@@ -148,11 +147,6 @@ You can build your own drivers or extend a driver that's included.  Create a pac
 ```php
     'driver' => '\MyApp\ScheduleDriver'
 ```
-
-<a name="roadmap" />
-## Roadmap
-
- * Accommodate a single command with various parameter sets
 
 <a name="faq" />
 ## FAQ
