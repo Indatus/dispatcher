@@ -104,8 +104,8 @@ Simply `extend \Indatus\Dispatcher\ScheduledCommand` and implement the `schedule
 	{
         //every Tuesday/Thursday at 5:03am
         return $scheduler->daysOfTheWeek([
-                Scheduler::$TUESDAY,
-                Scheduler::$THURSDAY
+                Scheduler::TUESDAY,
+                Scheduler::THURSDAY
             ])->hours(5)->minutes(3);
     }
 ```

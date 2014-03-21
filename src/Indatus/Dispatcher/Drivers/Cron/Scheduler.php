@@ -1,8 +1,13 @@
 <?php
-/**
- * @author Ben Kuhl <bkuhl@indatus.com>
- */
 
+/**
+ * This file is part of Dispatcher
+ *
+ * (c) Ben Kuhl <bkuhl@indatus.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace Indatus\Dispatcher\Drivers\Cron;
 
 use Indatus\Dispatcher\Schedulable;
@@ -13,28 +18,28 @@ class Scheduler implements Schedulable
     /**
      * @var string Any of the contextual timeframe
      */
-    public static $ANY = '*';
+    const ANY = '*';
 
-    public static $SUNDAY = 0;
-    public static $MONDAY = 1;
-    public static $TUESDAY = 2;
-    public static $WEDNESDAY = 3;
-    public static $THURSDAY = 4;
-    public static $FRIDAY = 5;
-    public static $SATURDAY = 6;
+    const SUNDAY = 0;
+    const MONDAY = 1;
+    const TUESDAY = 2;
+    const WEDNESDAY = 3;
+    const THURSDAY = 4;
+    const FRIDAY = 5;
+    const SATURDAY = 6;
 
-    public static $JANUARY = 1;
-    public static $FEBRUARY = 3;
-    public static $MARCH = 3;
-    public static $APRIL = 4;
-    public static $MAY = 5;
-    public static $JUNE = 6;
-    public static $JULY = 7;
-    public static $AUGUST = 8;
-    public static $SEPTEMBER = 9;
-    public static $OCTOBER = 10;
-    public static $NOVEMBER = 11;
-    public static $DECEMBER = 12;
+    const JANUARY = 1;
+    const FEBRUARY = 3;
+    const MARCH = 3;
+    const APRIL = 4;
+    const MAY = 5;
+    const JUNE = 6;
+    const JULY = 7;
+    const AUGUST = 8;
+    const SEPTEMBER = 9;
+    const OCTOBER = 10;
+    const NOVEMBER = 11;
+    const DECEMBER = 12;
 
     private $scheduleDayOfWeek = '*';
     private $scheduleMonth = '*';
@@ -93,7 +98,7 @@ class Scheduler implements Schedulable
         $this->setScheduleHour(0);
         $this->setScheduleDayOfMonth(1);
         $this->setScheduleMonth(1);
-        $this->setScheduleDayOfWeek(self::$ANY);
+        $this->setScheduleDayOfWeek(self::ANY);
 
         return $this;
     }
@@ -108,8 +113,8 @@ class Scheduler implements Schedulable
         $this->setScheduleMinute(0);
         $this->setScheduleHour(0);
         $this->setScheduleDayOfMonth(1);
-        $this->setScheduleMonth(self::$ANY);
-        $this->setScheduleDayOfWeek(self::$ANY);
+        $this->setScheduleMonth(self::ANY);
+        $this->setScheduleDayOfWeek(self::ANY);
 
         return $this;
     }
@@ -123,8 +128,8 @@ class Scheduler implements Schedulable
     {
         $this->setScheduleMinute(0);
         $this->setScheduleHour(0);
-        $this->setScheduleDayOfMonth(self::$ANY);
-        $this->setScheduleMonth(self::$ANY);
+        $this->setScheduleDayOfMonth(self::ANY);
+        $this->setScheduleMonth(self::ANY);
         $this->setScheduleDayOfWeek(0);
 
         return $this;
@@ -139,9 +144,9 @@ class Scheduler implements Schedulable
     {
         $this->setScheduleMinute(0);
         $this->setScheduleHour(0);
-        $this->setScheduleDayOfMonth(self::$ANY);
-        $this->setScheduleMonth(self::$ANY);
-        $this->setScheduleDayOfWeek(self::$ANY);
+        $this->setScheduleDayOfMonth(self::ANY);
+        $this->setScheduleMonth(self::ANY);
+        $this->setScheduleDayOfWeek(self::ANY);
 
         return $this;
     }
@@ -154,10 +159,10 @@ class Scheduler implements Schedulable
     public function hourly()
     {
         $this->setScheduleMinute(0);
-        $this->setScheduleHour(self::$ANY);
-        $this->setScheduleDayOfMonth(self::$ANY);
-        $this->setScheduleMonth(self::$ANY);
-        $this->setScheduleDayOfWeek(self::$ANY);
+        $this->setScheduleHour(self::ANY);
+        $this->setScheduleDayOfMonth(self::ANY);
+        $this->setScheduleMonth(self::ANY);
+        $this->setScheduleDayOfWeek(self::ANY);
 
         return $this;
     }
@@ -181,7 +186,7 @@ class Scheduler implements Schedulable
      */
     public function everyMinutes($minutes)
     {
-        $minutesSchedule = self::$ANY;
+        $minutesSchedule = self::ANY;
         if ($minutes != 1) {
             $minutesSchedule .= '/'.$minutes;
         }
@@ -269,7 +274,7 @@ class Scheduler implements Schedulable
      */
     public function everyWeekday()
     {
-        $this->daysOfTheWeek(Scheduler::$MONDAY.'-'.Scheduler::$FRIDAY);
+        $this->daysOfTheWeek(self::MONDAY.'-'.self::FRIDAY);
 
         return $this;
     }
