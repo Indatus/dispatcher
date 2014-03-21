@@ -29,7 +29,7 @@ class Scheduler implements Schedulable
     const SATURDAY = 6;
 
     const JANUARY = 1;
-    const FEBRUARY = 3;
+    const FEBRUARY = 2;
     const MARCH = 3;
     const APRIL = 4;
     const MAY = 5;
