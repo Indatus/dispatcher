@@ -1,4 +1,4 @@
-<?php return [
+<?php return array(
     /**
      * The schedule driver to use:
      *
@@ -10,4 +10,4 @@
      *
      */
     'driver' => 'cron'
-];
+);
