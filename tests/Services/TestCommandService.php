@@ -39,11 +39,11 @@ class TestCommandService extends TestCase
         $scheduledCommand->shouldReceive('user')->once()->andReturn(false);
 
         $scheduleService = m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService');
-        $scheduleService->shouldReceive('getDueCommands')->once()->andReturn([$scheduledCommand]);
+        $scheduleService->shouldReceive('getDueCommands')->once()->andReturn(array($scheduledCommand));
         $this->app->instance('Indatus\Dispatcher\Services\ScheduleService', $scheduleService);
 
         $commandService = m::mock('Indatus\Dispatcher\Services\CommandService[runnableInEnvironment,run]',
-            [$scheduleService],
+            array($scheduleService),
             function ($m) {
                 $m->shouldReceive('runnableInEnvironment')->andReturn(true);
                 $m->shouldReceive('run')->andReturnNull();
@@ -70,7 +70,7 @@ class TestCommandService extends TestCase
 
     public function testRunnableInMultipleEnvironments()
     {
-        $scheduledCommand = $this->mockCommand(['local', 'development']);
+        $scheduledCommand = $this->mockCommand(array('local', 'development'));
 
         App::shouldReceive('environment')->andReturn('local');
         $this->assertTrue($this->commandService->runnableInEnvironment($scheduledCommand));
@@ -78,7 +78,7 @@ class TestCommandService extends TestCase
 
     public function testNotRunnableInEnvironment()
     {
-        $scheduledCommand = $this->mockCommand(['local', 'development']);
+        $scheduledCommand = $this->mockCommand(array('local', 'development'));
 
         App::shouldReceive('environment')->andReturn('amazonAWS');
         $this->assertFalse($this->commandService->runnableInEnvironment($scheduledCommand));
@@ -90,13 +90,13 @@ class TestCommandService extends TestCase
         $scheduledCommand = $this->mockCommand();
         $scheduledCommand->shouldReceive('getName')->andReturn($commandName);
         $scheduledCommand->shouldReceive('user')->andReturn(false);
-        $this->assertEquals($this->commandService->getRunCommand($scheduledCommand), implode(' ', [
+        $this->assertEquals($this->commandService->getRunCommand($scheduledCommand), implode(' ', array(
                     'php',
                     base_path().'/artisan',
                     $commandName,
                     '&',
                     '> /dev/null 2>&1'
-                ]));
+                )));
     }
     public function testGetRunCommandAsUser()
     {
@@ -105,14 +105,14 @@ class TestCommandService extends TestCase
         $scheduledCommand = $this->mockCommand();
         $scheduledCommand->shouldReceive('getName')->andReturn($commandName);
         $scheduledCommand->shouldReceive('user')->andReturn($user);
-        $this->assertEquals($this->commandService->getRunCommand($scheduledCommand), implode(' ', [
+        $this->assertEquals($this->commandService->getRunCommand($scheduledCommand), implode(' ', array(
                     'sudo -u '.$user,
                     'php',
                     base_path().'/artisan',
                     $commandName,
                     '&',
                     '> /dev/null 2>&1'
-                ]));
+                )));
     }
 
     private function mockCommand ($environment = '*')

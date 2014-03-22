@@ -62,12 +62,12 @@ class TestMake extends TestCase
 
         $stubContents = file_get_contents($this->getStubPath('command.stub'));
 
-        $replacements = [
+        $replacements = array(
             'use Illuminate\Console\Command' => "use Indatus\\Dispatcher\\ScheduledCommand;\n".
                 "use Indatus\\Dispatcher\\Scheduler",
             'extends Command {' => 'extends ScheduledCommand {',
             'parent::__construct();' => $stubContents
-        ];
+        );
 
         $delimeter = '*****';
         $extendedStub = $method->invoke($this->makeFactory(), implode($delimeter, array_keys($replacements)));
@@ -77,12 +77,12 @@ class TestMake extends TestCase
 
     private function getStubPath($filename)
     {
-        return implode(DIRECTORY_SEPARATOR, [
+        return implode(DIRECTORY_SEPARATOR, array(
                 $this->getPackagePath(),
                 'Commands',
                 'stubs',
                 $filename
-            ]);
+            ));
     }
 
     private function makeFactory()
