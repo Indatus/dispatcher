@@ -81,7 +81,7 @@ abstract class ScheduleService
             /** @var $command \Indatus\Dispatcher\ScheduledCommand */
             $scheduler = $command->schedule(App::make('Indatus\Dispatcher\Schedulable'));
 
-            $this->table->addRow([
+            $this->table->addRow(array(
                     is_array($command->environment()) ? implode(',', $command->environment()) : $command->environment(),
                     $command->getName(),
                     $scheduler->getScheduleMinute(),
@@ -90,7 +90,7 @@ abstract class ScheduleService
                     $scheduler->getScheduleMonth(),
                     $scheduler->getScheduleDayOfWeek(),
                     $command->user()
-                ]);
+                ));
             $commands++;
             $activeCommands++;
         }
