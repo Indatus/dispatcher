@@ -68,13 +68,13 @@ class CommandService
      */
     public function getRunCommand(ScheduledCommand $scheduledCommand)
     {
-        $commandPieces = [
+        $commandPieces = array(
             'php',
             base_path().'/artisan',
             $scheduledCommand->getName(),
             '&', //run in background
             '> /dev/null 2>&1' //don't show output, errors can be viewed in the Laravel log
-        ];
+        );
 
         //run the command as a different user
         if (is_string($scheduledCommand->user())) {
