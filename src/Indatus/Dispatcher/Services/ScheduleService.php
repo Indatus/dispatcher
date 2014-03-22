@@ -73,7 +73,7 @@ abstract class ScheduleService
      */
     public function printSummary()
     {
-        $this->table->setHeaders(['Environment(s)', 'Name', 'Minute', 'Hour', 'Day of Month', 'Month', 'Day of Week', 'Run as']);
+        $this->table->setHeaders(array('Environment(s)', 'Name', 'Minute', 'Hour', 'Day of Month', 'Month', 'Day of Week', 'Run as'));
         /** @var $command \Indatus\Dispatcher\ScheduledCommand */
         $commands = 0;
         $activeCommands = 0;
