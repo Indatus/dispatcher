@@ -40,7 +40,7 @@ abstract class ScheduleService
      */
     public function getScheduledCommands()
     {
-        $scheduledCommands = [];
+        $scheduledCommands = array();
         foreach (Artisan::all() as $command) {
             if ($command instanceOf ScheduledCommand) {
                 $scheduledCommands[] = $command;
@@ -57,7 +57,7 @@ abstract class ScheduleService
      */
     public function getDueCommands()
     {
-        $commands = [];
+        $commands = array();
         foreach ($this->getScheduledCommands() as $command) {
             if ($this->isDue($command)) {
                 $commands[] = $command;
@@ -73,7 +73,7 @@ abstract class ScheduleService
      */
     public function printSummary()
     {
-        $this->table->setHeaders(['Environment(s)', 'Name', 'Minute', 'Hour', 'Day of Month', 'Month', 'Day of Week', 'Run as']);
+        $this->table->setHeaders(array('Environment(s)', 'Name', 'Minute', 'Hour', 'Day of Month', 'Month', 'Day of Week', 'Run as'));
         /** @var $command \Indatus\Dispatcher\ScheduledCommand */
         $commands = 0;
         $activeCommands = 0;
@@ -81,7 +81,7 @@ abstract class ScheduleService
             /** @var $command \Indatus\Dispatcher\ScheduledCommand */
             $scheduler = $command->schedule(App::make('Indatus\Dispatcher\Schedulable'));
 
-            $this->table->addRow([
+            $this->table->addRow(array(
                     is_array($command->environment()) ? implode(',', $command->environment()) : $command->environment(),
                     $command->getName(),
                     $scheduler->getScheduleMinute(),
@@ -90,7 +90,7 @@ abstract class ScheduleService
                     $scheduler->getScheduleMonth(),
                     $scheduler->getScheduleDayOfWeek(),
                     $command->user()
-                ]);
+                ));
             $commands++;
             $activeCommands++;
         }

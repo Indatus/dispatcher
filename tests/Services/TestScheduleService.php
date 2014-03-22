@@ -30,9 +30,9 @@ class TestScheduleService extends TestCase
 
     public function testGetScheduledCommands()
     {
-        $scheduledCommands = [$class = m::mock('Indatus\Dispatcher\ScheduledCommand', function ($m) {
+        $scheduledCommands = array($class = m::mock('Indatus\Dispatcher\ScheduledCommand', function ($m) {
                 $m->shouldReceive('schedule')->andReturn(m::mock('Indatus\Dispatcher\Schedulable'));
-            })];
+            }));
 
         Artisan::shouldReceive('all')->once()->andReturn($scheduledCommands);
 
@@ -64,23 +64,23 @@ class TestScheduleService extends TestCase
                             $m->shouldReceive('getScheduleDayOfWeek');
                         }));
             });
-        $scheduleService = m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService[getScheduledCommands]', [
+        $scheduleService = m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService[getScheduledCommands]', array(
                 $table
-            ], function ($m) use ($scheduledCommand) {
-                $m->shouldReceive('getScheduledCommands')->once()->andReturn([
+            ), function ($m) use ($scheduledCommand) {
+                $m->shouldReceive('getScheduledCommands')->once()->andReturn(array(
                         $scheduledCommand
-                    ]);
+                    ));
             });
         $scheduleService->printSummary();
     }
 
     public function testGetDueCommands()
     {
-        $scheduleService = m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService[getScheduledCommands,isDue]', [
+        $scheduleService = m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService[getScheduledCommands,isDue]', array(
                 new Table()
-            ], function ($m) {
+            ), function ($m) {
                 $m->shouldReceive('getScheduledCommands')->once()
-                    ->andReturn([m::mock('Indatus\Dispatcher\ScheduledCommand')]);
+                    ->andReturn(array(m::mock('Indatus\Dispatcher\ScheduledCommand')));
                 $m->shouldReceive('isDue')->once()->andReturn(true);
 
             });

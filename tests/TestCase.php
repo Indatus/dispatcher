@@ -18,13 +18,13 @@ class TestCase extends Orchestra\Testbench\TestCase
      */
     protected function getPackagePath()
     {
-        return realpath(implode(DIRECTORY_SEPARATOR, [
+        return realpath(implode(DIRECTORY_SEPARATOR, array(
             __DIR__,
             '..',
             'src',
             'Indatus',
             'Dispatcher'
-        ]));
+        )));
     }
 
 } 

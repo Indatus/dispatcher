@@ -51,12 +51,12 @@ class Make extends CommandMakeCommand
      */
     protected function extendStub($stub)
     {
-        $replacements = [
+        $replacements = array(
             'use Illuminate\Console\Command' => "use Indatus\\Dispatcher\\ScheduledCommand;\n".
                 "use Indatus\\Dispatcher\\Scheduler",
             'extends Command {' => 'extends ScheduledCommand {',
             'parent::__construct();' => $this->getStub()
-        ];
+        );
 
         $stub = str_replace(array_keys($replacements), array_values($replacements), $stub);
 

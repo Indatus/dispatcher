@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.3.2",
         "jlogsdon/cli": "v0.9.4",
         "mtdowling/cron-expression" : "1.0.*"
     },
