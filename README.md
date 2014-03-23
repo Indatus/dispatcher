@@ -65,7 +65,7 @@ Add this line to the providers array in your `app/config/app.php` file :
 Add the following cron.  If you'd like for scheduled commands to be able to run as different users, be sure to add this to the root crontab.  Otherwise all commands run as the user whose crontab you've added this to.
 
 ```php
-* * * * * php /path/to/artisan scheduled:run 1>> /dev/null 2>&
+* * * * * php /path/to/artisan scheduled:run 1>> /dev/null 2>&1
 ```
 
 <a name="usage" />
@@ -156,7 +156,7 @@ You can build your own drivers or extend a driver that's included.  Create a pac
 Schedule `scheduled:run` to use [rcron](https://code.google.com/p/rcron/):
 
 ```php
-* * * * * /usr/bin/rcron php /path/to/artisan scheduled:run 1>> /dev/null 2>&
+* * * * * /usr/bin/rcron php /path/to/artisan scheduled:run 1>> /dev/null 2>&1
 ```
 
 **Why are my commands not running when I've scheduled them correctly?  I'm also not seeing any error output**
