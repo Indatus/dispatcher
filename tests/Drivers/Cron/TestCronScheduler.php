@@ -30,7 +30,7 @@ class TestCronScheduler extends TestCase
 
     public function testSetSchedule()
     {
-        $this->scheduler->setSchedule(1, 2, 3, 4, 5);
+        $this->assertInstanceOf($this->schedularClass, $this->scheduler->setSchedule(1, 2, 3, 4, 5));
         $this->assertEquals($this->scheduler->getSchedule(), '1 2 3 4 5');
     }
 

@@ -110,6 +110,16 @@ Simply `extend \Indatus\Dispatcher\ScheduledCommand` and implement the `schedule
     }
 ```
 
+You may also schedule commands via raw cron expressions
+
+```php
+	public function schedule(Schedulable $scheduler)
+	{
+        //every other day at 3:15am, 4:15am and 5:15am
+        return $scheduler->setSchedule(3, [3,4,5], '*/2', '*', '*');
+    }
+```
+
 <a name="commands-as-users" />
 ### Running Commands As Users
 

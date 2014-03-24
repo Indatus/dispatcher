@@ -54,6 +54,7 @@ interface Schedulable
      * @param mixed $dayOfMonth
      * @param mixed $month
      * @param mixed $dayOfWeek
+     * @return $this
      */
     public function setSchedule($minute, $hour, $dayOfMonth, $month, $dayOfWeek);
 
