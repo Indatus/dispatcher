@@ -5,7 +5,7 @@
 
 use \Indatus\Dispatcher\Drivers\Cron\Scheduler;
 
-class TestScheduler extends TestCase
+class TestCronScheduler extends TestCase
 {
     /**
      * @var Indatus\Dispatcher\Scheduler
@@ -16,6 +16,7 @@ class TestScheduler extends TestCase
 
     public function setUp()
     {
+        parent::setUp();
         $this->scheduler = new Scheduler();
     }
 

@@ -16,7 +16,7 @@ class Scheduler implements Schedulable
 {
 
     /**
-     * @var string Any of the contextual timeframe
+     * @var string Any of the contextual time frame
      */
     const ANY = '*';
 

@@ -27,4 +27,37 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
         $cron = CronExpression::factory($command->schedule($scheduler)->getSchedule());
         return $cron->isDue();
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function printSummary()
+    {
+        $this->table->setHeaders(array('Environment(s)', 'Name', 'Minute', 'Hour', 'Day of Month', 'Month', 'Day of Week', 'Run as'));
+        /** @var $command \Indatus\Dispatcher\ScheduledCommand */
+        $commands = 0;
+        $activeCommands = 0;
+        foreach ($this->getScheduledCommands() as $command) {
+            /** @var $command \Indatus\Dispatcher\ScheduledCommand */
+            $scheduler = $command->schedule(App::make('Indatus\Dispatcher\Schedulable'));
+
+            $this->table->addRow(array(
+                    is_array($command->environment()) ? implode(',', $command->environment()) : $command->environment(),
+                    $command->getName(),
+                    $scheduler->getScheduleMinute(),
+                    $scheduler->getScheduleHour(),
+                    $scheduler->getScheduleDayOfMonth(),
+                    $scheduler->getScheduleMonth(),
+                    $scheduler->getScheduleDayOfWeek(),
+                    $command->user()
+                ));
+            $commands++;
+            $activeCommands++;
+        }
+
+        //sort by first column
+        $this->table->sort(0);
+
+        $this->table->display();
+    }
 } 
