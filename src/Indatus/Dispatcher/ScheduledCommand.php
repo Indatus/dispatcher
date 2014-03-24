@@ -13,7 +13,7 @@ namespace Indatus\Dispatcher;
 use App;
 use Illuminate\Console\Command;
 
-abstract class ScheduledCommand extends Command
+abstract class ScheduledCommand extends Command implements ScheduledCommandInterface
 {
 
 
@@ -23,14 +23,6 @@ abstract class ScheduledCommand extends Command
      * @var string
      */
     protected $name = 'scheduledCommand';
-
-    /**
-     * When a command should run
-     *
-     * @param Schedulable $scheduler
-     * @return \Indatus\Dispatcher\Schedulable
-     */
-    abstract public function schedule(Schedulable $scheduler);
 
     /**
      * User to run the command as

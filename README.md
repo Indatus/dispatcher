@@ -88,7 +88,7 @@ Use `php artisan scheduled:make` to generate a new scheduled command, the same w
 <a name="scheduling-commands" />
 ### Scheduling Existing Commands
 
-Simply `extend \Indatus\Dispatcher\ScheduledCommand` and implement the `schedule()` method within your command.  This method is injected with a `Schedulable` which provides a simple interface for scheduling your commands.
+Simply `extend \Indatus\Dispatcher\ScheduledCommand` and implement the `schedule()` method within your command or `implement \Indatus\Dispatcher\ScheduledCommandInterface`.  This method is injected with a `Schedulable` which provides a simple interface for scheduling your commands.
 
 ```php
 	public function schedule(Schedulable $scheduler)
