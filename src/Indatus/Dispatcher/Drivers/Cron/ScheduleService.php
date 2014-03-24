@@ -12,19 +12,48 @@ namespace Indatus\Dispatcher\Drivers\Cron;
 
 use App;
 use Cron\CronExpression;
-use Indatus\Dispatcher\ScheduledCommand;
+use Indatus\Dispatcher\ScheduledCommandInterface;
 
 class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
 
     /**
      * Determine if a command is due to be run
-     * @param ScheduledCommand $command
+     * @param ScheduledCommandInterface $command
      * @return bool
      */
-    public function isDue(ScheduledCommand $command)
+    public function isDue(ScheduledCommandInterface $command)
     {
         $scheduler = App::make('Indatus\Dispatcher\Schedulable');
         $cron = CronExpression::factory($command->schedule($scheduler)->getSchedule());
         return $cron->isDue();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function printSummary()
+    {
+        $this->table->setHeaders(array('Environment(s)', 'Name', 'Minute', 'Hour', 'Day of Month', 'Month', 'Day of Week', 'Run as'));
+        /** @var $command \Indatus\Dispatcher\ScheduledCommandInterface */
+        foreach ($this->getScheduledCommands() as $command) {
+            /** @var $command \Indatus\Dispatcher\ScheduledCommandInterface */
+            $scheduler = $command->schedule(App::make('Indatus\Dispatcher\Schedulable'));
+
+            $this->table->addRow(array(
+                    is_array($command->environment()) ? implode(',', $command->environment()) : $command->environment(),
+                    $command->getName(),
+                    $scheduler->getScheduleMinute(),
+                    $scheduler->getScheduleHour(),
+                    $scheduler->getScheduleDayOfMonth(),
+                    $scheduler->getScheduleMonth(),
+                    $scheduler->getScheduleDayOfWeek(),
+                    $command->user()
+                ));
+        }
+
+        //sort by first column
+        $this->table->sort(0);
+
+        $this->table->display();
     }
 } 

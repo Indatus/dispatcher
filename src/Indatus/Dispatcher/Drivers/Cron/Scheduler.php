@@ -16,7 +16,7 @@ class Scheduler implements Schedulable
 {
 
     /**
-     * @var string Any of the contextual timeframe
+     * @var string Any of the contextual time frame
      */
     const ANY = '*';
 
@@ -71,6 +71,7 @@ class Scheduler implements Schedulable
      * @param mixed $dayOfMonth
      * @param mixed $month
      * @param mixed $dayOfWeek
+     * @return $this
      */
     public function setSchedule($minute, $hour, $dayOfMonth, $month, $dayOfWeek)
     {
@@ -85,6 +86,8 @@ class Scheduler implements Schedulable
         $this->setScheduleDayOfMonth($dayOfMonth);
         $this->setScheduleMonth($month);
         $this->setScheduleDayOfWeek($dayOfWeek);
+
+        return $this;
     }
 
     /**

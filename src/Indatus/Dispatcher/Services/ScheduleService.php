@@ -12,7 +12,7 @@ namespace Indatus\Dispatcher\Services;
 
 use App;
 use Artisan;
-use Indatus\Dispatcher\ScheduledCommand;
+use Indatus\Dispatcher\ScheduledCommandInterface;
 use Indatus\Dispatcher\Table;
 
 abstract class ScheduleService
@@ -28,10 +28,10 @@ abstract class ScheduleService
 
     /**
      * Determine if a command is due to be run
-     * @param ScheduledCommand $command
+     * @param ScheduledCommandInterface $command
      * @return bool
      */
-    abstract public function isDue(ScheduledCommand $command);
+    abstract public function isDue(ScheduledCommandInterface $command);
 
     /**
      * Get all commands that are scheduled
@@ -42,7 +42,7 @@ abstract class ScheduleService
     {
         $scheduledCommands = array();
         foreach (Artisan::all() as $command) {
-            if ($command instanceOf ScheduledCommand) {
+            if ($command instanceOf ScheduledCommandInterface) {
                 $scheduledCommands[] = $command;
             }
         }
@@ -68,37 +68,8 @@ abstract class ScheduleService
 
     /**
      * Review scheduled commands schedule, active status, etc.
-     * @todo refactor this... it's ugly.  The output goes directly to STDOUT
      * @return void
      */
-    public function printSummary()
-    {
-        $this->table->setHeaders(array('Environment(s)', 'Name', 'Minute', 'Hour', 'Day of Month', 'Month', 'Day of Week', 'Run as'));
-        /** @var $command \Indatus\Dispatcher\ScheduledCommand */
-        $commands = 0;
-        $activeCommands = 0;
-        foreach ($this->getScheduledCommands() as $command) {
-            /** @var $command \Indatus\Dispatcher\ScheduledCommand */
-            $scheduler = $command->schedule(App::make('Indatus\Dispatcher\Schedulable'));
-
-            $this->table->addRow(array(
-                    is_array($command->environment()) ? implode(',', $command->environment()) : $command->environment(),
-                    $command->getName(),
-                    $scheduler->getScheduleMinute(),
-                    $scheduler->getScheduleHour(),
-                    $scheduler->getScheduleDayOfMonth(),
-                    $scheduler->getScheduleMonth(),
-                    $scheduler->getScheduleDayOfWeek(),
-                    $command->user()
-                ));
-            $commands++;
-            $activeCommands++;
-        }
-
-        //sort by first column
-        $this->table->sort(0);
-
-        $this->table->display();
-    }
+    abstract public function printSummary();
 
 }
