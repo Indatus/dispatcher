@@ -5,14 +5,19 @@
 <img align="left" height="300" src="https://s3-us-west-2.amazonaws.com/oss-avatars/dispatcher_round_readme.png">
 
 ```php
-<?php
-
 use Indatus\Dispatcher\ScheduledCommand;
+use Indatus\Dispatcher\Schedulable;
+use Indatus\Dispatcher\Drivers\Cron\Scheduler;
 
 class MyCommand extends ScheduledCommand {
 
     //your command name, description etc.
 
+    /**
+     * When a command should run
+     * @param Scheduler $scheduler
+     * @return \Indatus\Dispatcher\Schedulable
+     */
 	public function schedule(Schedulable $scheduler)
 	{
         //every day at 4:17am
@@ -32,9 +37,11 @@ class MyCommand extends ScheduledCommand {
 * [Usage](#usage)
   * [Generating New Scheduled Commands](#new-commands)
   * [Scheduling Existing Commands](#scheduling-commands)
+    * [Drivers](#drivers)
+      * [Cron](#Cron)
   * [Running Commands As Users](#commands-as-users)
   * [Environment-specific commands](#environment-commands)
-* [Custom Schedule Drivers](#customer-drivers)
+* [Custom Schedule Drivers](#custom-drivers)
 * [FAQ](#faq)
 
 <a name="features" />
@@ -62,11 +69,7 @@ Add this line to the providers array in your `app/config/app.php` file :
         'Indatus\Dispatcher\ServiceProvider',
 ```
 
-Add the following cron.  If you'd like for scheduled commands to be able to run as different users, be sure to add this to the root crontab.  Otherwise all commands run as the user whose crontab you've added this to.
-
-```php
-* * * * * php /path/to/artisan scheduled:run 1>> /dev/null 2>&
-```
+To use with Cron, see the [Cron driver](#Cron) section.
 
 <a name="usage" />
 ## Usage
@@ -88,7 +91,46 @@ Use `php artisan scheduled:make` to generate a new scheduled command, the same w
 <a name="scheduling-commands" />
 ### Scheduling Existing Commands
 
-Simply `extend \Indatus\Dispatcher\ScheduledCommand` and implement the `schedule()` method within your command or `implement \Indatus\Dispatcher\ScheduledCommandInterface`.  This method is injected with a `Schedulable` which provides a simple interface for scheduling your commands.
+You may either `implement \Indatus\Dispatcher\ScheduledCommandInterface` or follow the below steps.
+
+1. `extend \Indatus\Dispatcher\ScheduledCommand`
+2. Add use statements to your command.  If you're using a custom driver you will use a different `Scheduler` class.
+```php
+use Indatus\Dispatcher\ScheduledCommand;
+use Indatus\Dispatcher\Schedulable;
+use Indatus\Dispatcher\Drivers\Cron\Scheduler;
+```
+3. Implement schedule():
+```php
+	/**
+	 * When a command should run
+	 *
+	 * @param Scheduler $scheduler
+	 * @return \Indatus\Dispatcher\Schedulable
+	 */
+	public function schedule(Schedulable $scheduler)
+	{
+		return $scheduler;
+    }
+```
+
+<a name="drivers" />
+#### Drivers
+
+While Cron is the default driver for Dispatcher, it can be used with any scheduling tool that can run artisan commands. See [building custom drivers](#custom-drivers).
+
+<a name="Cron" />
+##### Cron (Default)
+
+Add the following to your Crontab:
+
+```php
+* * * * * php /path/to/artisan scheduled:run 1>> /dev/null 2>&1
+```
+
+> If you'd like for scheduled commands to be able to run as different users, be sure to add this to the root Crontab.  Otherwise all commands run as the user whose Crontab you've added this to.
+
+Examples of how to schedule:
 
 ```php
 	public function schedule(Schedulable $scheduler)
@@ -110,7 +152,7 @@ Simply `extend \Indatus\Dispatcher\ScheduledCommand` and implement the `schedule
     }
 ```
 
-You may also schedule commands via raw cron expressions
+You may also schedule commands via raw Cron expressions
 
 ```php
 	public function schedule(Schedulable $scheduler)
@@ -132,6 +174,8 @@ You may override `user()` to run a given artisan command as a specific user.  En
     }
 ```
 
+> This feature may not be supported by all drivers.
+
 <a name="environment-commands" />
 ### Environment-specific commands
 
@@ -144,15 +188,15 @@ You may override `environment()` to ensure your command is only scheduled in spe
     }
 ```
 
-<a name="customer-drivers" />
-## Custom Schedule Drivers
+<a name="custom-drivers" />
+## Custom Drivers
 
 You can build your own drivers or extend a driver that's included.  Create a packagepath such as `\MyApp\ScheduleDriver\` and create two classes:
 
- * `Scheduler` that `implements Indatus\Dispatcher\Schedulable`
- * `ScheduleService` that `extends \Indatus\Dispatcher\Services\ScheduleService`
+ * `Scheduler` that `implements Indatus\Dispatcher\Schedulable`.  This class should provide a useful interface for programmers to schedule their commands.
+ * `ScheduleService` that `extends \Indatus\Dispatcher\Services\ScheduleService`.  This class contains logic on how to determine if a command is due to run.
 
- Then update your driver configuration to reference the package in which these 2 classes are included (do not include a trailing slash):
+Publish the configs using `php artisan view:publish indatus/dispatcher`. Then update your driver configuration to reference the package in which these 2 classes are included (do not include a trailing slash):
 
 ```php
     'driver' => '\MyApp\ScheduleDriver'

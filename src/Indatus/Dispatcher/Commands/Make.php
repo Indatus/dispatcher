@@ -10,6 +10,7 @@
  */
 namespace Indatus\Dispatcher\Commands;
 
+use Config;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Console\CommandMakeCommand;
 
@@ -53,7 +54,8 @@ class Make extends CommandMakeCommand
     {
         $replacements = array(
             'use Illuminate\Console\Command' => "use Indatus\\Dispatcher\\ScheduledCommand;\n".
-                "use Indatus\\Dispatcher\\Scheduler",
+                "use Indatus\\Dispatcher\\Schedulable;\n".
+                "use Indatus\\Dispatcher\\Drivers\\".ucwords(Config::get('dispatcher::driver'))."\\Scheduler",
             'extends Command {' => 'extends ScheduledCommand {',
             'parent::__construct();' => $this->getStub()
         );
