@@ -13,11 +13,6 @@ class MyCommand extends ScheduledCommand {
 
     //your command name, description etc.
 
-    /**
-     * When a command should run
-     * @param Scheduler $scheduler
-     * @return \Indatus\Dispatcher\Schedulable
-     */
 	public function schedule(Schedulable $scheduler)
 	{
         //every day at 4:17am
@@ -37,11 +32,11 @@ class MyCommand extends ScheduledCommand {
 * [Usage](#usage)
   * [Generating New Scheduled Commands](#new-commands)
   * [Scheduling Existing Commands](#scheduling-commands)
-    * [Drivers](#drivers)
-      * [Cron](#Cron)
   * [Running Commands As Users](#commands-as-users)
   * [Environment-specific commands](#environment-commands)
-* [Custom Schedule Drivers](#custom-drivers)
+* [Drivers](#drivers)
+  * [Cron](#Cron)
+* [Custom Drivers](#custom-drivers)
 * [FAQ](#faq)
 
 <a name="features" />
@@ -114,13 +109,43 @@ use Indatus\Dispatcher\Drivers\Cron\Scheduler;
     }
 ```
 
+For details and examples on how to schedule, see [Cron](#Cron).
+
+<a name="commands-as-users" />
+### Running Commands As Users
+
+You may override `user()` to run a given artisan command as a specific user.  Ensure your `scheduled:run` artisan command is running as root.
+
+```php
+    public function user()
+    {
+        return 'backup';
+    }
+```
+
+> This feature may not be supported by all drivers.
+
+<a name="environment-commands" />
+### Environment-specific commands
+
+You may override `environment()` to ensure your command is only scheduled in specific environments.  It should provide a single environment or an array of environments.
+
+```php
+    public function environment()
+    {
+        return ['development','staging'];
+    }
+```
+
+
+
 <a name="drivers" />
-#### Drivers
+## Drivers
 
 While Cron is the default driver for Dispatcher, it can be used with any scheduling tool that can run artisan commands. See [building custom drivers](#custom-drivers).
 
 <a name="Cron" />
-##### Cron (Default)
+### Cron (Default)
 
 Add the following to your Crontab:
 
@@ -159,32 +184,6 @@ You may also schedule commands via raw Cron expressions
 	{
         //every other day at 3:15am, 4:15am and 5:15am
         return $scheduler->setSchedule(3, [3,4,5], '*/2', '*', '*');
-    }
-```
-
-<a name="commands-as-users" />
-### Running Commands As Users
-
-You may override `user()` to run a given artisan command as a specific user.  Ensure your `scheduled:run` artisan command is running as root.
-
-```php
-    public function user()
-    {
-        return 'backup';
-    }
-```
-
-> This feature may not be supported by all drivers.
-
-<a name="environment-commands" />
-### Environment-specific commands
-
-You may override `environment()` to ensure your command is only scheduled in specific environments.  It should provide a single environment or an array of environments.
-
-```php
-    public function environment()
-    {
-        return ['development','staging'];
     }
 ```
 
