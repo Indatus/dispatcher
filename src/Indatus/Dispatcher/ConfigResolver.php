@@ -16,13 +16,31 @@ use Config;
 class ConfigResolver
 {
 
-    public function resolveDriverClass($className)
+    /**
+     * Resolve a class based on the driver configuration
+     *
+     * @param       $className
+     * @param array $arguments
+     *
+     * @return mixed
+     */
+    public function resolveDriverClass($className, $arguments = [])
     {
         try {
-            return App::make(Config::get('dispatcher::driver').'\\'.$className);
+            return App::make(
+                Config::get('dispatcher::driver').'\\'.$className, [
+                    $this,
+                    $arguments
+                ]
+            );
         } catch (\ReflectionException $e) {
             $driver = ucwords(strtolower(Config::get('dispatcher::driver')));
-            return App::make('Indatus\Dispatcher\Drivers\\'.$driver.'\\'.$className);
+            return App::make(
+                'Indatus\Dispatcher\Drivers\\'.$driver.'\\'.$className, [
+                    $this,
+                    $arguments
+                ]
+            );
         }
     }
 

@@ -10,7 +10,37 @@
  */
 namespace Indatus\Dispatcher;
 
-interface Schedulable
+abstract class Schedulable
 {
+    protected $configResolver;
 
+    protected $arguments;
+
+    public function __construct(ConfigResolver $configResolver, $arguments = [])
+    {
+        $this->configResolver = $configResolver;
+        $this->arguments = $arguments;
+    }
+
+    /**
+     * Define arguments for this command when it runs.
+     *
+     * @param array $arguments
+     *
+     * @return \Indatus\Dispatcher\Schedulable
+     */
+    public function args(array $arguments)
+    {
+        return $this->configResolver->resolveDriverClass('Scheduler', $arguments);
+    }
+
+    /**
+     * Get the arguments for this command.
+     *
+     * @return array
+     */
+    public function getArguments()
+    {
+        return $this->arguments;
+    }
 }

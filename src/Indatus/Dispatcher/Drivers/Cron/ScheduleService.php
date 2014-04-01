@@ -24,8 +24,18 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
     public function isDue(ScheduledCommandInterface $command)
     {
         $scheduler = App::make('Indatus\Dispatcher\Schedulable');
-        $cron = CronExpression::factory($command->schedule($scheduler)->getSchedule());
-        return $cron->isDue();
+        $schedules = $command->schedule($scheduler);
+        if (!is_array($schedules)) {
+            $schedules = array($schedules);
+        }
+        foreach ($schedules as $schedule) {
+            $cron = CronExpression::factory($schedule->getSchedule());
+            if ($cron->isDue()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

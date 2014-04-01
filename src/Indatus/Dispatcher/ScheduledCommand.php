@@ -37,7 +37,7 @@ abstract class ScheduledCommand extends Command implements ScheduledCommandInter
     /**
      * Environment(s) under which the given command should run
      *
-     * @return string
+     * @return string|array
      */
     public function environment()
     {
