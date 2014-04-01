@@ -24,22 +24,22 @@ class ConfigResolver
      *
      * @return mixed
      */
-    public function resolveDriverClass($className, $arguments = [])
+    public function resolveDriverClass($className, $arguments = array())
     {
         try {
             return App::make(
-                Config::get('dispatcher::driver').'\\'.$className, [
+                Config::get('dispatcher::driver').'\\'.$className, array(
                     $this,
                     $arguments
-                ]
+                )
             );
         } catch (\ReflectionException $e) {
             $driver = ucwords(strtolower(Config::get('dispatcher::driver')));
             return App::make(
-                'Indatus\Dispatcher\Drivers\\'.$driver.'\\'.$className, [
+                'Indatus\Dispatcher\Drivers\\'.$driver.'\\'.$className, array(
                     $this,
                     $arguments
-                ]
+                )
             );
         }
     }
