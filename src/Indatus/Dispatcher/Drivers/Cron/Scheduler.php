@@ -12,7 +12,7 @@ namespace Indatus\Dispatcher\Drivers\Cron;
 
 use Indatus\Dispatcher\Schedulable;
 
-class Scheduler implements Schedulable
+class Scheduler extends Schedulable
 {
 
     /**
@@ -280,6 +280,15 @@ class Scheduler implements Schedulable
         $this->daysOfTheWeek(self::MONDAY.'-'.self::FRIDAY);
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     * @return $this
+     */
+    public function args(array $arguments)
+    {
+        return parent::args($arguments);
     }
 
     /**

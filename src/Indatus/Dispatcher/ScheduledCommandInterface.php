@@ -23,7 +23,7 @@ interface ScheduledCommandInterface
     /**
      * Environment(s) under which the given command should run
      * Defaults to '*' for all environments
-     * @return string
+     * @return string|array
      */
     public function environment();
 

@@ -19,7 +19,10 @@ class TestScheduledCommand extends TestCase
 
         $this->scheduledCommand = m::mock('Indatus\Dispatcher\ScheduledCommand[schedule]');
 
-        $this->app->instance('Indatus\Dispatcher\Schedulable', new Scheduler());
+        $this->app->instance(
+            'Indatus\Dispatcher\Schedulable',
+            new Scheduler(App::make('Indatus\Dispatcher\ConfigResolver'))
+        );
     }
 
     public function tearDown()

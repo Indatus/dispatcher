@@ -17,7 +17,7 @@ class TestCronScheduler extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->scheduler = new Scheduler();
+        $this->scheduler = new Scheduler(App::make('Indatus\Dispatcher\ConfigResolver'));
     }
 
     /**
@@ -144,6 +144,16 @@ class TestCronScheduler extends TestCase
     {
         $this->assertInstanceOf($this->schedularClass, $this->scheduler->everyWeekday());
         $this->assertEquals($this->scheduler->getSchedule(), Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::MONDAY.'-'.Scheduler::FRIDAY);
+    }
+
+    public function testArgs()
+    {
+        $args = array('testArgument');
+
+        /** @var \Indatus\Dispatcher\Scheduleable $scheduler */
+        $scheduler = $this->scheduler->args($args);
+        $this->assertInstanceOf($this->schedularClass, $scheduler);
+        $this->assertEquals($args, $scheduler->getArguments());
     }
 
 } 
