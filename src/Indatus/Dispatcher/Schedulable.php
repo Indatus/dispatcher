@@ -16,7 +16,7 @@ abstract class Schedulable
 
     protected $arguments;
 
-    public function __construct(ConfigResolver $configResolver, $arguments = [])
+    public function __construct(ConfigResolver $configResolver, $arguments = array())
     {
         $this->configResolver = $configResolver;
         $this->arguments = $arguments;
