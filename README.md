@@ -183,7 +183,7 @@ You may also schedule commands via raw Cron expressions
 	public function schedule(Schedulable $scheduler)
 	{
         //every other day at 3:15am, 4:15am and 5:15am
-        return $scheduler->setSchedule(3, [3,4,5], '*/2', '*', '*');
+        return $scheduler->setSchedule(15, [3,4,5], '*/2', '*', '*');
     }
 ```
 
