@@ -11,7 +11,7 @@
 namespace Indatus\Dispatcher\Services;
 
 use App;
-use Indatus\Dispatcher\ScheduledCommand;
+use Indatus\Dispatcher\Scheduling\ScheduledCommand;
 
 class CommandService
 {
@@ -41,9 +41,13 @@ class CommandService
 
     /**
      * Determine if a scheduled command is in the correct environment
-     *
-     * @param \Indatus\Dispatcher\ScheduledCommand $command
-     * @return bool
+
+
+*
+*@param \Indatus\Dispatcher\Scheduling\ScheduledCommand $command
+
+*
+*@return bool
      */
     public function runnableInEnvironment(ScheduledCommand $command)
     {
@@ -63,8 +67,12 @@ class CommandService
 
     /**
      * Get a command to run this application
-     * @param ScheduledCommand $scheduledCommand
-     * @return string
+
+*
+     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommand $scheduledCommand
+
+*
+*@return string
      */
     public function getRunCommand(ScheduledCommand $scheduledCommand)
     {

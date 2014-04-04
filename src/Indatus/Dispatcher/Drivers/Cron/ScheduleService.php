@@ -12,13 +12,26 @@ namespace Indatus\Dispatcher\Drivers\Cron;
 
 use App;
 use Cron\CronExpression;
-use Indatus\Dispatcher\ScheduledCommandInterface;
+use Indatus\Dispatcher\Scheduling\ScheduledCommandInterface;
+use Indatus\Dispatcher\Scheduling\ScheduleException;
+use Indatus\Dispatcher\Scheduling\Schedulable;
 
 class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
 
     /**
      * Determine if a command is due to be run
-     * @param ScheduledCommandInterface $command
+
+
+
+
+*
+*@param \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command
+
+
+
+
+*
+*@throws \Indatus\Dispatcher\Scheduling\ScheduleException
      * @return bool
      */
     public function isDue(ScheduledCommandInterface $command)
@@ -29,6 +42,10 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
             $schedules = array($schedules);
         }
         foreach ($schedules as $schedule) {
+            if (($schedule instanceOf Schedulable) === false) {
+                throw new ScheduleException('Schedule for "'.$command->getName().'" is not an instance of Schedulable');
+            }
+
             $cron = CronExpression::factory($schedule->getSchedule());
             if ($cron->isDue()) {
                 return true;
@@ -44,9 +61,9 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
     public function printSummary()
     {
         $this->table->setHeaders(array('Environment(s)', 'Name', 'Minute', 'Hour', 'Day of Month', 'Month', 'Day of Week', 'Run as'));
-        /** @var $command \Indatus\Dispatcher\ScheduledCommandInterface */
+        /** @var $command \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface */
         foreach ($this->getScheduledCommands() as $command) {
-            /** @var $command \Indatus\Dispatcher\ScheduledCommandInterface */
+            /** @var $command \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface */
             $scheduler = $command->schedule(App::make('Indatus\Dispatcher\Schedulable'));
 
             $this->table->addRow(array(

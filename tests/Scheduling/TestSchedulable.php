@@ -18,9 +18,9 @@ class TestSchedulable extends TestCase
     public function testArguments()
     {
         $args = ['type' => 'scheduled'];
-        /** @var \Indatus\Dispatcher\Schedulable $scheduleable */
+        /** @var \Indatus\Dispatcher\Scheduling\Schedulable $scheduleable */
         $scheduleable = $this->getMockForAbstractClass(
-            'Indatus\Dispatcher\Schedulable', array(
+            'Indatus\Dispatcher\Scheduling\Schedulable', array(
                 App::make('Indatus\Dispatcher\ConfigResolver')
             ));
         $newScheduleable = $scheduleable->args($args);
@@ -31,9 +31,9 @@ class TestSchedulable extends TestCase
     {
         $args = ['type' => 'scheduled'];
 
-        /** @var \Indatus\Dispatcher\Schedulable $scheduleable */
+        /** @var \Indatus\Dispatcher\Scheduling\Schedulable $scheduleable */
         $scheduleable = $this->getMockForAbstractClass(
-            'Indatus\Dispatcher\Schedulable', array(
+            'Indatus\Dispatcher\Scheduling\Schedulable', array(
                 App::make('Indatus\Dispatcher\ConfigResolver'),
                 $args
             )

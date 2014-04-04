@@ -12,7 +12,7 @@ class TestCronScheduler extends TestCase
      */
     private $scheduler;
 
-    private $schedularClass = 'Indatus\Dispatcher\Schedulable';
+    private $schedularClass = 'Indatus\Dispatcher\Scheduling\Schedulable';
 
     public function setUp()
     {

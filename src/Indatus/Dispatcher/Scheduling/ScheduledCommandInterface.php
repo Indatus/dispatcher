@@ -2,10 +2,19 @@
 /**
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
-namespace Indatus\Dispatcher;
+namespace Indatus\Dispatcher\Scheduling;
+
+use Indatus\Dispatcher\Scheduler;
+use Indatus\Dispatcher\Scheduling\Schedulable;
 
 interface ScheduledCommandInterface
 {
+    /**
+     * Get the name of the command
+     * @return string
+     */
+    public function getName();
+
     /**
      * User to run the command as
      * @return string Defaults to false to run as default user
@@ -14,9 +23,8 @@ interface ScheduledCommandInterface
 
     /**
      * When a command should run
-     *
      * @param Scheduler $scheduler
-     * @return \Indatus\Dispatcher\Schedulable
+     * @return \Indatus\Dispatcher\Scheduling\Schedulable
      */
     public function schedule(Schedulable $scheduler);
 

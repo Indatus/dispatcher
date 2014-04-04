@@ -12,7 +12,7 @@ namespace Indatus\Dispatcher\Services;
 
 use App;
 use Artisan;
-use Indatus\Dispatcher\ScheduledCommandInterface;
+use Indatus\Dispatcher\Scheduling\ScheduledCommandInterface;
 use Indatus\Dispatcher\Table;
 
 abstract class ScheduleService
@@ -28,8 +28,12 @@ abstract class ScheduleService
 
     /**
      * Determine if a command is due to be run
-     * @param ScheduledCommandInterface $command
-     * @return bool
+
+*
+*@param \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command
+
+*
+*@return bool
      */
     abstract public function isDue(ScheduledCommandInterface $command);
 
@@ -53,7 +57,7 @@ abstract class ScheduleService
     /**
      * Get all commands that are due to be run
      *
-     * @return \Indatus\Dispatcher\ScheduledCommand[]
+     * @return \Indatus\Dispatcher\Scheduling\ScheduledCommand[]
      */
     public function getDueCommands()
     {

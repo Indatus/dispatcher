@@ -10,7 +10,7 @@
  */
 namespace Indatus\Dispatcher\Drivers\Cron;
 
-use Indatus\Dispatcher\Schedulable;
+use Indatus\Dispatcher\Scheduling\Schedulable;
 
 class Scheduler extends Schedulable
 {

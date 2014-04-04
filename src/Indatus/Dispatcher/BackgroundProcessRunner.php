@@ -11,6 +11,7 @@
 namespace Indatus\Dispatcher;
 
 use App;
+use Indatus\Dispatcher\Scheduling\ScheduledCommand;
 use Indatus\Dispatcher\Services\CommandService;
 
 class BackgroundProcessRunner

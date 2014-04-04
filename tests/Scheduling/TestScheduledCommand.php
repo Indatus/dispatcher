@@ -9,7 +9,7 @@ use Indatus\Dispatcher\Drivers\Cron\Scheduler;
 class TestScheduledCommand extends TestCase
 {
     /**
-     * @var Indatus\Dispatcher\ScheduledCommand
+     * @var \Indatus\Dispatcher\Scheduling\ScheduledCommand
      */
     private $scheduledCommand;
 
@@ -17,7 +17,7 @@ class TestScheduledCommand extends TestCase
     {
         parent::setUp();
 
-        $this->scheduledCommand = m::mock('Indatus\Dispatcher\ScheduledCommand[schedule]');
+        $this->scheduledCommand = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand[schedule]');
 
         $this->app->instance(
             'Indatus\Dispatcher\Schedulable',

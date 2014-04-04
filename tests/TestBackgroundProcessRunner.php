@@ -25,7 +25,7 @@ class TestBackgroundProcessRunner extends TestCase
         $commandService = m::mock('Indatus\Dispatcher\Services\CommandService', function ($m) {
                 $m->shouldReceive('getRunCommand')->once()->andReturn('echo "this is a test"');
             });
-        $scheduledCommand = m::mock('Indatus\Dispatcher\ScheduledCommand');
+        $scheduledCommand = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand');
 
         $backgroundProcessRunner = new BackgroundProcessRunner($commandService);
         $this->assertTrue($backgroundProcessRunner->run($scheduledCommand));
