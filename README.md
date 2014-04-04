@@ -6,7 +6,7 @@
 
 ```php
 use Indatus\Dispatcher\Scheduling\ScheduledCommand;
-use Indatus\Dispatcher\Schedulable;
+use Indatus\Dispatcher\Scheduling\Schedulable;
 use Indatus\Dispatcher\Drivers\Cron\Scheduler;
 
 class MyCommand extends ScheduledCommand {
@@ -101,7 +101,7 @@ use Indatus\Dispatcher\Drivers\Cron\Scheduler;
 	 * When a command should run
 	 *
 	 * @param Scheduler $scheduler
-	 * @return \Indatus\Dispatcher\Schedulable
+	 * @return \Indatus\Dispatcher\Scheduling\Schedulable
 	 */
 	public function schedule(Schedulable $scheduler)
 	{
@@ -192,7 +192,7 @@ You may also schedule commands via raw Cron expressions
 
 You can build your own drivers or extend a driver that's included.  Create a packagepath such as `\MyApp\ScheduleDriver\` and create two classes:
 
- * `Scheduler` that `implements Indatus\Dispatcher\Schedulable`.  This class should provide a useful interface for programmers to schedule their commands.
+ * `Scheduler` that `implements Indatus\Dispatcher\Scheduling\Schedulable`.  This class should provide a useful interface for programmers to schedule their commands.
  * `ScheduleService` that `extends \Indatus\Dispatcher\Services\ScheduleService`.  This class contains logic on how to determine if a command is due to run.
 
 Publish the configs using `php artisan view:publish indatus/dispatcher`. Then update your driver configuration to reference the package in which these 2 classes are included (do not include a trailing slash):

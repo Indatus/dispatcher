@@ -7,6 +7,7 @@ use Mockery as m;
 use Indatus\Dispatcher\Drivers\Cron\ScheduleService;
 use Indatus\Dispatcher\Scheduler;
 use Indatus\Dispatcher\Table;
+use Indatus\Dispatcher\Queue;
 
 class TestScheduleService extends TestCase
 {
@@ -19,7 +20,7 @@ class TestScheduleService extends TestCase
     {
         parent::setUp();
 
-        $this->scheduleService = new ScheduleService(new Table());
+        $this->scheduleService = new ScheduleService(new Table(), new Queue());
     }
 
     public function tearDown()
@@ -31,7 +32,7 @@ class TestScheduleService extends TestCase
     public function testGetScheduledCommands()
     {
         $scheduledCommands = array($class = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand', function ($m) {
-                $m->shouldReceive('schedule')->andReturn(m::mock('Indatus\Dispatcher\Schedulable'));
+                $m->shouldReceive('schedule')->andReturn(m::mock('Indatus\Dispatcher\Scheduling\Schedulable'));
             }));
 
         Artisan::shouldReceive('all')->once()->andReturn($scheduledCommands);
@@ -41,8 +42,9 @@ class TestScheduleService extends TestCase
 
     public function testGetDueCommands()
     {
-        $scheduleService = m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService[getScheduledCommands,isDue]', array(
-                new Table()
+        $scheduleService = m::mock('Indatus\Dispatcher\Services\ScheduleService[getScheduledCommands,isDue]', array(
+                new Table(),
+                new Queue()
             ), function ($m) {
                 $m->shouldReceive('getScheduledCommands')->once()
                     ->andReturn(array(m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand')));
@@ -51,30 +53,6 @@ class TestScheduleService extends TestCase
             });
 
         $this->assertEquals(1, count($scheduleService->getDueCommands()));
-    }
-
-    public function testIsNotDue()
-    {
-        $scheduledCommand = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand', function ($m) {
-                $m->shouldReceive('schedule')->andReturn(m::mock('Indatus\Dispatcher\Scheduling\Schedulable', function ($m) {
-                            //schedule the cron to run yesterday
-                            $dateTime = new DateTime('yesterday');
-                            $m->shouldReceive('getSchedule')->once()->andReturn('* * * * '.$dateTime->format('N'));
-                        }));
-            });
-        $scheduledCommand->shouldReceive('getName');
-        $this->assertFalse($this->scheduleService->isDue($scheduledCommand));
-    }
-
-    public function testIsDue()
-    {
-        $scheduledCommand = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand', function ($m) {
-                $m->shouldReceive('schedule')->andReturn(m::mock('Indatus\Dispatcher\Scheduling\Schedulable', function ($m) {
-                        $m->shouldReceive('getSchedule')->once()->andReturn('* * * * *');
-                    }));
-            });
-        $scheduledCommand->shouldReceive('getName');
-        $this->assertTrue($this->scheduleService->isDue($scheduledCommand));
     }
 
 } 
