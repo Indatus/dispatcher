@@ -1,4 +1,4 @@
-<?php
+<?php namespace Indatus\Dispatcher\Services;
 
 /**
  * This file is part of Dispatcher
@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Indatus\Dispatcher\Services;
 
 use App;
 use Artisan;
@@ -28,12 +27,10 @@ abstract class ScheduleService
 
     /**
      * Determine if a command is due to be run
-
-*
-*@param \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command
-
-*
-*@return bool
+     *
+     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command
+     *
+     * @return bool
      */
     abstract public function isDue(ScheduledCommandInterface $command);
 

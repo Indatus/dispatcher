@@ -1,8 +1,8 @@
-<?php
+<?php namespace Indatus\Dispatcher\Scheduling;
+
 /**
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
-namespace Indatus\Dispatcher\Scheduling;
 
 use Indatus\Dispatcher\Scheduler;
 use Indatus\Dispatcher\Scheduling\Schedulable;

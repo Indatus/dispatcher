@@ -1,4 +1,4 @@
-<?php
+<?php namespace Indatus\Dispatcher\Drivers\Cron;
 
 /**
  * This file is part of Dispatcher
@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Indatus\Dispatcher\Drivers\Cron;
 
 use App;
 use Cron\CronExpression;
@@ -20,18 +19,9 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
 
     /**
      * Determine if a command is due to be run
-
-
-
-
-*
-*@param \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command
-
-
-
-
-*
-*@throws \Indatus\Dispatcher\Scheduling\ScheduleException
+     *
+     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command
+     * @throws \Indatus\Dispatcher\Scheduling\ScheduleException
      * @return bool
      */
     public function isDue(ScheduledCommandInterface $command)
