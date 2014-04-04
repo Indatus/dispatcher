@@ -28,7 +28,7 @@ abstract class Schedulable
      *
      * @param array $arguments
      *
-     * @return \Indatus\Dispatcher\Schedulable
+     * @return \Indatus\Dispatcher\Scheduling\Schedulable
      */
     public function args(array $arguments)
     {

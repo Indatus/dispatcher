@@ -22,7 +22,7 @@ class TestConfig extends TestCase
 
     public function testDefaultSchedulerClass()
     {
-        $serviceProvider = App::make('Indatus\Dispatcher\Schedulable');
+        $serviceProvider = App::make('Indatus\Dispatcher\Scheduling\Schedulable');
         $this->assertInstanceOf('Indatus\Dispatcher\Drivers\Cron\Scheduler', $serviceProvider);
     }
 

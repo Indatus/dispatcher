@@ -26,7 +26,7 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
      */
     public function isDue(ScheduledCommandInterface $command)
     {
-        $scheduler = App::make('Indatus\Dispatcher\Schedulable');
+        $scheduler = App::make('Indatus\Dispatcher\Scheduling\Schedulable');
         $schedules = $command->schedule($scheduler);
         if (!is_array($schedules)) {
             $schedules = array($schedules);
@@ -38,6 +38,14 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
 
             $cron = CronExpression::factory($schedule->getSchedule());
             if ($cron->isDue()) {
+
+                //add to the queue so we can run it later
+                /** @var \Indatus\Dispatcher\QueueItem $queueItem */
+                $queueItem = App::make('Indatus\Dispatcher\QueueItem');
+                $queueItem->setCommand($command);
+                $queueItem->setScheduler($scheduler);
+                $this->queue->add($queueItem);
+
                 return true;
             }
         }
@@ -54,7 +62,7 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
         /** @var $command \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface */
         foreach ($this->getScheduledCommands() as $command) {
             /** @var $command \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface */
-            $scheduler = $command->schedule(App::make('Indatus\Dispatcher\Schedulable'));
+            $scheduler = $command->schedule(App::make('Indatus\Dispatcher\Scheduling\Schedulable'));
 
             $this->table->addRow(array(
                     is_array($command->environment()) ? implode(',', $command->environment()) : $command->environment(),

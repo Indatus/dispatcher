@@ -11,6 +11,7 @@
 
 use App;
 use Artisan;
+use Indatus\Dispatcher\Queue;
 use Indatus\Dispatcher\Scheduling\ScheduledCommandInterface;
 use Indatus\Dispatcher\Table;
 
@@ -20,9 +21,13 @@ abstract class ScheduleService
     /** @var  \Indatus\Dispatcher\Table */
     protected $table;
 
-    public function __construct(Table $table)
+    /** @var  \Indatus\Dispatcher\Queue */
+    protected $queue;
+
+    public function __construct(Table $table, Queue $queue)
     {
         $this->table = $table;
+        $this->queue = $queue;
     }
 
     /**

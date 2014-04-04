@@ -8,6 +8,7 @@ use Indatus\Dispatcher\Services\CommandService;
 use Indatus\Dispatcher\Drivers\Cron\ScheduleService;
 use Indatus\Dispatcher\Table;
 use Indatus\Dispatcher\Scheduler;
+use Indatus\Dispatcher\Queue;
 
 class BackgroundProcessService extends TestCase
 {
@@ -20,7 +21,7 @@ class BackgroundProcessService extends TestCase
     {
         parent::setUp();
 
-        $scheduleService = new ScheduleService(new Table());
+        $scheduleService = new ScheduleService(new Table(), new Queue());
         $this->commandService = new CommandService($scheduleService);
 
     }
