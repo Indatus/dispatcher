@@ -1,4 +1,4 @@
-<?php
+<?php namespace Indatus\Dispatcher;
 
 /**
  * This file is part of Dispatcher
@@ -8,14 +8,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Indatus\Dispatcher;
 
 use cli\table\Renderer;
 
 /**
  * Table class, only here so we can unit test our app
- * @author Ben Kuhl <bkuhl@indatus.com>
- * @package Indatus\Dispatcher
  */
 interface TableInterface
 {
@@ -68,10 +65,7 @@ interface TableInterface
     /**
      * Sets the renderer used by this table.
      *
-     * @param table\Renderer $renderer The renderer to use for output.
-     * @see   table\Renderer
-     * @see   table\Ascii
-     * @see   table\Tabular
+     * @param \cli\table\Renderer $renderer The renderer to use for output.
      */
     public function setRenderer(Renderer $renderer);
 

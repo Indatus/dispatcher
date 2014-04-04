@@ -1,4 +1,4 @@
-<?php
+<?php namespace Indatus\Dispatcher\Services;
 
 /**
  * This file is part of Dispatcher
@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Indatus\Dispatcher\Services;
 
 use App;
 use Indatus\Dispatcher\Scheduling\ScheduledCommand;
@@ -41,13 +40,10 @@ class CommandService
 
     /**
      * Determine if a scheduled command is in the correct environment
-
-
-*
-*@param \Indatus\Dispatcher\Scheduling\ScheduledCommand $command
-
-*
-*@return bool
+     *
+     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommand $command
+     *
+     * @return bool
      */
     public function runnableInEnvironment(ScheduledCommand $command)
     {
@@ -67,12 +63,10 @@ class CommandService
 
     /**
      * Get a command to run this application
-
-*
+     *
      * @param \Indatus\Dispatcher\Scheduling\ScheduledCommand $scheduledCommand
-
-*
-*@return string
+     *
+     * @return string
      */
     public function getRunCommand(ScheduledCommand $scheduledCommand)
     {
