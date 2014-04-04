@@ -109,7 +109,7 @@ class BackgroundProcessService extends TestCase
 
     private function mockCommand ($environment = '*')
     {
-        return $class = m::mock('Indatus\Dispatcher\ScheduledCommand', function ($m) use ($environment) {
+        return $class = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand', function ($m) use ($environment) {
                 $m->shouldReceive('environment')->andReturn($environment);
             });
     }

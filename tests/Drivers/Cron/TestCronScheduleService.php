@@ -3,6 +3,7 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
+use \Indatus\Dispatcher\Drivers\Cron\ScheduleService;
 use Mockery as m;
 
 class TestCronScheduleService extends TestCase
@@ -19,6 +20,19 @@ class TestCronScheduleService extends TestCase
     }
 
     /**
+     * @expectedException \Indatus\Dispatcher\Scheduling\ScheduleException
+     */
+    public function testIsDueException()
+    {
+        $scheduleService = new ScheduleService(m::mock('Indatus\Dispatcher\Table'));
+
+        $command = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand');
+        $command->shouldReceive('schedule')->once()->andReturnNull();
+        $command->shouldReceive('getName')->once()->andReturn('testCommand');
+        $scheduleService->isDue($command);
+    }
+
+    /**
      * Test that a summary is properly generated
      * Dangit this is ugly... gotta find a new cli library
      */
@@ -29,7 +43,7 @@ class TestCronScheduleService extends TestCase
                 $m->shouldReceive('sort')->once();
                 $m->shouldReceive('display')->once();
             });
-        $scheduledCommand = m::mock('Indatus\Dispatcher\ScheduledCommand', function ($m) use ($table) {
+        $scheduledCommand = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand', function ($m) use ($table) {
                 $table->shouldReceive('addRow')->once();
 
                 $m->shouldReceive('getName')->once();

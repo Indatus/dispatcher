@@ -30,7 +30,7 @@ class TestConfigResolver extends TestCase
         $args = array('testArgument');
         $resolver = new ConfigResolver();
 
-        /** @var \Indatus\Dispatcher\Schedulable $scheduler */
+        /** @var \Indatus\Dispatcher\Scheduling\Schedulable $scheduler */
         $scheduler = $resolver->resolveDriverClass('Scheduler', $args);
         $this->assertEquals(
             $args,
@@ -43,7 +43,7 @@ class TestConfigResolver extends TestCase
         Config::shouldReceive('get')->andReturn('Indatus\Dispatcher\Drivers\Cron');
         $resolver = new ConfigResolver();
         $this->assertInstanceOf(
-            'Indatus\Dispatcher\Schedulable',
+            'Indatus\Dispatcher\Scheduling\Schedulable',
             $resolver->resolveDriverClass('Scheduler')
         );
     }
