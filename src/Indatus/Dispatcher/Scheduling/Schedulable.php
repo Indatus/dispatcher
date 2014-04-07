@@ -9,7 +9,9 @@
  * file that was distributed with this source code.
  */
 
+use App;
 use Indatus\Dispatcher\ConfigResolver;
+use Symfony\Component\Console\Input\ArgvInput;
 
 abstract class Schedulable
 {

@@ -11,46 +11,21 @@
 
 use App;
 use Cron\CronExpression;
-use Indatus\Dispatcher\Scheduling\ScheduledCommandInterface;
-use Indatus\Dispatcher\Scheduling\ScheduleException;
 use Indatus\Dispatcher\Scheduling\Schedulable;
 
 class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
 
     /**
-     * Determine if a command is due to be run
+     * Determine if a schedule is due to be run
      *
-     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command
-     * @throws \Indatus\Dispatcher\Scheduling\ScheduleException
+     * @param \Indatus\Dispatcher\Scheduling\Schedulable    $scheduler
+     *
      * @return bool
      */
-    public function isDue(ScheduledCommandInterface $command)
+    public function isDue(Schedulable $scheduler)
     {
-        $scheduler = App::make('Indatus\Dispatcher\Scheduling\Schedulable');
-        $schedules = $command->schedule($scheduler);
-        if (!is_array($schedules)) {
-            $schedules = array($schedules);
-        }
-        foreach ($schedules as $schedule) {
-            if (($schedule instanceOf Schedulable) === false) {
-                throw new ScheduleException('Schedule for "'.$command->getName().'" is not an instance of Schedulable');
-            }
-
-            $cron = CronExpression::factory($schedule->getSchedule());
-            if ($cron->isDue()) {
-
-                //add to the queue so we can run it later
-                /** @var \Indatus\Dispatcher\QueueItem $queueItem */
-                $queueItem = App::make('Indatus\Dispatcher\QueueItem');
-                $queueItem->setCommand($command);
-                $queueItem->setScheduler($scheduler);
-                $this->queue->add($queueItem);
-
-                return true;
-            }
-        }
-
-        return false;
+        $cron = CronExpression::factory($scheduler->getSchedule());
+        return $cron->isDue();
     }
 
     /**

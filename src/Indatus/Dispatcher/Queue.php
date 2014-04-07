@@ -12,7 +12,7 @@
 class Queue
 {
     /** @var QueueItem[] */
-    protected static $queue = array();
+    protected $queue = array();
 
     /**
      * Add an item to the queue
@@ -20,7 +20,7 @@ class Queue
      */
     public function add(QueueItem $item)
     {
-        self::$queue[] = $item;
+        $this->queue[] = $item;
     }
 
     /**
@@ -29,7 +29,7 @@ class Queue
      */
     public function size()
     {
-        return count(self::$queue);
+        return count($this->queue);
     }
 
     /**
@@ -38,8 +38,8 @@ class Queue
      */
     public function flush()
     {
-        $queue = self::$queue;
-        self::$queue = array();
+        $queue = $this->queue;
+        $this->queue = array();
 
         return $queue;
     }

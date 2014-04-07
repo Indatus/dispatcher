@@ -10,6 +10,7 @@
  */
 
 use App;
+use Indatus\Dispatcher\Scheduling\Schedulable;
 use Indatus\Dispatcher\Scheduling\ScheduledCommand;
 
 class CommandService
@@ -30,10 +31,16 @@ class CommandService
      */
     public function runDue()
     {
+        /** @var \Indatus\Dispatcher\BackgroundProcessRunner $backgroundProcessRunner */
         $backgroundProcessRunner = App::make('Indatus\Dispatcher\BackgroundProcessRunner');
-        foreach ($this->scheduleService->getDueCommands() as $command) {
+
+        /** @var \Indatus\Dispatcher\Queue $queue */
+        $queue = $this->scheduleService->getQueue();
+        foreach ($queue->flush() as $queueItem) {
+            $command = $queueItem->getCommand();
+            $scheduler = $queueItem->getScheduler();
             if ($command->isEnabled() && $this->runnableInEnvironment($command)) {
-                $backgroundProcessRunner->run($command);
+                $backgroundProcessRunner->run($command, $scheduler->getArguments());
             }
         }
     }
@@ -62,21 +69,62 @@ class CommandService
     }
 
     /**
-     * Get a command to run this application
+     * Prepare a command's arguments for command line usage
      *
-     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommand $scheduledCommand
+     * @param array $arguments
      *
      * @return string
      */
-    public function getRunCommand(ScheduledCommand $scheduledCommand)
+    public function prepareArguments(array $arguments)
+    {
+        $argumentPieces = array();
+        foreach ($arguments as $arg => $value) {
+            //if it's an array of options, throw them in there as well
+            if (is_array($value)) {
+                foreach ($value as $argArrayValue) {
+                    $argumentPieces[] = '--'.$arg.'="'.addslashes($argArrayValue).'"';
+                }
+            } else {
+                $argument = null;
+
+                //option exists with no value
+                if (is_numeric($arg)) {
+                    $argument = $value;
+                } elseif (!empty($value)) {
+                    $argument = $arg.'="'.addslashes($value).'"';
+                }
+
+                if (!is_null($argument)) {
+                    $argumentPieces[] = '--'.$argument;
+                }
+            }
+        }
+
+        return implode(' ', $argumentPieces);
+    }
+
+    /**
+     * Get a command to run this application
+     *
+     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommand $scheduledCommand
+     * @param array $arguments
+     *
+     * @return string
+     */
+    public function getRunCommand(ScheduledCommand $scheduledCommand, array $arguments = array())
     {
         $commandPieces = array(
             'php',
             base_path().'/artisan',
-            $scheduledCommand->getName(),
-            '&', //run in background
-            '> /dev/null 2>&1' //don't show output, errors can be viewed in the Laravel log
+            $scheduledCommand->getName()
         );
+
+        if (count($arguments) > 0) {
+            $commandPieces[] = $this->prepareArguments($arguments);
+        }
+
+        $commandPieces[] = '&'; //run in background
+        $commandPieces[] = '> /dev/null 2>&1'; //don't show output, errors can be viewed in the Laravel log
 
         //run the command as a different user
         if (is_string($scheduledCommand->user())) {
