@@ -12,6 +12,7 @@
 use App;
 use Indatus\Dispatcher\Scheduling\ScheduledCommand;
 use Indatus\Dispatcher\Services\CommandService;
+use Symfony\Component\Process\Process;
 
 class BackgroundProcessRunner
 {
@@ -29,12 +30,13 @@ class BackgroundProcessRunner
     /**
      * Run a scheduled command
      *
-     * @param ScheduledCommand $scheduledCommand
+     * @param ScheduledCommand  $scheduledCommand
+     * @param array             $arguments
      * @return bool
      */
-    public function run(ScheduledCommand $scheduledCommand)
+    public function run(ScheduledCommand $scheduledCommand, array $arguments = array())
     {
-        exec($this->commandService->getRunCommand($scheduledCommand));
+        exec($this->commandService->getRunCommand($scheduledCommand), $arguments);
 
         return true;
     }
