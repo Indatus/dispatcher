@@ -18,29 +18,47 @@ class ConfigResolver
     /**
      * Resolve a class based on the driver configuration
      *
-     * @param       $className
-     * @param array $arguments
-     *
-     * @return mixed
+     * @return \Indatus\Dispatcher\Scheduling\Schedulable
      */
-    public function resolveDriverClass($className, $arguments = array())
+    public function resolveSchedulerClass()
     {
         try {
             return App::make(
-                Config::get('dispatcher::driver').'\\'.$className, array(
-                    $this,
-                    $arguments
+                Config::get('dispatcher::driver').'\\Scheduler', array(
+                    $this
                 )
             );
         } catch (\ReflectionException $e) {
-            $driver = ucwords(strtolower(Config::get('dispatcher::driver')));
             return App::make(
-                'Indatus\Dispatcher\Drivers\\'.$driver.'\\'.$className, array(
-                    $this,
-                    $arguments
+                'Indatus\Dispatcher\Drivers\\'.$this->getDriver().'\\Scheduler', array(
+                    $this
                 )
             );
         }
+    }
+
+    /**
+     * Resolve a class based on the driver configuration
+     *
+     * @return \Indatus\Dispatcher\Scheduling\ScheduleService
+     */
+    public function resolveServiceClass()
+    {
+        try {
+            return App::make(Config::get('dispatcher::driver').'\\ScheduleService');
+        } catch (\ReflectionException $e) {
+            return App::make('Indatus\Dispatcher\Drivers\\'.$this->getDriver().'\\ScheduleService');
+        }
+    }
+
+    /**
+     * Get the dispatcher driver class
+     *
+     * @return string
+     */
+    public function getDriver()
+    {
+        return ucwords(strtolower(Config::get('dispatcher::driver')));
     }
 
 }

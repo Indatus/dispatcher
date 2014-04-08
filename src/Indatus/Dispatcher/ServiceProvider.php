@@ -44,12 +44,12 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         //load the scheduler of the appropriate driver
         App::bind('Indatus\Dispatcher\Scheduling\Schedulable', function () use ($resolver) {
-                return $resolver->resolveDriverClass('Scheduler');
+                return $resolver->resolveSchedulerClass();
             });
 
-        //load the scheduler of the appropriate driver
+        //load the schedule service of the appropriate driver
         App::bind('Indatus\Dispatcher\Services\ScheduleService', function () use ($resolver) {
-                return $resolver->resolveDriverClass('ScheduleService');
+                return $resolver->resolveServiceClass();
             });
 
         $this->registerCommands();
