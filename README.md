@@ -195,7 +195,7 @@ You can build your own drivers or extend a driver that's included.  Create a pac
  * `Scheduler` that `implements Indatus\Dispatcher\Schedulable`.  This class should provide a useful interface for programmers to schedule their commands.
  * `ScheduleService` that `extends \Indatus\Dispatcher\Services\ScheduleService`.  This class contains logic on how to determine if a command is due to run.
 
-Publish the configs using `php artisan view:publish indatus/dispatcher`. Then update your driver configuration to reference the package in which these 2 classes are included (do not include a trailing slash):
+Publish the configs using `php artisan config:publish indatus/dispatcher`. Then update your driver configuration to reference the package in which these 2 classes are included (do not include a trailing slash):
 
 ```php
     'driver' => '\MyApp\ScheduleDriver'
