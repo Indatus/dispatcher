@@ -291,7 +291,8 @@ class Scheduler extends Schedulable
     }
 
     /**
-     * @todo This is a terrible method name
+     * If an array of values is used, convert it
+     * to a comma separated value.
      */
     private function parseTimeParameter($parameter)
     {

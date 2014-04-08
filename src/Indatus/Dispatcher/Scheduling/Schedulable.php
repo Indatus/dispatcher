@@ -15,14 +15,15 @@ use Symfony\Component\Console\Input\ArgvInput;
 
 abstract class Schedulable
 {
+    /** @var \Indatus\Dispatcher\ConfigResolver $configResolver */
     protected $configResolver;
 
-    protected $arguments;
+    /** @var array $arguments */
+    protected $arguments = array();
 
-    public function __construct(ConfigResolver $configResolver, $arguments = array())
+    public function __construct(ConfigResolver $configResolver)
     {
         $this->configResolver = $configResolver;
-        $this->arguments = $arguments;
     }
 
     /**
@@ -34,7 +35,10 @@ abstract class Schedulable
      */
     public function args(array $arguments)
     {
-        return $this->configResolver->resolveDriverClass('Scheduler', $arguments);
+        /** @var \Indatus\Dispatcher\Scheduling\Schedulable $scheduler */
+        $scheduler = $this->configResolver->resolveSchedulerClass();
+        $scheduler->setArguments($arguments);
+        return $scheduler;
     }
 
     /**
@@ -45,5 +49,17 @@ abstract class Schedulable
     public function getArguments()
     {
         return $this->arguments;
+    }
+
+    /**
+     * Set the schedule's arguments
+     *
+     * This method is only to be used internally by Dispatcher.
+     *
+     * @param array $arguments
+     */
+    public function setArguments($arguments)
+    {
+        $this->arguments = $arguments;
     }
 }

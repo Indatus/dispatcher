@@ -8,7 +8,7 @@ use \Indatus\Dispatcher\Drivers\Cron\Scheduler;
 class TestCronScheduler extends TestCase
 {
     /**
-     * @var Indatus\Dispatcher\Scheduler
+     * @var Indatus\Dispatcher\Drivers\Cron\Scheduler
      */
     private $scheduler;
 
@@ -150,7 +150,7 @@ class TestCronScheduler extends TestCase
     {
         $args = array('testArgument');
 
-        /** @var \Indatus\Dispatcher\Scheduleable $scheduler */
+        /** @var \Indatus\Dispatcher\Drivers\Cron\Scheduler $scheduler */
         $scheduler = $this->scheduler->args($args);
         $this->assertInstanceOf($this->schedularClass, $scheduler);
         $this->assertEquals($args, $scheduler->getArguments());
