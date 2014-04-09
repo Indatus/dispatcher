@@ -32,11 +32,15 @@ class BackgroundProcessRunner
      *
      * @param ScheduledCommand  $scheduledCommand
      * @param array             $arguments
+     * @param array             $options
      * @return bool
      */
-    public function run(ScheduledCommand $scheduledCommand, array $arguments = array())
-    {
-        exec($this->commandService->getRunCommand($scheduledCommand), $arguments);
+    public function run(
+        ScheduledCommand $scheduledCommand,
+        array $arguments = array(),
+        array $options = array()
+    ) {
+        exec($this->commandService->getRunCommand($scheduledCommand, $arguments, $options));
 
         return true;
     }

@@ -37,6 +37,15 @@ class TestCronScheduleService extends TestCase
         $this->assertFalse($this->scheduleService->isDue($scheduler));
     }
 
+    public function testIsDueException()
+    {
+        Log::shouldReceive('error')->once();
+        $scheduler = m::mock('Indatus\Dispatcher\Scheduling\Schedulable', function ($m) {
+                $m->shouldReceive('getSchedule')->once()->andReturn('asdf');
+            });
+        $this->assertFalse($this->scheduleService->isDue($scheduler));
+    }
+
     public function testIsDue()
     {
         $scheduler = m::mock('Indatus\Dispatcher\Scheduling\Schedulable', function ($m) {
@@ -53,7 +62,6 @@ class TestCronScheduleService extends TestCase
     {
         $table = m::mock('Indatus\Dispatcher\Table', function ($m) {
                 $m->shouldReceive('setHeaders')->once();
-                $m->shouldReceive('sort')->once();
                 $m->shouldReceive('display')->once();
             });
         $queue = m::mock('Indatus\Dispatcher\Queue', function ($m) {
@@ -61,25 +69,50 @@ class TestCronScheduleService extends TestCase
                 $m->shouldReceive('sort')->once();
                 $m->shouldReceive('display')->once();*/
             });
-        $scheduledCommand = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand', function ($m) use ($table) {
-                $table->shouldReceive('addRow')->once();
+
+        $scheduledCommandWithMultipleSchedulers = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand', function ($m) use ($table) {
+                $table->shouldReceive('addRow')->times(3);
+
+                $scheduler = m::mock('Indatus\Dispatcher\Drivers\Cron\Scheduler', function ($m) {
+                        $m->shouldReceive('getScheduleMinute');
+                        $m->shouldReceive('getScheduleHour');
+                        $m->shouldReceive('getScheduleDayOfMonth');
+                        $m->shouldReceive('getScheduleMonth');
+                        $m->shouldReceive('getScheduleDayOfWeek');
+                        $m->shouldReceive('getArguments')->twice()->andReturn(array());
+                        $m->shouldReceive('getOptions')->twice()->andReturn(array());
+                    });
 
                 $m->shouldReceive('getName')->once();
                 $m->shouldReceive('user')->once();
                 $m->shouldReceive('environment')->twice();
-                $m->shouldReceive('schedule')->once()->andReturn(m::mock('Indatus\Dispatcher\Drivers\Cron\Scheduler', function ($m) {
-                            $m->shouldReceive('getScheduleMinute');
-                            $m->shouldReceive('getScheduleHour');
-                            $m->shouldReceive('getScheduleDayOfMonth');
-                            $m->shouldReceive('getScheduleMonth');
-                            $m->shouldReceive('getScheduleDayOfWeek');
-                        }));
+                $m->shouldReceive('schedule')->once()->andReturn([
+                        $scheduler,
+                        $scheduler
+                    ]);
+            });
+        $scheduledCommand = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand', function ($m) use ($table) {
+                $table->shouldReceive('addRow')->once();
+
+                $scheduler = m::mock('Indatus\Dispatcher\Drivers\Cron\Scheduler', function ($m) {
+                        $m->shouldReceive('getScheduleMinute');
+                        $m->shouldReceive('getScheduleHour');
+                        $m->shouldReceive('getScheduleDayOfMonth');
+                        $m->shouldReceive('getScheduleMonth');
+                        $m->shouldReceive('getScheduleDayOfWeek');
+                    });
+
+                $m->shouldReceive('getName')->once();
+                $m->shouldReceive('user')->once();
+                $m->shouldReceive('environment')->twice();
+                $m->shouldReceive('schedule')->once()->andReturn($scheduler);
             });
         $scheduleService = m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService[getScheduledCommands]', array(
                 $table,
                 $queue
-            ), function ($m) use ($scheduledCommand) {
+            ), function ($m) use ($scheduledCommand, $scheduledCommandWithMultipleSchedulers) {
                 $m->shouldReceive('getScheduledCommands')->once()->andReturn(array(
+                        $scheduledCommandWithMultipleSchedulers,
                         $scheduledCommand
                     ));
             });

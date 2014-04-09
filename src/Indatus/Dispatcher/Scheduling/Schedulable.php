@@ -21,6 +21,12 @@ abstract class Schedulable
     /** @var array $arguments */
     protected $arguments = array();
 
+    /** @var array $options */
+    protected $options = array();
+
+    /** @var bool Instantiate a new instance when using args() or opts() */
+    protected $instantiateNew = true;
+
     public function __construct(ConfigResolver $configResolver)
     {
         $this->configResolver = $configResolver;
@@ -35,8 +41,7 @@ abstract class Schedulable
      */
     public function args(array $arguments)
     {
-        /** @var \Indatus\Dispatcher\Scheduling\Schedulable $scheduler */
-        $scheduler = $this->configResolver->resolveSchedulerClass();
+        $scheduler = $this->getClass();
         $scheduler->setArguments($arguments);
         return $scheduler;
     }
@@ -61,5 +66,58 @@ abstract class Schedulable
     public function setArguments($arguments)
     {
         $this->arguments = $arguments;
+    }
+
+    /**
+     * Define options for this command when it runs.
+     *
+     * @param array $options
+     *
+     * @return \Indatus\Dispatcher\Scheduling\Schedulable
+     */
+    public function opts(array $options)
+    {
+        $scheduler = $this->getClass();
+        $scheduler->setOptions($options);
+        return $scheduler;
+    }
+
+    /**
+     * Get the options for this command.
+     *
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * Set the schedule's options
+     *
+     * This method is only to be used internally by Dispatcher.
+     *
+     * @param array $options
+     */
+    public function setOptions($options)
+    {
+        $this->options = $options;
+    }
+
+    /**
+     * Get a scheduler class
+     *
+     * @return $this|Schedulable
+     */
+    public function getClass()
+    {
+        //use the existing one if we've already instantiated
+        if ($this->instantiateNew === false) {
+            return $this;
+        }
+
+        $this->instantiateNew = false;
+
+        return $this;
     }
 }

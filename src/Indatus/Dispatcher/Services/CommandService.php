@@ -10,7 +10,6 @@
  */
 
 use App;
-use Indatus\Dispatcher\Scheduling\Schedulable;
 use Indatus\Dispatcher\Scheduling\ScheduledCommand;
 
 class CommandService
@@ -77,30 +76,42 @@ class CommandService
      */
     public function prepareArguments(array $arguments)
     {
-        $argumentPieces = array();
-        foreach ($arguments as $arg => $value) {
+        return implode(' ', $arguments);
+    }
+
+    /**
+     * Prepare a command's options for command line usage
+     *
+     * @param array $options
+     *
+     * @return string
+     */
+    public function prepareOptions(array $options)
+    {
+        $optionPieces = array();
+        foreach ($options as $opt => $value) {
             //if it's an array of options, throw them in there as well
             if (is_array($value)) {
-                foreach ($value as $argArrayValue) {
-                    $argumentPieces[] = '--'.$arg.'="'.addslashes($argArrayValue).'"';
+                foreach ($value as $optArrayValue) {
+                    $optionPieces[] = '--'.$opt.'="'.addslashes($optArrayValue).'"';
                 }
             } else {
-                $argument = null;
+                $option = null;
 
                 //option exists with no value
-                if (is_numeric($arg)) {
-                    $argument = $value;
+                if (is_numeric($opt)) {
+                    $option = $value;
                 } elseif (!empty($value)) {
-                    $argument = $arg.'="'.addslashes($value).'"';
+                    $option = $opt.'="'.addslashes($value).'"';
                 }
 
-                if (!is_null($argument)) {
-                    $argumentPieces[] = '--'.$argument;
+                if (!is_null($option)) {
+                    $optionPieces[] = '--'.$option;
                 }
             }
         }
 
-        return implode(' ', $argumentPieces);
+        return implode(' ', $optionPieces);
     }
 
     /**
@@ -108,10 +119,14 @@ class CommandService
      *
      * @param \Indatus\Dispatcher\Scheduling\ScheduledCommand $scheduledCommand
      * @param array $arguments
+     * @param array $options
      *
      * @return string
      */
-    public function getRunCommand(ScheduledCommand $scheduledCommand, array $arguments = array())
+    public function getRunCommand(
+        ScheduledCommand $scheduledCommand,
+        array $arguments = array(),
+        array $options = array())
     {
         $commandPieces = array(
             'php',
@@ -121,6 +136,10 @@ class CommandService
 
         if (count($arguments) > 0) {
             $commandPieces[] = $this->prepareArguments($arguments);
+        }
+
+        if (count($options) > 0) {
+            $commandPieces[] = $this->prepareOptions($options);
         }
 
         $commandPieces[] = '&'; //run in background
