@@ -3,8 +3,8 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Mockery as m;
 use Indatus\Dispatcher\Commands\ScheduleSummary;
+use Mockery as m;
 
 class TestScheduleSummary extends TestCase
 {

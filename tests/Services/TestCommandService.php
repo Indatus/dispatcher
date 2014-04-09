@@ -3,12 +3,12 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Mockery as m;
-use Indatus\Dispatcher\Services\CommandService;
 use Indatus\Dispatcher\Drivers\Cron\ScheduleService;
-use Indatus\Dispatcher\Table;
-use Indatus\Dispatcher\Scheduler;
 use Indatus\Dispatcher\Queue;
+use Indatus\Dispatcher\Scheduler;
+use Indatus\Dispatcher\Services\CommandService;
+use Indatus\Dispatcher\Table;
+use Mockery as m;
 
 class TestCommandService extends TestCase
 {
@@ -41,6 +41,7 @@ class TestCommandService extends TestCase
 
         $scheduler = m::mock('Indatus\Dispatcher\Scheduling\Schedulable');
         $scheduler->shouldReceive('getArguments')->once()->andReturn(array());
+        $scheduler->shouldReceive('getOptions')->once()->andReturn(array());
         $queue = m::mock('Indatus\Dispatcher\Queue',
             function ($m) use ($scheduledCommand, $scheduler) {
                 $item = m::mock('Indatus\Dispatcher\QueueItem');

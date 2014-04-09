@@ -40,7 +40,8 @@ class BackgroundProcessRunner
         array $arguments = array(),
         array $options = array()
     ) {
-        \Log::debug($scheduledCommand->getName(), [$this->commandService->getRunCommand($scheduledCommand, $arguments, $options)]);
+
+        \Log::debug('runCommand', [$this->commandService->getRunCommand($scheduledCommand, $arguments, $options)]);
         exec($this->commandService->getRunCommand($scheduledCommand, $arguments, $options));
 
         return true;

@@ -18,7 +18,7 @@ use Log;
 class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
 
     /**
-     * Determine if a schedule is due to be run
+     * Determine if a schedule is due to be run.
      *
      * @param \Indatus\Dispatcher\Scheduling\Schedulable $scheduler
      *

@@ -3,7 +3,7 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use \Indatus\Dispatcher\Drivers\Cron\ScheduleService;
+use Indatus\Dispatcher\Drivers\Cron\ScheduleService;
 use Mockery as m;
 
 class TestCronScheduleService extends TestCase

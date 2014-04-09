@@ -391,4 +391,12 @@ class Scheduler extends Schedulable
     {
         return $this->scheduleMonth;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getSchedule();
+    }
 } 

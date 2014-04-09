@@ -3,11 +3,10 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Mockery as m;
 use Indatus\Dispatcher\Drivers\Cron\ScheduleService;
 use Indatus\Dispatcher\Scheduler;
 use Indatus\Dispatcher\Table;
-use Indatus\Dispatcher\Queue;
+use Mockery as m;
 
 class TestScheduleService extends TestCase
 {

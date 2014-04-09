@@ -3,7 +3,7 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use \Indatus\Dispatcher\Drivers\Cron\Scheduler;
+use Indatus\Dispatcher\Drivers\Cron\Scheduler;
 
 class TestCronScheduler extends TestCase
 {
@@ -26,6 +26,7 @@ class TestCronScheduler extends TestCase
     public function testBuildingSchedule()
     {
         $this->assertEquals($this->scheduler->getSchedule(), '* * * * *');
+        $this->assertEquals($this->scheduler.'', '* * * * *');
     }
 
     public function testSetSchedule()

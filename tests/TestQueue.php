@@ -4,7 +4,6 @@
  */
 
 use Mockery as m;
-use Indatus\Dispatcher\Queue;
 
 class TestQueue extends TestCase
 {
