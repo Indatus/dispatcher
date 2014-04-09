@@ -41,9 +41,14 @@ abstract class Schedulable
      */
     public function args(array $arguments)
     {
-        $scheduler = $this->getClass();
-        $scheduler->setArguments($arguments);
-        return $scheduler;
+        if (count($this->getOptions()) == 0) {
+            $scheduler = $this->getNewSchedulerClass();
+            $scheduler->setArguments($arguments);
+            return $scheduler;
+        }
+
+        $this->setArguments($arguments);
+        return $this;
     }
 
     /**
@@ -77,9 +82,14 @@ abstract class Schedulable
      */
     public function opts(array $options)
     {
-        $scheduler = $this->getClass();
-        $scheduler->setOptions($options);
-        return $scheduler;
+        if (count($this->getArguments()) == 0) {
+            $scheduler = $this->getNewSchedulerClass();
+            $scheduler->setOptions($options);
+            return $scheduler;
+        }
+
+        $this->setOptions($options);
+        return $this;
     }
 
     /**
@@ -109,15 +119,11 @@ abstract class Schedulable
      *
      * @return $this|Schedulable
      */
-    public function getClass()
+    public function getNewSchedulerClass()
     {
-        //use the existing one if we've already instantiated
-        if ($this->instantiateNew === false) {
-            return $this;
-        }
+        /** @var \Indatus\Dispatcher\Scheduling\Schedulable $scheduler */
+        $scheduler = $this->configResolver->resolveSchedulerClass();
 
-        $this->instantiateNew = false;
-
-        return $this;
+        return $scheduler;
     }
 }

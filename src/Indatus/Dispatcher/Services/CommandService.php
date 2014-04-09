@@ -35,11 +35,15 @@ class CommandService
 
         /** @var \Indatus\Dispatcher\Queue $queue */
         $queue = $this->scheduleService->getQueue();
+        \Log::debug('runCommand', [$queue->size()]);
         foreach ($queue->flush() as $queueItem) {
             $command = $queueItem->getCommand();
-            $scheduler = $queueItem->getScheduler();
+
             if ($command->isEnabled() && $this->runnableInEnvironment($command)) {
-                $backgroundProcessRunner->run($command, $scheduler->getArguments());
+                $scheduler = $queueItem->getScheduler();
+
+                \Log::debug('runCommand', [$command->getName(), $scheduler->getArguments(), $scheduler->getOptions()]);
+                $backgroundProcessRunner->run($command, $scheduler->getArguments(), $scheduler->getOptions());
             }
         }
     }

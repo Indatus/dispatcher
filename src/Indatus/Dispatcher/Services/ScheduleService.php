@@ -86,7 +86,7 @@ abstract class ScheduleService
                     $queueItem = App::make('Indatus\Dispatcher\QueueItem');
 
                     $queueItem->setCommand($command);
-                    $queueItem->setScheduler($scheduler);
+                    $queueItem->setScheduler($schedule);
 
                     $queue->add($queueItem);
                 }
