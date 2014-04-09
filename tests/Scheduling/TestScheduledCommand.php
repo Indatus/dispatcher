@@ -3,13 +3,13 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Mockery as m;
 use Indatus\Dispatcher\Drivers\Cron\Scheduler;
+use Mockery as m;
 
 class TestScheduledCommand extends TestCase
 {
     /**
-     * @var Indatus\Dispatcher\ScheduledCommand
+     * @var \Indatus\Dispatcher\Scheduling\ScheduledCommand
      */
     private $scheduledCommand;
 
@@ -17,9 +17,12 @@ class TestScheduledCommand extends TestCase
     {
         parent::setUp();
 
-        $this->scheduledCommand = m::mock('Indatus\Dispatcher\ScheduledCommand[schedule]');
+        $this->scheduledCommand = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand[schedule]');
 
-        $this->app->instance('Indatus\Dispatcher\Schedulable', new Scheduler());
+        $this->app->instance(
+            'Indatus\Dispatcher\Scheduling\Schedulable',
+            new Scheduler(App::make('Indatus\Dispatcher\ConfigResolver'))
+        );
     }
 
     public function tearDown()

@@ -1,4 +1,4 @@
-<?php
+<?php namespace Indatus\Dispatcher\Services;
 
 /**
  * This file is part of Dispatcher
@@ -8,10 +8,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Indatus\Dispatcher\Services;
 
 use App;
-use Indatus\Dispatcher\ScheduledCommand;
+use Indatus\Dispatcher\Scheduling\ScheduledCommand;
 
 class CommandService
 {
@@ -31,10 +30,18 @@ class CommandService
      */
     public function runDue()
     {
+        /** @var \Indatus\Dispatcher\BackgroundProcessRunner $backgroundProcessRunner */
         $backgroundProcessRunner = App::make('Indatus\Dispatcher\BackgroundProcessRunner');
-        foreach ($this->scheduleService->getDueCommands() as $command) {
+
+        /** @var \Indatus\Dispatcher\Queue $queue */
+        $queue = $this->scheduleService->getQueue();
+        foreach ($queue->flush() as $queueItem) {
+            $command = $queueItem->getCommand();
+
             if ($command->isEnabled() && $this->runnableInEnvironment($command)) {
-                $backgroundProcessRunner->run($command);
+                $scheduler = $queueItem->getScheduler();
+
+                $backgroundProcessRunner->run($command, $scheduler->getArguments(), $scheduler->getOptions());
             }
         }
     }
@@ -42,7 +49,8 @@ class CommandService
     /**
      * Determine if a scheduled command is in the correct environment
      *
-     * @param \Indatus\Dispatcher\ScheduledCommand $command
+     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommand $command
+     *
      * @return bool
      */
     public function runnableInEnvironment(ScheduledCommand $command)
@@ -62,19 +70,82 @@ class CommandService
     }
 
     /**
-     * Get a command to run this application
-     * @param ScheduledCommand $scheduledCommand
+     * Prepare a command's arguments for command line usage
+     *
+     * @param array $arguments
+     *
      * @return string
      */
-    public function getRunCommand(ScheduledCommand $scheduledCommand)
+    public function prepareArguments(array $arguments)
+    {
+        return implode(' ', $arguments);
+    }
+
+    /**
+     * Prepare a command's options for command line usage
+     *
+     * @param array $options
+     *
+     * @return string
+     */
+    public function prepareOptions(array $options)
+    {
+        $optionPieces = array();
+        foreach ($options as $opt => $value) {
+            //if it's an array of options, throw them in there as well
+            if (is_array($value)) {
+                foreach ($value as $optArrayValue) {
+                    $optionPieces[] = '--'.$opt.'="'.addslashes($optArrayValue).'"';
+                }
+            } else {
+                $option = null;
+
+                //option exists with no value
+                if (is_numeric($opt)) {
+                    $option = $value;
+                } elseif (!empty($value)) {
+                    $option = $opt.'="'.addslashes($value).'"';
+                }
+
+                if (!is_null($option)) {
+                    $optionPieces[] = '--'.$option;
+                }
+            }
+        }
+
+        return implode(' ', $optionPieces);
+    }
+
+    /**
+     * Get a command to run this application
+     *
+     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommand $scheduledCommand
+     * @param array $arguments
+     * @param array $options
+     *
+     * @return string
+     */
+    public function getRunCommand(
+        ScheduledCommand $scheduledCommand,
+        array $arguments = array(),
+        array $options = array())
     {
         $commandPieces = array(
             'php',
             base_path().'/artisan',
-            $scheduledCommand->getName(),
-            '&', //run in background
-            '> /dev/null 2>&1' //don't show output, errors can be viewed in the Laravel log
+            $scheduledCommand->getName()
         );
+
+        if (count($arguments) > 0) {
+            $commandPieces[] = $this->prepareArguments($arguments);
+        }
+
+        if (count($options) > 0) {
+            $commandPieces[] = $this->prepareOptions($options);
+        }
+
+        $commandPieces[] = '&'; //run in background
+        $commandPieces[] = '> /dev/null 2>&1'; //don't show output, errors can be viewed in the Laravel log
 
         //run the command as a different user
         if (is_string($scheduledCommand->user())) {

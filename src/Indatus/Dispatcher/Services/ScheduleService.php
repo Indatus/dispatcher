@@ -1,4 +1,4 @@
-<?php
+<?php namespace Indatus\Dispatcher\Services;
 
 /**
  * This file is part of Dispatcher
@@ -8,17 +8,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Indatus\Dispatcher\Services;
 
 use App;
 use Artisan;
-use Indatus\Dispatcher\ScheduledCommandInterface;
+use Indatus\Dispatcher\Scheduling\Schedulable;
+use Indatus\Dispatcher\Scheduling\ScheduledCommandInterface;
+use Indatus\Dispatcher\Scheduling\ScheduleException;
 use Indatus\Dispatcher\Table;
+use Symfony\Component\Process\Exception\InvalidArgumentException;
 
 abstract class ScheduleService
 {
 
-    /** @var  \Indatus\Dispatcher\Table */
+    /** @var \Indatus\Dispatcher\Table */
     protected $table;
 
     public function __construct(Table $table)
@@ -28,10 +30,12 @@ abstract class ScheduleService
 
     /**
      * Determine if a command is due to be run
-     * @param ScheduledCommandInterface $command
+     *
+     * @param \Indatus\Dispatcher\Scheduling\Schedulable $scheduler
+     *
      * @return bool
      */
-    abstract public function isDue(ScheduledCommandInterface $command);
+    abstract public function isDue(Schedulable $scheduler);
 
     /**
      * Get all commands that are scheduled
@@ -52,18 +56,43 @@ abstract class ScheduleService
 
     /**
      * Get all commands that are due to be run
-     *
-     * @return \Indatus\Dispatcher\ScheduledCommand[]
+     * @throws \InvalidArgumentException
+     * @return \Indatus\Dispatcher\Queue
      */
-    public function getDueCommands()
+    public function getQueue()
     {
-        $commands = array();
+        /** @var \Indatus\Dispatcher\Queue $queue */
+        $queue = App::make('Indatus\Dispatcher\Queue');
+
+        /** @var \Indatus\Dispatcher\Scheduling\Schedulable $queue */
+        $scheduler = App::make('Indatus\Dispatcher\Scheduling\Schedulable');
+
         foreach ($this->getScheduledCommands() as $command) {
-            if ($this->isDue($command)) {
-                $commands[] = $command;
+
+            //could be multiple schedules based on arguments
+            $schedules = $command->schedule($scheduler);
+            if (!is_array($schedules)) {
+                $schedules = array($schedules);
+            }
+
+            foreach ($schedules as $schedule) {
+                if (($schedule instanceOf Schedulable) === false) {
+                    throw new \InvalidArgumentException('Schedule for "'.$command->getName().'" is not an instance of Schedulable');
+                }
+
+                if ($this->isDue($schedule)) {
+                    /** @var \Indatus\Dispatcher\QueueItem $queueItem */
+                    $queueItem = App::make('Indatus\Dispatcher\QueueItem');
+
+                    $queueItem->setCommand($command);
+                    $queueItem->setScheduler($schedule);
+
+                    $queue->add($queueItem);
+                }
             }
         }
-        return $commands;
+
+        return $queue;
     }
 
     /**

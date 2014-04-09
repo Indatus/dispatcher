@@ -1,4 +1,4 @@
-<?php
+<?php namespace Indatus\Dispatcher\Commands;
 
 /**
  * This file is part of Dispatcher
@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Indatus\Dispatcher\Commands;
 
 use Illuminate\Console\Command;
 use Indatus\Dispatcher\Services\CommandService;
@@ -16,7 +15,6 @@ use Indatus\Dispatcher\Services\CommandService;
 /**
  * Run any commands that should be run
  * @author Ben Kuhl <bkuhl@indatus.com>
- * @package Indatus\Dispatcher\Commands
  */
 class Run extends Command
 {
@@ -52,6 +50,7 @@ class Run extends Command
      */
     public function fire()
     {
+
         $this->commandService->runDue();
     }
 } 

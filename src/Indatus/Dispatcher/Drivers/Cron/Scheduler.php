@@ -1,4 +1,4 @@
-<?php
+<?php namespace Indatus\Dispatcher\Drivers\Cron;
 
 /**
  * This file is part of Dispatcher
@@ -8,11 +8,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Indatus\Dispatcher\Drivers\Cron;
 
-use Indatus\Dispatcher\Schedulable;
+use Indatus\Dispatcher\Scheduling\Schedulable;
 
-class Scheduler implements Schedulable
+class Scheduler extends Schedulable
 {
 
     /**
@@ -283,7 +282,26 @@ class Scheduler implements Schedulable
     }
 
     /**
-     * @todo This is a terrible method name
+     * @inheritDoc
+     * @return $this
+     */
+    public function args(array $arguments)
+    {
+        return parent::args($arguments);
+    }
+
+    /**
+     * @inheritDoc
+     * @return $this
+     */
+    public function opts(array $options)
+    {
+        return parent::opts($options);
+    }
+
+    /**
+     * If an array of values is used, convert it
+     * to a comma separated value.
      */
     private function parseTimeParameter($parameter)
     {
@@ -372,5 +390,13 @@ class Scheduler implements Schedulable
     public function getScheduleMonth()
     {
         return $this->scheduleMonth;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getSchedule();
     }
 } 

@@ -1,4 +1,4 @@
-<?php
+<?php namespace Indatus\Dispatcher\Commands;
 
 /**
  * This file is part of Dispatcher
@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Indatus\Dispatcher\Commands;
 
 use Config;
 use Illuminate\Console\Command;
@@ -17,7 +16,6 @@ use Illuminate\Foundation\Console\CommandMakeCommand;
 /**
  * View a summary for all scheduled artisan commands
  * @author Ben Kuhl <bkuhl@indatus.com>
- * @package Indatus\Dispatcher\Commands
  */
 class Make extends CommandMakeCommand
 {
@@ -53,8 +51,8 @@ class Make extends CommandMakeCommand
     protected function extendStub($stub)
     {
         $replacements = array(
-            'use Illuminate\Console\Command' => "use Indatus\\Dispatcher\\ScheduledCommand;\n".
-                "use Indatus\\Dispatcher\\Schedulable;\n".
+            'use Illuminate\Console\Command' => "use Indatus\\Dispatcher\\Scheduling\\ScheduledCommand;\n".
+                "use Indatus\\Dispatcher\\Scheduling\\Schedulable;\n".
                 "use Indatus\\Dispatcher\\Drivers\\".ucwords(Config::get('dispatcher::driver'))."\\Scheduler",
             'extends Command {' => 'extends ScheduledCommand {',
             'parent::__construct();' => $this->getStub()

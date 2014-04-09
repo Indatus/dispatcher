@@ -1,4 +1,4 @@
-<?php
+<?php namespace Indatus\Dispatcher;
 
 /**
  * This file is part of Dispatcher
@@ -8,10 +8,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Indatus\Dispatcher;
 
 use App;
+use Indatus\Dispatcher\Scheduling\ScheduledCommand;
 use Indatus\Dispatcher\Services\CommandService;
+use Symfony\Component\Process\Process;
 
 class BackgroundProcessRunner
 {
@@ -29,13 +30,18 @@ class BackgroundProcessRunner
     /**
      * Run a scheduled command
      *
-     * @param ScheduledCommand $scheduledCommand
+     * @param ScheduledCommand  $scheduledCommand
+     * @param array             $arguments
+     * @param array             $options
      * @return bool
      */
-    public function run(ScheduledCommand $scheduledCommand)
-    {
-        exec($this->commandService->getRunCommand($scheduledCommand));
+    public function run(
+        ScheduledCommand $scheduledCommand,
+        array $arguments = array(),
+        array $options = array()
+    ) {
+        exec($this->commandService->getRunCommand($scheduledCommand, $arguments, $options));
 
         return true;
     }
-} 
+}

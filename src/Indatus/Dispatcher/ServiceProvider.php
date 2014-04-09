@@ -1,4 +1,4 @@
-<?php
+<?php namespace Indatus\Dispatcher;
 
 /**
  * This file is part of Dispatcher
@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Indatus\Dispatcher;
 
 use App;
 use Config;
@@ -44,13 +43,13 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $resolver = App::make('\Indatus\Dispatcher\ConfigResolver');
 
         //load the scheduler of the appropriate driver
-        App::bind('Indatus\Dispatcher\Schedulable', function () use ($resolver) {
-                return $resolver->resolveDriverClass('Scheduler');
+        App::bind('Indatus\Dispatcher\Scheduling\Schedulable', function () use ($resolver) {
+                return $resolver->resolveSchedulerClass();
             });
 
-        //load the scheduler of the appropriate driver
+        //load the schedule service of the appropriate driver
         App::bind('Indatus\Dispatcher\Services\ScheduleService', function () use ($resolver) {
-                return $resolver->resolveDriverClass('ScheduleService');
+                return $resolver->resolveServiceClass();
             });
 
         $this->registerCommands();

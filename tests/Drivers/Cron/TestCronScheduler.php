@@ -3,21 +3,21 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use \Indatus\Dispatcher\Drivers\Cron\Scheduler;
+use Indatus\Dispatcher\Drivers\Cron\Scheduler;
 
 class TestCronScheduler extends TestCase
 {
     /**
-     * @var Indatus\Dispatcher\Scheduler
+     * @var Indatus\Dispatcher\Drivers\Cron\Scheduler
      */
     private $scheduler;
 
-    private $schedularClass = 'Indatus\Dispatcher\Schedulable';
+    private $schedularClass = 'Indatus\Dispatcher\Scheduling\Schedulable';
 
     public function setUp()
     {
         parent::setUp();
-        $this->scheduler = new Scheduler();
+        $this->scheduler = new Scheduler(App::make('Indatus\Dispatcher\ConfigResolver'));
     }
 
     /**
@@ -26,6 +26,7 @@ class TestCronScheduler extends TestCase
     public function testBuildingSchedule()
     {
         $this->assertEquals($this->scheduler->getSchedule(), '* * * * *');
+        $this->assertEquals($this->scheduler.'', '* * * * *');
     }
 
     public function testSetSchedule()
@@ -144,6 +145,39 @@ class TestCronScheduler extends TestCase
     {
         $this->assertInstanceOf($this->schedularClass, $this->scheduler->everyWeekday());
         $this->assertEquals($this->scheduler->getSchedule(), Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::MONDAY.'-'.Scheduler::FRIDAY);
+    }
+
+    public function testArgs()
+    {
+        $args = array('testArgument');
+
+        /** @var \Indatus\Dispatcher\Drivers\Cron\Scheduler $scheduler */
+        $scheduler = $this->scheduler->args($args);
+        $this->assertInstanceOf($this->schedularClass, $scheduler);
+        $this->assertEquals($args, $scheduler->getArguments());
+    }
+
+    public function testOpts()
+    {
+        $opts = array(
+            'testOpt',
+            'option' => 'value'
+        );
+        $args = array(
+            'testArgument'
+        );
+
+        /** @var \Indatus\Dispatcher\Drivers\Cron\Scheduler $scheduler */
+        $scheduler = $this->scheduler->args($args)->opts($opts);
+        $this->assertInstanceOf($this->schedularClass, $scheduler);
+        $this->assertEquals($args, $scheduler->getArguments());
+        $this->assertEquals($opts, $scheduler->getOptions());
+
+        /** @var \Indatus\Dispatcher\Drivers\Cron\Scheduler $scheduler */
+        $scheduler = $this->scheduler->opts($opts)->args($args);
+        $this->assertInstanceOf($this->schedularClass, $scheduler);
+        $this->assertEquals($args, $scheduler->getArguments());
+        $this->assertEquals($opts, $scheduler->getOptions());
     }
 
 } 

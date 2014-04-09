@@ -1,4 +1,4 @@
-<?php
+<?php namespace Indatus\Dispatcher\Scheduling;
 
 /**
  * This file is part of Dispatcher
@@ -8,14 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Indatus\Dispatcher;
 
 use App;
 use Illuminate\Console\Command;
 
 abstract class ScheduledCommand extends Command implements ScheduledCommandInterface
 {
-
 
     /**
      * Unfortunately, this has to be here for unit testing
@@ -37,7 +35,7 @@ abstract class ScheduledCommand extends Command implements ScheduledCommandInter
     /**
      * Environment(s) under which the given command should run
      *
-     * @return string
+     * @return string|array
      */
     public function environment()
     {

@@ -3,9 +3,9 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Mockery as m;
-use Indatus\Dispatcher\Scheduler;
 use Indatus\Dispatcher\ConfigResolver;
+use Indatus\Dispatcher\Scheduler;
+use Mockery as m;
 
 class TestConfigResolver extends TestCase
 {
@@ -16,17 +16,42 @@ class TestConfigResolver extends TestCase
         m::close();
     }
 
-    public function testLoadingPackagedDriver()
+    public function testLoadingSchedulerPackagedDriver()
     {
         $resolver = new ConfigResolver();
-        $this->assertInstanceOf('Indatus\Dispatcher\Drivers\Cron\Scheduler', $resolver->resolveDriverClass('Scheduler'));
+        $this->assertInstanceOf(
+            'Indatus\Dispatcher\Drivers\Cron\Scheduler',
+            $resolver->resolveSchedulerClass()
+        );
     }
 
-    public function testLoadingCustomDriver()
+    public function testLoadingServiceCustomDriver()
     {
-        Config::shouldReceive('get')->andReturn('Indatus\Dispatcher\Drivers\Cron');
+        Config::shouldReceive('get')->andReturn('cron');
         $resolver = new ConfigResolver();
-        $this->assertInstanceOf('Indatus\Dispatcher\Schedulable', $resolver->resolveDriverClass('Scheduler'));
+        $this->assertInstanceOf(
+            'Indatus\Dispatcher\Scheduling\Schedulable',
+            $resolver->resolveSchedulerClass()
+        );
+    }
+
+    public function testLoadingServicePackagedDriver()
+    {
+        $resolver = new ConfigResolver();
+        $this->assertInstanceOf(
+            'Indatus\Dispatcher\Services\ScheduleService',
+            $resolver->resolveServiceClass()
+        );
+    }
+
+    public function testLoadingSchedulerCustomDriver()
+    {
+        Config::shouldReceive('get')->andReturn('cron');
+        $resolver = new ConfigResolver();
+        $this->assertInstanceOf(
+            'Indatus\Dispatcher\Services\ScheduleService',
+            $resolver->resolveServiceClass()
+        );
     }
 
 }

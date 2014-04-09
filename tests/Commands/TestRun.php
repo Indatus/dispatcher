@@ -3,8 +3,8 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Mockery as m;
 use Indatus\Dispatcher\Commands\Run;
+use Mockery as m;
 
 class TestRun extends TestCase
 {

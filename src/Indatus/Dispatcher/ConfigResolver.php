@@ -1,4 +1,4 @@
-<?php
+<?php namespace Indatus\Dispatcher;
 
 /**
  * This file is part of Dispatcher
@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Indatus\Dispatcher;
 
 use App;
 use Config;
@@ -16,14 +15,50 @@ use Config;
 class ConfigResolver
 {
 
-    public function resolveDriverClass($className)
+    /**
+     * Resolve a class based on the driver configuration
+     *
+     * @return \Indatus\Dispatcher\Scheduling\Schedulable
+     */
+    public function resolveSchedulerClass()
     {
         try {
-            return App::make(Config::get('dispatcher::driver').'\\'.$className);
+            return App::make(
+                Config::get('dispatcher::driver').'\\Scheduler', array(
+                    $this
+                )
+            );
         } catch (\ReflectionException $e) {
-            $driver = ucwords(strtolower(Config::get('dispatcher::driver')));
-            return App::make('Indatus\Dispatcher\Drivers\\'.$driver.'\\'.$className);
+            return App::make(
+                'Indatus\Dispatcher\Drivers\\'.$this->getDriver().'\\Scheduler', array(
+                    $this
+                )
+            );
         }
     }
 
-} 
+    /**
+     * Resolve a class based on the driver configuration
+     *
+     * @return \Indatus\Dispatcher\Scheduling\ScheduleService
+     */
+    public function resolveServiceClass()
+    {
+        try {
+            return App::make(Config::get('dispatcher::driver').'\\ScheduleService');
+        } catch (\ReflectionException $e) {
+            return App::make('Indatus\Dispatcher\Drivers\\'.$this->getDriver().'\\ScheduleService');
+        }
+    }
+
+    /**
+     * Get the dispatcher driver class
+     *
+     * @return string
+     */
+    public function getDriver()
+    {
+        return ucwords(strtolower(Config::get('dispatcher::driver')));
+    }
+
+}
