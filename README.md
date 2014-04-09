@@ -257,7 +257,7 @@ Publish the configs using `php artisan config:publish indatus/dispatcher`. Then 
 
 **I need to deploy to multiple servers representing a single environment.  How can I be sure my command is only run by a single server and not run on each server?**
 
-Schedule `scheduled:run` to use [rcron](https://code.google.com/p/rcron/):
+Schedule `scheduled:run` to run every minute with [rcron](https://code.google.com/p/rcron/):
 
 ```php
 * * * * * /usr/bin/rcron php /path/to/artisan scheduled:run 1>> /dev/null 2>&1
