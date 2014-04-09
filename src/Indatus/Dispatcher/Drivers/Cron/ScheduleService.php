@@ -30,7 +30,7 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
             $cron = CronExpression::factory($scheduler->getSchedule());
             return $cron->isDue();
         } catch (\Exception $e) {
-            \Log::error($e->getMessage());
+            Log::error($e->getMessage());
         }
 
         return false;
@@ -46,6 +46,7 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
         foreach ($this->getScheduledCommands() as $command) {
             /** @var $command \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface */
             $scheduler = $command->schedule(App::make('Indatus\Dispatcher\Scheduling\Schedulable'));
+
             //if there's only one schedule, print just the command
             if (!is_array($scheduler)) {
                 $this->printCommand($command, $scheduler);
