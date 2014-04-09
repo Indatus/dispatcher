@@ -5,7 +5,6 @@
  */
 
 use Indatus\Dispatcher\Scheduler;
-use Indatus\Dispatcher\Scheduling\Schedulable;
 
 interface ScheduledCommandInterface
 {

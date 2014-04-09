@@ -156,4 +156,21 @@ class TestCronScheduler extends TestCase
         $this->assertEquals($args, $scheduler->getArguments());
     }
 
+    public function testOpts()
+    {
+        $opts = array(
+            'testOpt',
+            'option' => 'value'
+        );
+        $args = array(
+            'testArgument'
+        );
+
+        /** @var \Indatus\Dispatcher\Drivers\Cron\Scheduler $scheduler */
+        $scheduler = $this->scheduler->args($args)->opts($opts);
+        $this->assertInstanceOf($this->schedularClass, $scheduler);
+        $this->assertEquals($args, $scheduler->getArguments());
+        $this->assertEquals($opts, $scheduler->getOptions());
+    }
+
 } 

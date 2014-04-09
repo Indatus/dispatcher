@@ -97,7 +97,7 @@ class TestCommandService extends TestCase
     public function testPrepareArguments()
     {
         $arguments = array(
-            'test' => 'argument'
+            'argument'
         );
         $commandService = $this->getMockForAbstractClass('Indatus\Dispatcher\Services\CommandService',
             array(
@@ -105,12 +105,12 @@ class TestCommandService extends TestCase
             ));
 
         $this->assertEquals(
-            '--test="argument"',
+            'argument',
             $commandService->prepareArguments($arguments)
         );
     }
 
-    public function testPrepareArgumentsKeyOnly()
+    public function testPrepareOptions()
     {
         $arguments = array(
             'test' => 'argument',
@@ -123,11 +123,11 @@ class TestCommandService extends TestCase
 
         $this->assertEquals(
             '--test="argument" --keyOnly',
-            $commandService->prepareArguments($arguments)
+            $commandService->prepareOptions($arguments)
         );
     }
 
-    public function testPrepareArgumentsArrayValue()
+    public function testPrepareOptionsArrayValue()
     {
         $arguments = array(
             'test' => 'argument',
@@ -143,7 +143,7 @@ class TestCommandService extends TestCase
 
         $this->assertEquals(
             '--test="argument" --option="value1" --option="value2"',
-            $commandService->prepareArguments($arguments)
+            $commandService->prepareOptions($arguments)
         );
     }
 
@@ -172,7 +172,32 @@ class TestCommandService extends TestCase
             $this->commandService->getRunCommand(
                 $scheduledCommand,
                 array(
-                    'option' => 'value'
+                    'option'
+                )
+            ),
+            implode(' ', array(
+                    'php',
+                    base_path().'/artisan',
+                    $commandName,
+                    'option',
+                    '&',
+                    '> /dev/null 2>&1'
+                )));
+    }
+
+    public function testGetRunCommandWithOptions()
+    {
+        $commandName = 'test:command';
+        $scheduledCommand = $this->mockCommand();
+        $scheduledCommand->shouldReceive('getName')->andReturn($commandName);
+        $scheduledCommand->shouldReceive('user')->andReturn(false);
+        $this->assertEquals(
+            $this->commandService->getRunCommand(
+                $scheduledCommand,
+                array(),
+                array(
+                    'option' => 'value',
+                    'anotherOption'
                 )
             ),
             implode(' ', array(
@@ -180,6 +205,7 @@ class TestCommandService extends TestCase
                     base_path().'/artisan',
                     $commandName,
                     '--option="value"',
+                    '--anotherOption',
                     '&',
                     '> /dev/null 2>&1'
                 )));

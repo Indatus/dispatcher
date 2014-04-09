@@ -20,7 +20,7 @@ use Symfony\Component\Process\Exception\InvalidArgumentException;
 abstract class ScheduleService
 {
 
-    /** @var  \Indatus\Dispatcher\Table */
+    /** @var \Indatus\Dispatcher\Table */
     protected $table;
 
     public function __construct(Table $table)

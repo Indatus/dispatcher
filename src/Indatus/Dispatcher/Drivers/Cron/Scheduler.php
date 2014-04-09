@@ -291,6 +291,15 @@ class Scheduler extends Schedulable
     }
 
     /**
+     * @inheritDoc
+     * @return $this
+     */
+    public function opts(array $options)
+    {
+        return parent::opts($options);
+    }
+
+    /**
      * If an array of values is used, convert it
      * to a comma separated value.
      */
