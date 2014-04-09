@@ -17,7 +17,7 @@ class TestQueue extends TestCase
     public function testQueue()
     {
         $item = m::mock('Indatus\Dispatcher\QueueItem');
-        //trigger-travis-build
+
         $queue = new Indatus\Dispatcher\Queue();
         $this->assertEquals(0, $queue->size());
         $queue->add($item);
