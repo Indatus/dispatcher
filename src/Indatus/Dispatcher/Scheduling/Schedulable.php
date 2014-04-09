@@ -33,7 +33,7 @@ abstract class Schedulable
     }
 
     /**
-     * Define arguments for this command when it runs.
+     * Define arguments for this schedule when it runs.
      *
      * @param array $arguments
      *
@@ -41,7 +41,7 @@ abstract class Schedulable
      */
     public function args(array $arguments)
     {
-        if (count($this->getOptions()) == 0) {
+        if (count($this->options) == 0) {
             $scheduler = $this->getNewSchedulerClass();
             $scheduler->setArguments($arguments);
             return $scheduler;
@@ -52,7 +52,7 @@ abstract class Schedulable
     }
 
     /**
-     * Get the arguments for this command.
+     * Get the arguments for this schedule.
      *
      * @return array
      */
@@ -74,7 +74,7 @@ abstract class Schedulable
     }
 
     /**
-     * Define options for this command when it runs.
+     * Define options for this schedule when it runs.
      *
      * @param array $options
      *
@@ -82,7 +82,7 @@ abstract class Schedulable
      */
     public function opts(array $options)
     {
-        if (count($this->getArguments()) == 0) {
+        if (count($this->arguments) == 0) {
             $scheduler = $this->getNewSchedulerClass();
             $scheduler->setOptions($options);
             return $scheduler;
@@ -93,7 +93,7 @@ abstract class Schedulable
     }
 
     /**
-     * Get the options for this command.
+     * Get the options for this schedule.
      *
      * @return array
      */

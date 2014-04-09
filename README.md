@@ -141,6 +141,8 @@ You may override `environment()` to ensure your command is only scheduled in spe
 <a name="advanced-scheduling" />
 ### Advanced scheduling
 
+> These examples utilize the [cron](#Cron) driver.
+
 You may schedule a given command to to run at multiple times by `schedule()` returning multiple `Schedulable` instances.
 
 ```php
@@ -186,7 +188,7 @@ You may also schedule a command to run with arguments and options.
 	}
 ```
 
-> Both `args()` and `opts()`, whichever is called first, will internally create a new `Schedulable` instance for you, so be sure you call those prior to any scheduling methods.
+> Both `args()` and `opts()`, whichever is called first, will internally create a new `Schedulable` instance for you so you don't need to `App::make()`.
 
 <a name="drivers" />
 ## Drivers

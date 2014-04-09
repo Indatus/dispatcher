@@ -64,11 +64,7 @@ class TestCronScheduleService extends TestCase
                 $m->shouldReceive('setHeaders')->once();
                 $m->shouldReceive('display')->once();
             });
-        $queue = m::mock('Indatus\Dispatcher\Queue', function ($m) {
-                /*$m->shouldReceive('setHeaders')->once();
-                $m->shouldReceive('sort')->once();
-                $m->shouldReceive('display')->once();*/
-            });
+        $queue = m::mock('Indatus\Dispatcher\Queue');
 
         $scheduledCommandWithMultipleSchedulers = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand', function ($m) use ($table) {
                 $table->shouldReceive('addRow')->times(3);
@@ -86,10 +82,10 @@ class TestCronScheduleService extends TestCase
                 $m->shouldReceive('getName')->once();
                 $m->shouldReceive('user')->once();
                 $m->shouldReceive('environment')->twice();
-                $m->shouldReceive('schedule')->once()->andReturn([
+                $m->shouldReceive('schedule')->once()->andReturn(array(
                         $scheduler,
                         $scheduler
-                    ]);
+                    ));
             });
         $scheduledCommand = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand', function ($m) use ($table) {
                 $table->shouldReceive('addRow')->once();
