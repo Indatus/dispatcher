@@ -50,6 +50,7 @@ class Run extends Command
      */
     public function fire()
     {
+
         $this->commandService->runDue();
     }
 } 
