@@ -33,7 +33,8 @@ class MyCommand extends ScheduledCommand {
   * [Generating New Scheduled Commands](#new-commands)
   * [Scheduling Existing Commands](#scheduling-commands)
   * [Running Commands As Users](#commands-as-users)
-  * [Environment-specific commands](#environment-commands)
+  * [Environment-Specific Commands](#environment-commands)
+  * [Advanced Scheduling](#advanced-scheduling)
 * [Drivers](#drivers)
   * [Cron](#Cron)
 * [Custom Drivers](#custom-drivers)
@@ -126,7 +127,7 @@ You may override `user()` to run a given artisan command as a specific user.  En
 > This feature may not be supported by all drivers.
 
 <a name="environment-commands" />
-### Environment-specific commands
+### Environment-Specific Commands
 
 You may override `environment()` to ensure your command is only scheduled in specific environments.  It should provide a single environment or an array of environments.
 
@@ -137,7 +138,55 @@ You may override `environment()` to ensure your command is only scheduled in spe
     }
 ```
 
+<a name="advanced-scheduling" />
+### Advanced scheduling
 
+You may schedule a given command to to run at multiple times by `schedule()` returning multiple `Schedulable` instances.
+
+```php
+	public function schedule(Schedulable $scheduler)
+	{
+        return [
+            // 5am Mon-Fri
+            $scheduler->everyWeekday()->hours(5),
+
+            // 2am every Saturday
+            App::make(get_class($scheduler))
+                ->daysOfTheWeek(Scheduler::SATURDAY)
+                ->hours(2)
+        ];
+    }
+```
+
+You may also schedule a command to run with arguments and options.
+
+```php
+
+	public function schedule(Schedulable $scheduler)
+	{
+		return [
+            // equivalent to: php /path/to/artisan command:name /path/to/file
+            $scheduler->args(['/path/to/file'])
+                ->everyWeekday()
+                ->hours(5),
+
+            // equivalent to: php /path/to/artisan command:name /path/to/file --force --toDelete="expired" --exclude="admins" --exclude="developers"
+            $scheduler->args(['/path/to/file'])
+                ->opts([
+                    'force',
+                    'toDelete' => 'expired',
+                    'exclude' => [
+                        'admins',
+                        'developers'
+                    ]
+                ])
+                ->daysOfTheMonth([1, 15])
+                ->hours(2)
+        ];
+	}
+```
+
+> Both `args()` and `opts()`, whichever is called first, will internally create a new `Schedulable` instance for you, so be sure you call those prior to any scheduling methods.
 
 <a name="drivers" />
 ## Drivers

@@ -3,8 +3,8 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
+use Indatus\Dispatcher\BackgroundProcessRunner;
 use Mockery as m;
-use \Indatus\Dispatcher\BackgroundProcessRunner;
 
 class TestBackgroundProcessRunner extends TestCase
 {

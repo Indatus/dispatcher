@@ -3,9 +3,9 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Mockery as m;
-use Indatus\Dispatcher\ServiceProvider;
 use Indatus\Dispatcher\BackgroundProcess;
+use Indatus\Dispatcher\ServiceProvider;
+use Mockery as m;
 
 class TestServiceProvider extends TestCase
 {

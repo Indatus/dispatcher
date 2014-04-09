@@ -81,7 +81,6 @@ abstract class ScheduleService
                 }
 
                 if ($this->isDue($schedule)) {
-
                     /** @var \Indatus\Dispatcher\QueueItem $queueItem */
                     $queueItem = App::make('Indatus\Dispatcher\QueueItem');
 

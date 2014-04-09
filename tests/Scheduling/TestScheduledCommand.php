@@ -3,8 +3,8 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Mockery as m;
 use Indatus\Dispatcher\Drivers\Cron\Scheduler;
+use Mockery as m;
 
 class TestScheduledCommand extends TestCase
 {

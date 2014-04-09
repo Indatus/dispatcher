@@ -3,9 +3,9 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Mockery as m;
-use Indatus\Dispatcher\Scheduler;
 use Indatus\Dispatcher\ConfigResolver;
+use Indatus\Dispatcher\Scheduler;
+use Mockery as m;
 
 class TestConfigResolver extends TestCase
 {
