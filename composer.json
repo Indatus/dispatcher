@@ -2,6 +2,7 @@
     "name": "indatus/dispatcher",
     "description": "Schedule your artisan commands within your application",
     "keywords": ["laravel", "artisan", "dispatcher", "schedule"],
+    "type": "library",
     "license": "MIT",
     "authors": [
         {
