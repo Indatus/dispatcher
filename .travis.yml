@@ -6,8 +6,13 @@ php:
   - 5.5
 
 before_script:
+ # Set the GitHub OAuth token to make use of the 6000 per hour rate limit
+ - "mkdir -p ~/.composer"
+ - cp .travis.composer.config.json ~/.composer/config.json
+
+ # Run composer
  - wget http://getcomposer.org/composer.phar
- - php composer.phar install --dev --no-interaction  
+ - php composer.phar install --dev --no-interaction
 
 script:
  - mkdir -p build/logs
