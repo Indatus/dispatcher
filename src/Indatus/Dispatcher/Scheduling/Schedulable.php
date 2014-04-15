@@ -41,6 +41,10 @@ abstract class Schedulable
      */
     public function args(array $arguments)
     {
+        // provide a new instance of the scheduler class if this
+        // is the first method that was called.  This allows for
+        // $scheduler->opts() to return a new instance of the
+        // scheduler when it's first called
         if (count($this->options) == 0) {
             $scheduler = $this->getNewSchedulerClass();
             $scheduler->setArguments($arguments);
@@ -82,6 +86,10 @@ abstract class Schedulable
      */
     public function opts(array $options)
     {
+        // provide a new instance of the scheduler class if this
+        // is the first method that was called.  This allows for
+        // $scheduler->opts() to return a new instance of the
+        // scheduler when it's first called
         if (count($this->arguments) == 0) {
             $scheduler = $this->getNewSchedulerClass();
             $scheduler->setOptions($options);

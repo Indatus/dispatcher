@@ -7,17 +7,20 @@ use Indatus\Dispatcher\Drivers\Cron\Scheduler;
 
 class TestCronScheduler extends TestCase
 {
-    /**
-     * @var Indatus\Dispatcher\Drivers\Cron\Scheduler
-     */
+    /** @var Indatus\Dispatcher\Drivers\Cron\Scheduler */
     private $scheduler;
 
-    private $schedularClass = 'Indatus\Dispatcher\Scheduling\Schedulable';
+    private $schedulerClass = 'Indatus\Dispatcher\Scheduling\Schedulable';
+
+    /** @var string Should be: "* * * * *" */
+    private $defaultSchedule;
 
     public function setUp()
     {
         parent::setUp();
         $this->scheduler = new Scheduler(App::make('Indatus\Dispatcher\ConfigResolver'));
+
+        $this->defaultSchedule = implode(' ', array_fill(0, 5, Scheduler::ANY));
     }
 
     /**
@@ -25,50 +28,50 @@ class TestCronScheduler extends TestCase
      */
     public function testBuildingSchedule()
     {
-        $this->assertEquals($this->scheduler->getSchedule(), '* * * * *');
-        $this->assertEquals($this->scheduler.'', '* * * * *');
+        $this->assertEquals($this->scheduler->getSchedule(), $this->defaultSchedule);
+        $this->assertEquals($this->scheduler.'', $this->defaultSchedule);
     }
 
     public function testSetSchedule()
     {
-        $this->assertInstanceOf($this->schedularClass, $this->scheduler->setSchedule(1, 2, 3, 4, 5));
+        $this->assertInstanceOf($this->schedulerClass, $this->scheduler->setSchedule(1, 2, 3, 4, 5));
         $this->assertEquals($this->scheduler->getSchedule(), '1 2 3 4 5');
     }
 
     public function testYearly()
     {
-        $this->assertInstanceOf($this->schedularClass, $this->scheduler->yearly());
+        $this->assertInstanceOf($this->schedulerClass, $this->scheduler->yearly());
         $this->assertEquals($this->scheduler->getSchedule(), '0 0 1 1 '.Scheduler::ANY);
     }
 
     public function testMonthly()
     {
-        $this->assertInstanceOf($this->schedularClass, $this->scheduler->monthly());
+        $this->assertInstanceOf($this->schedulerClass, $this->scheduler->monthly());
         $this->assertEquals($this->scheduler->getSchedule(), '0 0 1 '.Scheduler::ANY.' '.Scheduler::ANY);
     }
 
     public function testWeekly()
     {
-        $this->assertInstanceOf($this->schedularClass, $this->scheduler->weekly());
+        $this->assertInstanceOf($this->schedulerClass, $this->scheduler->weekly());
         $this->assertEquals($this->scheduler->getSchedule(), '0 0 '.Scheduler::ANY.' '.Scheduler::ANY.' 0');
     }
 
     public function testDaily()
     {
-        $this->assertInstanceOf($this->schedularClass, $this->scheduler->daily());
+        $this->assertInstanceOf($this->schedulerClass, $this->scheduler->daily());
         $this->assertEquals($this->scheduler->getSchedule(), '0 0 '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY);
     }
 
     public function testHourly()
     {
-        $this->assertInstanceOf($this->schedularClass, $this->scheduler->hourly());
+        $this->assertInstanceOf($this->schedulerClass, $this->scheduler->hourly());
         $this->assertEquals($this->scheduler->getSchedule(), '0 '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY);
     }
 
     public function testMinutes()
     {
         $minutes = 15;
-        $this->assertInstanceOf($this->schedularClass, $this->scheduler->minutes($minutes));
+        $this->assertInstanceOf($this->schedulerClass, $this->scheduler->minutes($minutes));
         $this->assertEquals($this->scheduler->getSchedule(), $minutes.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY);
 
         //test that we can specify arrays of times
@@ -79,7 +82,7 @@ class TestCronScheduler extends TestCase
     public function testEveryMinutes()
     {
         $minutes = 30;
-        $this->assertInstanceOf($this->schedularClass, $this->scheduler->everyMinutes($minutes));
+        $this->assertInstanceOf($this->schedulerClass, $this->scheduler->everyMinutes($minutes));
 
         $this->assertEquals($this->scheduler->getSchedule(), '*/'.$minutes.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY);
     }
@@ -87,7 +90,7 @@ class TestCronScheduler extends TestCase
     public function testEverySingleMinute()
     {
         $minutes = 1;
-        $this->assertInstanceOf($this->schedularClass, $this->scheduler->everyMinutes($minutes));
+        $this->assertInstanceOf($this->schedulerClass, $this->scheduler->everyMinutes($minutes));
 
         $this->assertEquals($this->scheduler->getSchedule(), '* '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY);
     }
@@ -95,7 +98,7 @@ class TestCronScheduler extends TestCase
     public function testHours()
     {
         $hours = 15;
-        $this->assertInstanceOf($this->schedularClass, $this->scheduler->hours($hours));
+        $this->assertInstanceOf($this->schedulerClass, $this->scheduler->hours($hours));
         $this->assertEquals($this->scheduler->getSchedule(), Scheduler::ANY.' '.$hours.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY);
 
         //test that we can specify arrays of times
@@ -106,7 +109,7 @@ class TestCronScheduler extends TestCase
     public function testEveryHours()
     {
         $hours = 6;
-        $this->assertInstanceOf($this->schedularClass, $this->scheduler->everyHours($hours));
+        $this->assertInstanceOf($this->schedulerClass, $this->scheduler->everyHours($hours));
 
         $this->assertEquals($this->scheduler->getSchedule(), Scheduler::ANY.' */'.$hours.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY);
     }
@@ -114,7 +117,7 @@ class TestCronScheduler extends TestCase
     public function testDaysOfTheMonth()
     {
         $daysOfTheMonth = 14;
-        $this->assertInstanceOf($this->schedularClass, $this->scheduler->daysOfTheMonth($daysOfTheMonth));
+        $this->assertInstanceOf($this->schedulerClass, $this->scheduler->daysOfTheMonth($daysOfTheMonth));
         $this->assertEquals($this->scheduler->getSchedule(), Scheduler::ANY.' '.Scheduler::ANY.' '.$daysOfTheMonth.' '.Scheduler::ANY.' '.Scheduler::ANY);
 
         //test that we can specify arrays of times
@@ -125,7 +128,7 @@ class TestCronScheduler extends TestCase
     public function testMonths()
     {
         $months = 4;
-        $this->assertInstanceOf($this->schedularClass, $this->scheduler->months($months));
+        $this->assertInstanceOf($this->schedulerClass, $this->scheduler->months($months));
         $this->assertEquals($this->scheduler->getSchedule(), Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.$months.' '.Scheduler::ANY);
 
         //test that we can specify arrays of times
@@ -136,14 +139,14 @@ class TestCronScheduler extends TestCase
     public function testEveryMonths()
     {
         $months = 6;
-        $this->assertInstanceOf($this->schedularClass, $this->scheduler->everyMonths($months));
+        $this->assertInstanceOf($this->schedulerClass, $this->scheduler->everyMonths($months));
 
         $this->assertEquals($this->scheduler->getSchedule(), Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY.' */'.$months.' '.Scheduler::ANY);
     }
 
     public function testEveryWeekday()
     {
-        $this->assertInstanceOf($this->schedularClass, $this->scheduler->everyWeekday());
+        $this->assertInstanceOf($this->schedulerClass, $this->scheduler->everyWeekday());
         $this->assertEquals($this->scheduler->getSchedule(), Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::MONDAY.'-'.Scheduler::FRIDAY);
     }
 
@@ -153,7 +156,7 @@ class TestCronScheduler extends TestCase
 
         /** @var \Indatus\Dispatcher\Drivers\Cron\Scheduler $scheduler */
         $scheduler = $this->scheduler->args($args);
-        $this->assertInstanceOf($this->schedularClass, $scheduler);
+        $this->assertInstanceOf($this->schedulerClass, $scheduler);
         $this->assertEquals($args, $scheduler->getArguments());
     }
 
@@ -168,16 +171,20 @@ class TestCronScheduler extends TestCase
         );
 
         /** @var \Indatus\Dispatcher\Drivers\Cron\Scheduler $scheduler */
-        $scheduler = $this->scheduler->args($args)->opts($opts);
-        $this->assertInstanceOf($this->schedularClass, $scheduler);
+        $scheduler = $this->scheduler->args($args)->opts($opts)->everyWeekday();
+        $this->assertInstanceOf($this->schedulerClass, $scheduler);
         $this->assertEquals($args, $scheduler->getArguments());
         $this->assertEquals($opts, $scheduler->getOptions());
+        $this->assertNotEquals($scheduler->getSchedule(), $this->defaultSchedule);
 
         /** @var \Indatus\Dispatcher\Drivers\Cron\Scheduler $scheduler */
         $scheduler = $this->scheduler->opts($opts)->args($args);
-        $this->assertInstanceOf($this->schedularClass, $scheduler);
+        $this->assertInstanceOf($this->schedulerClass, $scheduler);
         $this->assertEquals($args, $scheduler->getArguments());
         $this->assertEquals($opts, $scheduler->getOptions());
+
+        //be sure schedule reset, if not then we didn't get a fresh instance
+        $this->assertEquals($scheduler->getSchedule(), $this->defaultSchedule);
     }
 
 } 
