@@ -28,6 +28,7 @@ class MyCommand extends ScheduledCommand {
 ## README Contents
 
 * [Features](#features)
+* [Tutorial](#tutorial)
 * [Installation](#installation)
 * [Usage](#usage)
   * [Generating New Scheduled Commands](#new-commands)
@@ -49,6 +50,11 @@ class MyCommand extends ScheduledCommand {
  * Schedule commands to run with arguments and options
  * Run commands as other users
  * Run commands in certain environments
+
+<a name="tutorial" />
+## Tutorial
+
+By Ben Kuhl at the [Laravel Louisville meetup](http://laravel-louisville.github.io/meetup/) ([@lurvul](https://twitter.com/lurvul)): Video (coming soon) - [Slides](http://bkuhl.github.io/dispatcher-slides)
 
 <a name="installation" />
 ## Installation
