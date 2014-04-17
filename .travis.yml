@@ -22,8 +22,15 @@ before_script:
   - bash -c 'if [ "$TRAVIS_PHP_VERSION" == "5.3.3" ]; then phpenv config-add travis.php.ini; fi;'
   - bash -c 'if [ "$TRAVIS_PHP_VERSION" == "5.3" ]; then phpenv config-add travis.php.ini; fi;'
 
+  # HHVM PHPUnit fixes
+  - bash -c 'if [ "$TRAVIS_PHP_VERSION" == "hhvm" ]; then rm phpunit.xml; fi;'
+  - bash -c 'if [ "$TRAVIS_PHP_VERSION" == "hhvm" ]; then mv phpunit.hhvm.xml phpunit.xml; fi;'
+
 script:
-  - vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml
+  # Run PPUnit without code coverage report for HHVM
+  - bash -c 'if [ "$TRAVIS_PHP_VERSION" == "hhvm" ]; then vendor/bin/phpunit --verbose; fi;'
+  - bash -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml;
 
 after_script:
+  # Submit code coverage to travis except from HHVM
   - bash -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php vendor/bin/coveralls -v; fi;'
