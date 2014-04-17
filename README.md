@@ -45,6 +45,8 @@ class MyCommand extends ScheduledCommand {
 
  * Schedule artisan commands to run automatically
  * Scheduling is maintained within your version control system
+ * Single source of truth for when and where commands run
+ * Schedule commands to run with arguments and options
  * Run commands as other users
  * Run commands in certain environments
 
