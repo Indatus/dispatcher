@@ -158,8 +158,29 @@ class TestCommandService extends TestCase
                     'php',
                     base_path().'/artisan',
                     $commandName,
-                    '&',
-                    '> /dev/null 2>&1'
+                    '> /dev/null',
+                    '&'
+                )));
+    }
+
+    public function testGetRunCommandWindows()
+    {
+        $this->app->instance('Indatus\Dispatcher\Platform', m::mock('Indatus\Dispatcher\Platform', function ($m) {
+                    $m->shouldReceive('isUnix')->andReturn(false);
+                    $m->shouldReceive('isWindows')->andReturn(true);
+                }));
+
+        $commandName = 'test:command';
+        $scheduledCommand = $this->mockCommand();
+        $scheduledCommand->shouldReceive('getName')->andReturn($commandName);
+        $scheduledCommand->shouldReceive('user')->andReturn(false);
+        $this->assertEquals($this->commandService->getRunCommand($scheduledCommand), implode(' ', array(
+                    'START',
+                    '/B',
+                    'php',
+                    base_path().'/artisan',
+                    $commandName,
+                    '> NUL'
                 )));
     }
 
@@ -181,8 +202,8 @@ class TestCommandService extends TestCase
                     base_path().'/artisan',
                     $commandName,
                     'option',
-                    '&',
-                    '> /dev/null 2>&1'
+                    '> /dev/null',
+                    '&'
                 )));
     }
 
@@ -207,8 +228,8 @@ class TestCommandService extends TestCase
                     $commandName,
                     '--option="value"',
                     '--anotherOption',
-                    '&',
-                    '> /dev/null 2>&1'
+                    '> /dev/null',
+                    '&'
                 )));
     }
 
@@ -224,8 +245,8 @@ class TestCommandService extends TestCase
                     'php',
                     base_path().'/artisan',
                     $commandName,
-                    '&',
-                    '> /dev/null 2>&1'
+                    '> /dev/null',
+                    '&'
                 )));
     }
 

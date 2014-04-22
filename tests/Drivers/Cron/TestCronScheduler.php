@@ -183,7 +183,7 @@ class TestCronScheduler extends TestCase
         $this->assertEquals($args, $scheduler->getArguments());
         $this->assertEquals($opts, $scheduler->getOptions());
 
-        //be sure schedule reset, if not then we didn't get a fresh instance
+        //be sure schedule reset, if not then we didn't get a fresh SchedulerClass
         $this->assertEquals($scheduler->getSchedule(), $this->defaultSchedule);
     }
 

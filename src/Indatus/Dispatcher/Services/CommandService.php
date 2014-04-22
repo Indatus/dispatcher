@@ -130,6 +130,9 @@ class CommandService
         array $arguments = array(),
         array $options = array())
     {
+        /** @var \Indatus\Dispatcher\Platform $platform */
+        $platform = App::make('Indatus\Dispatcher\Platform');
+
         $commandPieces = array(
             'php',
             base_path().'/artisan',
@@ -144,12 +147,20 @@ class CommandService
             $commandPieces[] = $this->prepareOptions($options);
         }
 
-        $commandPieces[] = '&'; //run in background
-        $commandPieces[] = '> /dev/null 2>&1'; //don't show output, errors can be viewed in the Laravel log
+        if ($platform->isUnix()) {
+            $commandPieces[] = '> /dev/null'; //don't show output, errors can be viewed in the Laravel log
+            $commandPieces[] = '&'; //run in background
 
-        //run the command as a different user
-        if (is_string($scheduledCommand->user())) {
-            array_unshift($commandPieces, 'sudo -u '.$scheduledCommand->user());
+            //run the command as a different user
+            if (is_string($scheduledCommand->user())) {
+                array_unshift($commandPieces, 'sudo -u '.$scheduledCommand->user());
+            }
+        } elseif($platform->isWindows()) {
+            $commandPieces[] = '> NUL'; //don't show output, errors can be viewed in the Laravel log
+
+            //run in background on windows
+            array_unshift($commandPieces, '/B');
+            array_unshift($commandPieces, 'START');
         }
 
         return implode(' ', $commandPieces);
