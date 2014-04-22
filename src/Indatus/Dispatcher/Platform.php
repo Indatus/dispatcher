@@ -9,6 +9,9 @@
  * file that was distributed with this source code.
  */
 
+/**
+ * @codeCoverageIgnore
+ */
 class Platform {
 
     /**
