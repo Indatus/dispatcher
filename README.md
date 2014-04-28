@@ -90,7 +90,7 @@ If commands are not visible via `php artisan` then they cannot be scheduled.
 <a name="new-commands" />
 ### Generating New Scheduled Commands
 
-Use `php artisan scheduled:make` to generate a new scheduled command, the same way you would use artisan's `command:make`.
+Use `php artisan scheduled:make` to generate a new scheduled command, the same way you would use artisan's `command:make`.  Then [register your command](http://laravel.com/docs/commands#registering-commands) with Laravel.
 
 <a name="scheduling-commands" />
 ### Scheduling Existing Commands
