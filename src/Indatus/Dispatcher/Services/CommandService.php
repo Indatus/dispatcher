@@ -16,7 +16,7 @@ class CommandService
 {
 
     /**
-     * @var /Indatus\Dispatcher\Services\ScheduleService
+     * @var \Indatus\Dispatcher\Services\ScheduleService
      */
     private $scheduleService;
 
