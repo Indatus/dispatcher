@@ -44,13 +44,13 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         //load the scheduler of the appropriate driver
         App::bind('Indatus\Dispatcher\Scheduling\Schedulable', function () use ($resolver) {
-                return $resolver->resolveSchedulerClass();
-            });
+            return $resolver->resolveSchedulerClass();
+        });
 
         //load the schedule service of the appropriate driver
         App::bind('Indatus\Dispatcher\Services\ScheduleService', function () use ($resolver) {
-                return $resolver->resolveServiceClass();
-            });
+            return $resolver->resolveServiceClass();
+        });
 
         $this->registerCommands();
 	}
@@ -76,24 +76,21 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     private function registerCommands()
     {
         //scheduled:summary
-        $this->app['command.scheduled.summary'] = $this->app->share(function($app)
-            {
-                return App::make('Indatus\Dispatcher\Commands\ScheduleSummary');
-            });
+        $this->app['command.scheduled.summary'] = $this->app->share(function() {
+            return App::make('Indatus\Dispatcher\Commands\ScheduleSummary');
+        });
         $this->commands('command.scheduled.summary');
 
         //scheduled:make
-        $this->app['command.scheduled.make'] = $this->app->share(function($app)
-            {
-                return App::make('Indatus\Dispatcher\Commands\Make');
-            });
+        $this->app['command.scheduled.make'] = $this->app->share(function() {
+            return App::make('Indatus\Dispatcher\Commands\Make');
+        });
         $this->commands('command.scheduled.make');
 
         //scheduled:run
-        $this->app['command.scheduled.run'] = $this->app->share(function($app)
-            {
-                return App::make('Indatus\Dispatcher\Commands\Run');
-            });
+        $this->app['command.scheduled.run'] = $this->app->share(function() {
+            return App::make('Indatus\Dispatcher\Commands\Run');
+        });
         $this->commands('command.scheduled.run');
     }
 

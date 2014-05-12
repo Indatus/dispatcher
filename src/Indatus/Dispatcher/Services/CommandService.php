@@ -11,12 +11,13 @@
 
 use App;
 use Indatus\Dispatcher\Scheduling\ScheduledCommand;
+use Indatus\Dispatcher\Scheduling\ScheduledCommandInterface;
 
 class CommandService
 {
 
     /**
-     * @var /Indatus\Dispatcher\Services\ScheduleService
+     * @var \Indatus\Dispatcher\Services\ScheduleService
      */
     private $scheduleService;
 
@@ -36,6 +37,8 @@ class CommandService
         /** @var \Indatus\Dispatcher\Queue $queue */
         $queue = $this->scheduleService->getQueue();
         foreach ($queue->flush() as $queueItem) {
+
+            /** @var \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command */
             $command = $queueItem->getCommand();
 
             if ($command->isEnabled() && $this->runnableInEnvironment($command)) {
@@ -49,11 +52,11 @@ class CommandService
     /**
      * Determine if a scheduled command is in the correct environment
      *
-     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommand $command
+     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command
      *
      * @return bool
      */
-    public function runnableInEnvironment(ScheduledCommand $command)
+    public function runnableInEnvironment(ScheduledCommandInterface $command)
     {
         $environment = $command->environment();
 
@@ -119,14 +122,14 @@ class CommandService
     /**
      * Get a command to run this application
      *
-     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommand $scheduledCommand
+     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $scheduledCommand
      * @param array $arguments
      * @param array $options
      *
      * @return string
      */
     public function getRunCommand(
-        ScheduledCommand $scheduledCommand,
+        ScheduledCommandInterface $scheduledCommand,
         array $arguments = array(),
         array $options = array())
     {

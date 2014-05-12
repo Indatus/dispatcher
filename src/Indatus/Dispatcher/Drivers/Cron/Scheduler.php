@@ -122,7 +122,7 @@ class Scheduler extends Schedulable
     }
 
     /**
-     * Run once a month at midnight in the morning of the first day of the month
+     * Run once a week at midnight in the morning of the first day of the month
      *
      * @return $this
      */

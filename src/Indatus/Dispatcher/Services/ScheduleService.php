@@ -64,7 +64,7 @@ abstract class ScheduleService
         /** @var \Indatus\Dispatcher\Queue $queue */
         $queue = App::make('Indatus\Dispatcher\Queue');
 
-        /** @var \Indatus\Dispatcher\Scheduling\Schedulable $queue */
+        /** @var \Indatus\Dispatcher\Scheduling\Schedulable $scheduler */
         $scheduler = App::make('Indatus\Dispatcher\Scheduling\Schedulable');
 
         foreach ($this->getScheduledCommands() as $command) {
