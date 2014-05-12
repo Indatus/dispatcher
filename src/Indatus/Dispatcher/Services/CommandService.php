@@ -11,6 +11,7 @@
 
 use App;
 use Indatus\Dispatcher\Scheduling\ScheduledCommand;
+use Indatus\Dispatcher\Scheduling\ScheduledCommandInterface;
 
 class CommandService
 {
@@ -51,11 +52,11 @@ class CommandService
     /**
      * Determine if a scheduled command is in the correct environment
      *
-     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommand $command
+     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command
      *
      * @return bool
      */
-    public function runnableInEnvironment(ScheduledCommand $command)
+    public function runnableInEnvironment(ScheduledCommandInterface $command)
     {
         $environment = $command->environment();
 
