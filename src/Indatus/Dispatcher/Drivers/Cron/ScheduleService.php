@@ -42,9 +42,10 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
     public function printSummary()
     {
         $this->table->setHeaders(array('Environment(s)', 'Name', 'Args/Opts', 'Minute', 'Hour', 'Day of Month', 'Month', 'Day of Week', 'Run as'));
-        /** @var $command \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface */
+        /** @var \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command */
         foreach ($this->getScheduledCommands() as $command) {
-            /** @var $command \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface */
+
+            /** @var \Indatus\Dispatcher\Scheduling\Schedulable $scheduler */
             $scheduler = $command->schedule(App::make('Indatus\Dispatcher\Scheduling\Schedulable'));
 
             //if there's only one schedule, print just the command

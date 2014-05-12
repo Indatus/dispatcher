@@ -122,14 +122,14 @@ class CommandService
     /**
      * Get a command to run this application
      *
-     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommand $scheduledCommand
+     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $scheduledCommand
      * @param array $arguments
      * @param array $options
      *
      * @return string
      */
     public function getRunCommand(
-        ScheduledCommand $scheduledCommand,
+        ScheduledCommandInterface $scheduledCommand,
         array $arguments = array(),
         array $options = array())
     {
