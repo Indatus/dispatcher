@@ -36,6 +36,8 @@ class CommandService
         /** @var \Indatus\Dispatcher\Queue $queue */
         $queue = $this->scheduleService->getQueue();
         foreach ($queue->flush() as $queueItem) {
+
+            /** @var \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command */
             $command = $queueItem->getCommand();
 
             if ($command->isEnabled() && $this->runnableInEnvironment($command)) {
