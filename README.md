@@ -26,9 +26,9 @@ class MyCommand extends ScheduledCommand {
 }
 ```
 
-[![Latest Stable Version](https://poser.pugx.org/indatus/dispatcher/v/stable.png)](https://packagist.org/packages/indatus/dispatcher) [![Total Downloads](https://poser.pugx.org/indatus/dispatcher/downloads.png)](https://packagist.org/packages/indatus/dispatcher) [![Build Status](https://travis-ci.org/Indatus/dispatcher.png?branch=master)](https://travis-ci.org/Indatus/dispatcher) [![Code Coverage](https://scrutinizer-ci.com/g/Indatus/dispatcher/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Indatus/dispatcher/?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Indatus/dispatcher/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Indatus/dispatcher/?branch=master)
-
 ---
+
+[![Latest Stable Version](https://poser.pugx.org/indatus/dispatcher/v/stable.png)](https://packagist.org/packages/indatus/dispatcher) [![Total Downloads](https://poser.pugx.org/indatus/dispatcher/downloads.png)](https://packagist.org/packages/indatus/dispatcher) [![Build Status](https://travis-ci.org/Indatus/dispatcher.png?branch=master)](https://travis-ci.org/Indatus/dispatcher) [![Code Coverage](https://scrutinizer-ci.com/g/Indatus/dispatcher/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Indatus/dispatcher/?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Indatus/dispatcher/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Indatus/dispatcher/?branch=master)
 
 ## README Contents
 
