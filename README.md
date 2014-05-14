@@ -1,7 +1,7 @@
 # Dispatcher
 
 
-Dispatcher allows you to schedule your artisan commands within your Laravel project, eliminating the need to touch the crontab when deploying.  It also allows commands to run per environment and keeps your scheduling logic where it should be, in your version control.
+Dispatcher allows you to schedule your artisan commands within your [Laravel](http://laravel.com) project, eliminating the need to touch the crontab when deploying.  It also allows commands to run per environment and keeps your scheduling logic where it should be, in your version control.
 
 [![Latest Stable Version](https://poser.pugx.org/indatus/dispatcher/v/stable.png)](https://packagist.org/packages/indatus/dispatcher) [![Total Downloads](https://poser.pugx.org/indatus/dispatcher/downloads.png)](https://packagist.org/packages/indatus/dispatcher) [![Build Status](https://travis-ci.org/Indatus/dispatcher.png?branch=master)](https://travis-ci.org/Indatus/dispatcher) [![Code Coverage](https://scrutinizer-ci.com/g/Indatus/dispatcher/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Indatus/dispatcher/?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Indatus/dispatcher/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Indatus/dispatcher/?branch=master)
 
