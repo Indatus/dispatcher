@@ -23,7 +23,7 @@ interface ScheduledCommandInterface
     /**
      * When a command should run
      * @param Scheduler $scheduler
-     * @return \Indatus\Dispatcher\Scheduling\Schedulable
+     * @return \Indatus\Dispatcher\Scheduling\Schedulable|\Indatus\Dispatcher\Scheduling\Schedulable[]
      */
     public function schedule(Schedulable $scheduler);
 

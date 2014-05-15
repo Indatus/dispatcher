@@ -40,7 +40,7 @@ abstract class ScheduleService
     /**
      * Get all commands that are scheduled
      *
-     * @return array
+     * @return \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface[]
      */
     public function getScheduledCommands()
     {
@@ -64,17 +64,18 @@ abstract class ScheduleService
         /** @var \Indatus\Dispatcher\Queue $queue */
         $queue = App::make('Indatus\Dispatcher\Queue');
 
-        /** @var \Indatus\Dispatcher\Scheduling\Schedulable $scheduler */
-        $scheduler = App::make('Indatus\Dispatcher\Scheduling\Schedulable');
-
+        /** @var \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command */
         foreach ($this->getScheduledCommands() as $command) {
+
+            /** @var \Indatus\Dispatcher\Scheduling\Schedulable $scheduler */
+            $scheduler = App::make('Indatus\Dispatcher\Scheduling\Schedulable');
 
             //could be multiple schedules based on arguments
             $schedules = $command->schedule($scheduler);
             if (!is_array($schedules)) {
                 $schedules = array($schedules);
             }
-
+            //echo $command->getName()." (".count($schedules).")\n";
             foreach ($schedules as $schedule) {
                 if (($schedule instanceOf Schedulable) === false) {
                     throw new \InvalidArgumentException('Schedule for "'.$command->getName().'" is not an instance of Schedulable');
