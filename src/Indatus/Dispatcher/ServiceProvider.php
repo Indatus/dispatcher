@@ -40,6 +40,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 	 */
 	public function register()
 	{
+        /** @var \Indatus\Dispatcher\ConfigResolver $resolver */
         $resolver = App::make('\Indatus\Dispatcher\ConfigResolver');
 
         //load the scheduler of the appropriate driver
