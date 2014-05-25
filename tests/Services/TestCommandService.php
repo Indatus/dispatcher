@@ -178,7 +178,6 @@ class TestCommandService extends TestCase
         $this->assertEquals($this->commandService->getRunCommand($scheduledCommand), implode(' ', array(
                     'START',
                     '/B',
-                    '/usr/bin/env',
                     'php',
                     base_path().'/artisan',
                     $commandName,
