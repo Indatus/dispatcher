@@ -137,7 +137,6 @@ class CommandService
         $platform = App::make('Indatus\Dispatcher\Platform');
 
         $commandPieces = array(
-            '/usr/bin/env',
             'php',
             base_path().'/artisan',
             $scheduledCommand->getName()
@@ -154,6 +153,9 @@ class CommandService
         if ($platform->isUnix()) {
             $commandPieces[] = '> /dev/null'; //don't show output, errors can be viewed in the Laravel log
             $commandPieces[] = '&'; //run in background
+
+            //for linux, use environment variable
+            array_unshift($commandPieces, '/usr/bin/env');
 
             //run the command as a different user
             if (is_string($scheduledCommand->user())) {
