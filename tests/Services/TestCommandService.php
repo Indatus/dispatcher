@@ -155,6 +155,7 @@ class TestCommandService extends TestCase
         $scheduledCommand->shouldReceive('getName')->andReturn($commandName);
         $scheduledCommand->shouldReceive('user')->andReturn(false);
         $this->assertEquals($this->commandService->getRunCommand($scheduledCommand), implode(' ', array(
+                    '/usr/bin/env',
                     'php',
                     base_path().'/artisan',
                     $commandName,
@@ -177,6 +178,7 @@ class TestCommandService extends TestCase
         $this->assertEquals($this->commandService->getRunCommand($scheduledCommand), implode(' ', array(
                     'START',
                     '/B',
+                    '/usr/bin/env',
                     'php',
                     base_path().'/artisan',
                     $commandName,
@@ -198,6 +200,7 @@ class TestCommandService extends TestCase
                 )
             ),
             implode(' ', array(
+                    '/usr/bin/env',
                     'php',
                     base_path().'/artisan',
                     $commandName,
@@ -223,6 +226,7 @@ class TestCommandService extends TestCase
                 )
             ),
             implode(' ', array(
+                    '/usr/bin/env',
                     'php',
                     base_path().'/artisan',
                     $commandName,
@@ -242,6 +246,7 @@ class TestCommandService extends TestCase
         $scheduledCommand->shouldReceive('user')->andReturn($user);
         $this->assertEquals($this->commandService->getRunCommand($scheduledCommand), implode(' ', array(
                     'sudo -u '.$user,
+                    '/usr/bin/env',
                     'php',
                     base_path().'/artisan',
                     $commandName,
