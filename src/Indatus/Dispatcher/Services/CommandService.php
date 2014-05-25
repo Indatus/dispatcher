@@ -137,6 +137,7 @@ class CommandService
         $platform = App::make('Indatus\Dispatcher\Platform');
 
         $commandPieces = array(
+            '/usr/bin/env',
             'php',
             base_path().'/artisan',
             $scheduledCommand->getName()
