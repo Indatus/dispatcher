@@ -169,6 +169,7 @@ class TestCommandService extends TestCase
         $this->app->instance('Indatus\Dispatcher\Platform', m::mock('Indatus\Dispatcher\Platform', function ($m) {
                     $m->shouldReceive('isUnix')->andReturn(false);
                     $m->shouldReceive('isWindows')->andReturn(true);
+                    $m->shouldReceive('isHHVM')->andReturn(false);
                 }));
 
         $commandName = 'test:command';
@@ -182,6 +183,28 @@ class TestCommandService extends TestCase
                     base_path().'/artisan',
                     $commandName,
                     '> NUL'
+                )));
+    }
+
+    public function testGetRunCommandHHVM()
+    {
+        $this->app->instance('Indatus\Dispatcher\Platform', m::mock('Indatus\Dispatcher\Platform', function ($m) {
+                    $m->shouldReceive('isUnix')->andReturn(true);
+                    $m->shouldReceive('isWindows')->andReturn(false);
+                    $m->shouldReceive('isHHVM')->once()->andReturn(true);
+                }));
+
+        $commandName = 'test:command';
+        $scheduledCommand = $this->mockCommand();
+        $scheduledCommand->shouldReceive('getName')->andReturn($commandName);
+        $scheduledCommand->shouldReceive('user')->andReturn(false);
+        $this->assertEquals($this->commandService->getRunCommand($scheduledCommand), implode(' ', array(
+                    '/usr/bin/env',
+                    'hhvm',
+                    base_path().'/artisan',
+                    $commandName,
+                    '> /dev/null',
+                    '&'
                 )));
     }
 

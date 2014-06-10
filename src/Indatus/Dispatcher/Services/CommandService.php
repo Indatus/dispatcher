@@ -10,6 +10,7 @@
  */
 
 use App;
+use Indatus\Dispatcher\OptionReader;
 use Indatus\Dispatcher\Scheduling\ScheduledCommand;
 use Indatus\Dispatcher\Scheduling\ScheduledCommandInterface;
 
@@ -29,7 +30,7 @@ class CommandService
     /**
      * Run all commands that are due to be run
      */
-    public function runDue()
+    public function runDue(OptionReader $optionReader)
     {
         /** @var \Indatus\Dispatcher\BackgroundProcessRunner $backgroundProcessRunner */
         $backgroundProcessRunner = App::make('Indatus\Dispatcher\BackgroundProcessRunner');
@@ -136,11 +137,13 @@ class CommandService
         /** @var \Indatus\Dispatcher\Platform $platform */
         $platform = App::make('Indatus\Dispatcher\Platform');
 
-        $commandPieces = array(
-            'php',
-            base_path().'/artisan',
-            $scheduledCommand->getName()
-        );
+        $commandPieces = array('php');
+        if ($platform->isHHVM()) {
+            $commandPieces = array('hhvm');
+        }
+
+        $commandPieces[] = base_path().'/artisan';
+        $commandPieces[] = $scheduledCommand->getName();
 
         if (count($arguments) > 0) {
             $commandPieces[] = $this->prepareArguments($arguments);

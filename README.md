@@ -213,11 +213,13 @@ While Cron is the default driver for Dispatcher, it can be used with any schedul
 <a name="Cron" />
 ### Cron (Default)
 
-Add the following to your Crontab:
+Add the following to your root Crontab (`sudo crontab -e`):
 
 ```php
 * * * * * php /path/to/artisan scheduled:run 1>> /dev/null 2>&1
 ```
+
+If you are adding this to `/etc/cron.d` you'll need to specify a user immediately after `* * * * *`.
 
 > If you'd like for scheduled commands to be able to run as different users, be sure to add this to the root Crontab.  Otherwise all commands run as the user whose Crontab you've added this to.
 
