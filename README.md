@@ -282,15 +282,9 @@ Schedule `scheduled:run` to run every minute with [rcron](https://code.google.co
 
 **Why are my commands not running when I've scheduled them correctly?  I'm also not seeing any error output**
 
-Verify that mcrypt is installed and working correctly via the command `php -i | mcrypt`.
+1) Verify that mcrypt is installed and working correctly via the command `php -i | mcrypt`.
 
-**Why do I see a RuntimeExceptionWhen I use `php artisan scheduled:run`?**
-
-When running scheduled commands, exceptions from a command will appear as if they came from `scheduled:run`.  More than likely, it's one of your commands that is throwing the exception.
-
-**I have commands that extend `ScheduledCommand` but why don't they appear in when I run `scheduled:summary`?**
-
-Utilizing `php artisan scheduled:run --debug` will tell you why they're not runnig.  If you do not see your command listed here then it is not set up correctly.
+2) Utilizing `php artisan scheduled:run --debug` will tell you why they're not running.  If you do not see your command listed here then it is not set up correctly.
 
 Example:
 
@@ -303,3 +297,7 @@ Running commands...
      cache:clean: /usr/bin/env php /Users/myUser/myApp/artisan cache:clean > /dev/null &
      mail:subscribers: /usr/bin/env php /Users/myUser/myApp/artisan mail:subscribers > /dev/null &
 ```
+
+**I have commands that extend `ScheduledCommand` but why don't they appear in when I run `scheduled:summary`?**
+
+Commands that are disabled will not appear here.  Check and be sure `isEnabled()` returns true on those commands.
