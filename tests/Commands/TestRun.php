@@ -46,9 +46,9 @@ class TestRun extends TestCase
                 $m->shouldReceive('runDue')->once();
             });
 
-        $command = m::mock('Indatus\Dispatcher\Commands\Run[option]', [
+        $command = m::mock('Indatus\Dispatcher\Commands\Run[option]', array(
             $commandService
-        ]);
+            ));
         $command->shouldReceive('option')->andReturn(array());
         $command->run(
             m::mock('Symfony\Component\Console\Input\InputInterface')->shouldIgnoreMissing(),
