@@ -61,7 +61,7 @@ class MyCommand extends ScheduledCommand {
 <a name="tutorial" />
 ## Tutorial
 
-By Ben Kuhl at the [Laravel Louisville meetup](http://laravel-louisville.github.io/meetup/) ([@lurvul](https://twitter.com/lurvul)): Video (coming soon) - [Slides](http://bkuhl.github.io/dispatcher-slides)
+By Ben Kuhl at the [Laravel Louisville meetup](http://laravel-louisville.github.io/meetup/) ([@lurvul](https://twitter.com/lurvul)): [Video](http://vimeo.com/94212203) - [Slides](http://bkuhl.github.io/dispatcher-slides)
 
 <a name="installation" />
 ## Installation
@@ -102,7 +102,7 @@ If commands are not visible via `php artisan` then they cannot be scheduled.
 <a name="new-commands" />
 ### Generating New Scheduled Commands
 
-Use `php artisan scheduled:make` to generate a new scheduled command, the same way you would use artisan's `command:make`.
+Use `php artisan scheduled:make` to generate a new scheduled command, the same way you would use artisan's `command:make`.  Then [register your command](http://laravel.com/docs/commands#registering-commands) with Laravel.
 
 <a name="scheduling-commands" />
 ### Scheduling Existing Commands
