@@ -60,7 +60,68 @@ class TestCommandService extends TestCase
                 $m->shouldReceive('run')->with($scheduledCommand, $scheduler)->andReturnNull();
             });
 
-        $this->assertNull($commandService->runDue());
+        $debugger = m::mock('Indatus\Dispatcher\Debugger');
+        $debugger->shouldReceive('log');
+        $debugger->shouldReceive('commandRun');
+
+        $this->assertNull($commandService->runDue($debugger));
+    }
+
+    public function testLogDisabled()
+    {
+        $scheduledCommand = $this->mockCommand();
+        $scheduledCommand->shouldReceive('isEnabled')->once()->andReturn(false);
+
+        $scheduler = m::mock('Indatus\Dispatcher\Scheduling\Schedulable');
+        $queue = m::mock('Indatus\Dispatcher\Queue',
+            function ($m) use ($scheduledCommand, $scheduler) {
+                $item = m::mock('Indatus\Dispatcher\QueueItem');
+                $item->shouldReceive('getCommand')->once()->andReturn($scheduledCommand);
+                $m->shouldReceive('flush')->once()->andReturn(array($item));
+            });
+        $scheduleService = m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService');
+        $scheduleService->shouldReceive('getQueue')->once()->andReturn($queue);
+        $this->app->instance('Indatus\Dispatcher\Services\ScheduleService', $scheduleService);
+
+        $commandService = m::mock('Indatus\Dispatcher\Services\CommandService[runnableInEnvironment,run]',
+            array($scheduleService));
+
+        $debugger = m::mock('Indatus\Dispatcher\Debugger');
+        $debugger->shouldReceive('commandNotRun')->once()->with($scheduledCommand, 'Command is disabled');
+        $debugger->shouldReceive('log');
+        $debugger->shouldReceive('commandRun');
+
+        $this->assertNull($commandService->runDue($debugger));
+    }
+
+    public function testLogNotRunnableInEnvironment()
+    {
+        $scheduledCommand = $this->mockCommand();
+        $scheduledCommand->shouldReceive('isEnabled')->once()->andReturn(true);
+
+        $scheduler = m::mock('Indatus\Dispatcher\Scheduling\Schedulable');
+        $queue = m::mock('Indatus\Dispatcher\Queue',
+            function ($m) use ($scheduledCommand, $scheduler) {
+                $item = m::mock('Indatus\Dispatcher\QueueItem');
+                $item->shouldReceive('getCommand')->once()->andReturn($scheduledCommand);
+                $m->shouldReceive('flush')->once()->andReturn(array($item));
+            });
+        $scheduleService = m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService');
+        $scheduleService->shouldReceive('getQueue')->once()->andReturn($queue);
+        $this->app->instance('Indatus\Dispatcher\Services\ScheduleService', $scheduleService);
+
+        $commandService = m::mock('Indatus\Dispatcher\Services\CommandService[runnableInEnvironment,run]',
+            array($scheduleService),
+            function ($m) use ($scheduledCommand, $scheduler) {
+                $m->shouldReceive('runnableInEnvironment')->andReturn(false);
+            });
+
+        $debugger = m::mock('Indatus\Dispatcher\Debugger');
+        $debugger->shouldReceive('commandNotRun')->once()->with($scheduledCommand, 'Command is not configured to run in '.App::environment());
+        $debugger->shouldReceive('log');
+        $debugger->shouldReceive('commandRun');
+
+        $this->assertNull($commandService->runDue($debugger));
     }
 
     public function testRunnableInAnyEnvironment()

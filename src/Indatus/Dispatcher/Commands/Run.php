@@ -11,6 +11,8 @@
 
 use Illuminate\Console\Command;
 use Indatus\Dispatcher\Services\CommandService;
+use Symfony\Component\Console\Input\InputOption;
+use App;
 
 /**
  * Run any commands that should be run
@@ -44,13 +46,35 @@ class Run extends Command
     protected $description = 'Run scheduled commands';
 
     /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return array(
+            array('debug', 'd', InputOption::VALUE_NONE, 'Output debug information about why commands do/don\'t run.'),
+        );
+    }
+
+    /**
      * Execute the console command.
      *
      * @return mixed
      */
     public function fire()
     {
+        /** @var \Indatus\Dispatcher\OptionReader $optionReader */
+        $optionReader = App::make('Indatus\Dispatcher\OptionReader', [
+                $this->option()
+            ]);
 
-        $this->commandService->runDue();
+        /** @var \Indatus\Dispatcher\Debugger $debugger */
+        $debugger = App::make('Indatus\Dispatcher\Debugger', [
+                $optionReader,
+                $this->getOutput()
+            ]);
+
+        $this->commandService->runDue($debugger);
     }
 } 

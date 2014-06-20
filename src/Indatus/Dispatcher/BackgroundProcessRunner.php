@@ -39,9 +39,16 @@ class BackgroundProcessRunner
     public function run(
         ScheduledCommandInterface $scheduledCommand,
         array $arguments = array(),
-        array $options = array()
+        array $options = array(),
+        Debugger $debugger = null
     ) {
-        exec($this->commandService->getRunCommand($scheduledCommand, $arguments, $options));
+        $runCommand = $this->commandService->getRunCommand($scheduledCommand, $arguments, $options);
+
+        if (!is_null($debugger)) {
+            $debugger->commandRun($scheduledCommand, $runCommand);
+        }
+
+        exec($runCommand);
 
         return true;
     }
