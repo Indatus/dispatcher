@@ -290,4 +290,16 @@ When running scheduled commands, exceptions from a command will appear as if the
 
 **I have commands that extend `ScheduledCommand` but why don't they appear in when I run `scheduled:summary`?**
 
-Commands that are disabled will not appear here.  Check and be sure `isEnabled()` returns true on those commands.
+Utilizing `php artisan scheduled:run --debug` will tell you why they're not runnig.  If you do not see your command listed here then it is not set up correctly.
+
+Example:
+
+```
+$ php artisan scheduled:run --debug                                                                                        
+Running commands...
+     backup:avatars: No schedules were due
+     command:name: No schedules were due
+     myTestCommand:name: No schedules were due
+     cache:clean: /usr/bin/env php /Users/myUser/myApp/artisan cache:clean > /dev/null &
+     mail:subscribers: /usr/bin/env php /Users/myUser/myApp/artisan mail:subscribers > /dev/null &
+```
