@@ -243,7 +243,7 @@ class TestCommandService extends TestCase
                     'php',
                     base_path().'/artisan',
                     $commandName,
-                    '> NUL'
+                    '> NULL'
                 )));
     }
 
