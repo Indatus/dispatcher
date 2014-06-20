@@ -66,6 +66,11 @@ By Ben Kuhl at the [Laravel Louisville meetup](http://laravel-louisville.github.
 <a name="installation" />
 ## Installation
 
+Requires:
+
+ * PHP 5.3+ or [HHVM](http://hhvm.com/)
+ * [Laravel](http://laravel.com) 4+
+
 You can install the library via [Composer](http://getcomposer.org) by adding the following line to the **require** block of your *composer.json* file:
 
 ````
