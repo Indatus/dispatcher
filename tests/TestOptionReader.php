@@ -17,12 +17,12 @@ class TestOptionReader extends TestCase
 
     public function testDebugMode()
     {
-        $optionReader = new OptionReader([]);
+        $optionReader = new OptionReader(array());
         $this->assertEquals(false, $optionReader->isDebugMode());
 
-        $optionReader = new OptionReader([
+        $optionReader = new OptionReader(array(
             'debug' => true
-        ]);
+        ));
         $this->assertEquals(true, $optionReader->isDebugMode());
     }
 } 
