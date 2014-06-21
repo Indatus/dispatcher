@@ -58,4 +58,4 @@ class Debugger
             $this->output->writeln($message);
         }
     }
-} 
+}
