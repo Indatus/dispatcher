@@ -11,6 +11,7 @@
 
 use App;
 use Artisan;
+use Indatus\Dispatcher\Debugger;
 use Indatus\Dispatcher\Scheduling\Schedulable;
 use Indatus\Dispatcher\Scheduling\ScheduledCommandInterface;
 use Indatus\Dispatcher\Scheduling\ScheduleException;
@@ -56,10 +57,13 @@ abstract class ScheduleService
 
     /**
      * Get all commands that are due to be run
+     *
+     * @param Debugger $debugger
+     *
      * @throws \InvalidArgumentException
      * @return \Indatus\Dispatcher\Queue
      */
-    public function getQueue()
+    public function getQueue(Debugger $debugger)
     {
         /** @var \Indatus\Dispatcher\Queue $queue */
         $queue = App::make('Indatus\Dispatcher\Queue');
@@ -75,7 +79,8 @@ abstract class ScheduleService
             if (!is_array($schedules)) {
                 $schedules = array($schedules);
             }
-            //echo $command->getName()." (".count($schedules).")\n";
+
+            $willBeRun = false;
             foreach ($schedules as $schedule) {
                 if (($schedule instanceOf Schedulable) === false) {
                     throw new \InvalidArgumentException('Schedule for "'.$command->getName().'" is not an instance of Schedulable');
@@ -88,8 +93,15 @@ abstract class ScheduleService
                     $queueItem->setCommand($command);
                     $queueItem->setScheduler($schedule);
 
-                    $queue->add($queueItem);
+                    if ($queue->add($queueItem)) {
+                        $willBeRun = true;
+                    }
                 }
+            }
+
+            //it didn't run, so record that it didn't run
+            if ($willBeRun === false) {
+                $debugger->commandNotRun($command, 'No schedules were due');
             }
         }
 

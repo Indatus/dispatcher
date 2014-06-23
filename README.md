@@ -66,6 +66,11 @@ By Ben Kuhl at the [Laravel Louisville meetup](http://laravel-louisville.github.
 <a name="installation" />
 ## Installation
 
+Requires:
+
+ * PHP 5.3+ or [HHVM](http://hhvm.com/)
+ * [Laravel](http://laravel.com) 4+
+
 You can install the library via [Composer](http://getcomposer.org) by adding the following line to the **require** block of your *composer.json* file:
 
 ````
@@ -213,11 +218,13 @@ While Cron is the default driver for Dispatcher, it can be used with any schedul
 <a name="Cron" />
 ### Cron (Default)
 
-Add the following to your Crontab:
+Add the following to your root Crontab (`sudo crontab -e`):
 
 ```php
 * * * * * php /path/to/artisan scheduled:run 1>> /dev/null 2>&1
 ```
+
+If you are adding this to `/etc/cron.d` you'll need to specify a user immediately after `* * * * *`.
 
 > If you'd like for scheduled commands to be able to run as different users, be sure to add this to the root Crontab.  Otherwise all commands run as the user whose Crontab you've added this to.
 
@@ -280,11 +287,21 @@ Schedule `scheduled:run` to run every minute with [rcron](https://code.google.co
 
 **Why are my commands not running when I've scheduled them correctly?  I'm also not seeing any error output**
 
-Verify that mcrypt is installed and working correctly via the command `php -i | mcrypt`.
+1) Verify that mcrypt is installed and working correctly via the command `php -i | mcrypt`.
 
-**Why do I see a RuntimeExceptionWhen I use `php artisan scheduled:run`?**
+2) Utilizing `php artisan scheduled:run --debug` will tell you why they're not running.  If you do not see your command listed here then it is not set up correctly.
 
-When running scheduled commands, exceptions from a command will appear as if they came from `scheduled:run`.  More than likely, it's one of your commands that is throwing the exception.
+Example:
+
+```
+$ php artisan scheduled:run --debug                                                                                        
+Running commands...
+     backup:avatars: No schedules were due
+     command:name: No schedules were due
+     myTestCommand:name: No schedules were due
+     cache:clean: /usr/bin/env php /Users/myUser/myApp/artisan cache:clean > /dev/null &
+     mail:subscribers: /usr/bin/env php /Users/myUser/myApp/artisan mail:subscribers > /dev/null &
+```
 
 **I have commands that extend `ScheduledCommand` but why don't they appear in when I run `scheduled:summary`?**
 
