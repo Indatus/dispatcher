@@ -7,8 +7,9 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
+ * @codeCoverageIgnore
  */
-
 class Platform {
 
     /**
@@ -24,7 +25,6 @@ class Platform {
     /**
      * Determine if the current OS is Windows
      * @return bool
-     * @codeCoverageIgnore
      */
     public function isWindows()
     {
@@ -42,7 +42,6 @@ class Platform {
 
     /**
      * @return integer
-     * @codeCoverageIgnore
      */
     private function getPlatform()
     {
