@@ -24,6 +24,7 @@ class Platform {
     /**
      * Determine if the current OS is Windows
      * @return bool
+     * @codeCoverageIgnore
      */
     public function isWindows()
     {

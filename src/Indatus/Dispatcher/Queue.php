@@ -21,6 +21,8 @@ class Queue
     public function add(QueueItem $item)
     {
         $this->queue[] = $item;
+
+        return true;
     }
 
     /**
