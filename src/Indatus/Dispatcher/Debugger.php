@@ -1,7 +1,6 @@
 <?php namespace Indatus\Dispatcher;
 
 use Indatus\Dispatcher\Scheduling\ScheduledCommandInterface;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -11,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Debugger
 {
-    /** @var \Symfony\Component\Console\Output\Output */
+    /** @var \Symfony\Component\Console\Output\OutputInterface */
     protected $output;
 
     /** @var \Indatus\Dispatcher\OptionReader */
