@@ -65,15 +65,15 @@ class Run extends Command
     public function fire()
     {
         /** @var \Indatus\Dispatcher\OptionReader $optionReader */
-        $optionReader = App::make('Indatus\Dispatcher\OptionReader', [
+        $optionReader = App::make('Indatus\Dispatcher\OptionReader', array(
                 $this->option()
-            ]);
+            ));
 
         /** @var \Indatus\Dispatcher\Debugger $debugger */
-        $debugger = App::make('Indatus\Dispatcher\Debugger', [
+        $debugger = App::make('Indatus\Dispatcher\Debugger', array(
                 $optionReader,
                 $this->getOutput()
-            ]);
+            ));
 
         $this->commandService->runDue($debugger);
     }
