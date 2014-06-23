@@ -24,6 +24,12 @@ class TestCommandService extends TestCase
         $scheduleService = new ScheduleService(new Table(), new Queue());
         $this->commandService = new CommandService($scheduleService);
 
+        //default all commands to unix
+        $this->app->instance('Indatus\Dispatcher\Platform', m::mock('Indatus\Dispatcher\Platform', function ($m) {
+                    $m->shouldReceive('isUnix')->andReturn(true);
+                    $m->shouldReceive('isWindows')->andReturn(false);
+                    $m->shouldReceive('isHHVM')->andReturn(false);
+                }));
     }
 
     public function tearDown()

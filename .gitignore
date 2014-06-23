@@ -4,3 +4,4 @@ composer.phar
 build
 tests/coverage
 tests/meta
+.idea
