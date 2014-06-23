@@ -10,6 +10,9 @@
  */
 
 use App;
+use Illuminate\Console\Command;
+use Indatus\Dispatcher\Commands\Run;
+use Indatus\Dispatcher\Debugger;
 use Indatus\Dispatcher\OptionReader;
 use Indatus\Dispatcher\Scheduling\ScheduledCommand;
 use Indatus\Dispatcher\Scheduling\ScheduledCommandInterface;
@@ -30,22 +33,33 @@ class CommandService
     /**
      * Run all commands that are due to be run
      */
-    public function runDue(OptionReader $optionReader)
+    public function runDue(Debugger $debugger)
     {
+        $debugger->log('Running commands...');
+
         /** @var \Indatus\Dispatcher\BackgroundProcessRunner $backgroundProcessRunner */
         $backgroundProcessRunner = App::make('Indatus\Dispatcher\BackgroundProcessRunner');
 
         /** @var \Indatus\Dispatcher\Queue $queue */
-        $queue = $this->scheduleService->getQueue();
+        $queue = $this->scheduleService->getQueue($debugger);
+
         foreach ($queue->flush() as $queueItem) {
 
             /** @var \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command */
             $command = $queueItem->getCommand();
 
-            if ($command->isEnabled() && $this->runnableInEnvironment($command)) {
-                $scheduler = $queueItem->getScheduler();
+            //determine if the command is enabled
+            if ($command->isEnabled()) {
 
-                $backgroundProcessRunner->run($command, $scheduler->getArguments(), $scheduler->getOptions());
+                if ($this->runnableInEnvironment($command)) {
+                    $scheduler = $queueItem->getScheduler();
+
+                    $backgroundProcessRunner->run($command, $scheduler->getArguments(), $scheduler->getOptions(), $debugger);
+                } else {
+                    $debugger->commandNotRun($command, 'Command is not configured to run in '.App::environment());
+                }
+            } else {
+                $debugger->commandNotRun($command, 'Command is disabled');
             }
         }
     }
@@ -165,7 +179,7 @@ class CommandService
                 array_unshift($commandPieces, 'sudo -u '.$scheduledCommand->user());
             }
         } elseif($platform->isWindows()) {
-            $commandPieces[] = '> NUL'; //don't show output, errors can be viewed in the Laravel log
+            $commandPieces[] = '> NULL'; //don't show output, errors can be viewed in the Laravel log
 
             //run in background on windows
             array_unshift($commandPieces, '/B');

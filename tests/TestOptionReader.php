@@ -4,8 +4,9 @@
  */
 
 use Mockery as m;
+use Indatus\Dispatcher\OptionReader;
 
-class TestQueue extends TestCase
+class TestOptionReader extends TestCase
 {
 
     public function tearDown()
@@ -14,15 +15,14 @@ class TestQueue extends TestCase
         m::close();
     }
 
-    public function testQueue()
+    public function testDebugMode()
     {
-        $item = m::mock('Indatus\Dispatcher\QueueItem');
+        $optionReader = new OptionReader(array());
+        $this->assertEquals(false, $optionReader->isDebugMode());
 
-        $queue = new Indatus\Dispatcher\Queue();
-        $this->assertEquals(0, $queue->size());
-        $queue->add($item);
-        $this->assertEquals(1, $queue->size());
-        $this->assertEquals(array($item), $queue->flush());
-        $this->assertEquals(0, $queue->size());
+        $optionReader = new OptionReader(array(
+            'debug' => true
+        ));
+        $this->assertEquals(true, $optionReader->isDebugMode());
     }
 } 

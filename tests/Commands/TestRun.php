@@ -18,7 +18,10 @@ class TestRun extends TestCase
     {
         parent::setUp();
 
-        $this->command = new Run(m::mock('Indatus\Dispatcher\Services\CommandService'), m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService'));
+        $this->command = new Run(
+            m::mock('Indatus\Dispatcher\Services\CommandService'),
+            m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService')
+        );
     }
 
     public function tearDown()
@@ -42,8 +45,15 @@ class TestRun extends TestCase
         $commandService = m::mock('Indatus\Dispatcher\Services\CommandService', function ($m) {
                 $m->shouldReceive('runDue')->once();
             });
-        $command = new Run($commandService);
-        $command->fire();
+
+        $command = m::mock('Indatus\Dispatcher\Commands\Run[option]', array(
+            $commandService
+            ));
+        $command->shouldReceive('option')->andReturn(array());
+        $command->run(
+            m::mock('Symfony\Component\Console\Input\InputInterface')->shouldIgnoreMissing(),
+            m::mock('Symfony\Component\Console\Output\OutputInterface')->shouldIgnoreMissing()
+        );
     }
 
 } 

@@ -61,10 +61,15 @@ class MyCommand extends ScheduledCommand {
 <a name="tutorial" />
 ## Tutorial
 
-By Ben Kuhl at the [Laravel Louisville meetup](http://laravel-louisville.github.io/meetup/) ([@lurvul](https://twitter.com/lurvul)): Video (coming soon) - [Slides](http://bkuhl.github.io/dispatcher-slides)
+By Ben Kuhl at the [Laravel Louisville meetup](http://laravel-louisville.github.io/meetup/) ([@lurvul](https://twitter.com/lurvul)): [Video](http://vimeo.com/94212203) - [Slides](http://bkuhl.github.io/dispatcher-slides)
 
 <a name="installation" />
 ## Installation
+
+Requires:
+
+ * PHP 5.3+ or [HHVM](http://hhvm.com/)
+ * [Laravel](http://laravel.com) 4+
 
 You can install the library via [Composer](http://getcomposer.org) by adding the following line to the **require** block of your *composer.json* file:
 
@@ -97,7 +102,7 @@ If commands are not visible via `php artisan` then they cannot be scheduled.
 <a name="new-commands" />
 ### Generating New Scheduled Commands
 
-Use `php artisan scheduled:make` to generate a new scheduled command, the same way you would use artisan's `command:make`.
+Use `php artisan scheduled:make` to generate a new scheduled command, the same way you would use artisan's `command:make`.  Then [register your command](http://laravel.com/docs/commands#registering-commands) with Laravel.
 
 <a name="scheduling-commands" />
 ### Scheduling Existing Commands
@@ -282,11 +287,21 @@ Schedule `scheduled:run` to run every minute with [rcron](https://code.google.co
 
 **Why are my commands not running when I've scheduled them correctly?  I'm also not seeing any error output**
 
-Verify that mcrypt is installed and working correctly via the command `php -i | mcrypt`.
+1) Verify that mcrypt is installed and working correctly via the command `php -i | mcrypt`.
 
-**Why do I see a RuntimeExceptionWhen I use `php artisan scheduled:run`?**
+2) Utilizing `php artisan scheduled:run --debug` will tell you why they're not running.  If you do not see your command listed here then it is not set up correctly.
 
-When running scheduled commands, exceptions from a command will appear as if they came from `scheduled:run`.  More than likely, it's one of your commands that is throwing the exception.
+Example:
+
+```
+$ php artisan scheduled:run --debug                                                                                        
+Running commands...
+     backup:avatars: No schedules were due
+     command:name: No schedules were due
+     myTestCommand:name: No schedules were due
+     cache:clean: /usr/bin/env php /Users/myUser/myApp/artisan cache:clean > /dev/null &
+     mail:subscribers: /usr/bin/env php /Users/myUser/myApp/artisan mail:subscribers > /dev/null &
+```
 
 **I have commands that extend `ScheduledCommand` but why don't they appear in when I run `scheduled:summary`?**
 
