@@ -17,6 +17,9 @@ use Log;
 
 class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
 
+    /** @var \Indatus\Dispatcher\Table */
+    protected $table;
+
     /**
      * Determine if a schedule is due to be run.
      *
@@ -41,6 +44,8 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
      */
     public function printSummary()
     {
+        $this->table = App::make('Indatus\Dispatcher\Table');
+
         $this->table->setHeaders(array('Environment(s)', 'Name', 'Args/Opts', 'Minute', 'Hour', 'Day of Month', 'Month', 'Day of Week', 'Run as'));
         /** @var \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command */
         foreach ($this->getScheduledCommands() as $command) {

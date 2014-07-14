@@ -21,14 +21,6 @@ use Symfony\Component\Process\Exception\InvalidArgumentException;
 abstract class ScheduleService
 {
 
-    /** @var \Indatus\Dispatcher\Table */
-    protected $table;
-
-    public function __construct(Table $table)
-    {
-        $this->table = $table;
-    }
-
     /**
      * Determine if a command is due to be run
      *
