@@ -18,7 +18,9 @@ class TestCronScheduleService extends TestCase
         parent::setUp();
 
         $table = m::mock('Indatus\Dispatcher\Table');
-        $this->scheduleService = new ScheduleService($table);
+        $this->app->instance('Indatus\Dispatcher\Table', $table);
+
+        $this->scheduleService = new ScheduleService();
     }
 
     public function tearDown()
@@ -103,10 +105,10 @@ class TestCronScheduleService extends TestCase
                 $m->shouldReceive('environment')->twice();
                 $m->shouldReceive('schedule')->once()->andReturn($scheduler);
             });
-        $scheduleService = m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService[getScheduledCommands]', array(
-                $table,
-                $queue
-            ), function ($m) use ($scheduledCommand, $scheduledCommandWithMultipleSchedulers) {
+        $this->app->instance('Indatus\Dispatcher\Table', $table);
+        $scheduleService = m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService[getScheduledCommands]',
+            array(),
+            function ($m) use ($scheduledCommand, $scheduledCommandWithMultipleSchedulers) {
                 $m->shouldReceive('getScheduledCommands')->once()->andReturn(array(
                         $scheduledCommandWithMultipleSchedulers,
                         $scheduledCommand

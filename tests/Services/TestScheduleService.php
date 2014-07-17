@@ -11,7 +11,7 @@ use Mockery as m;
 class TestScheduleService extends TestCase
 {
     /**
-     * @var Indatus\Dispatcher\ScheduleService
+     * @var \Indatus\Dispatcher\ScheduleService
      */
     private $scheduleService;
 
@@ -19,7 +19,7 @@ class TestScheduleService extends TestCase
     {
         parent::setUp();
 
-        $this->scheduleService = new ScheduleService(new Table());
+        $this->scheduleService = new ScheduleService();
     }
 
     public function tearDown()
