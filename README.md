@@ -1,11 +1,11 @@
 # Dispatcher
 
-[<img src="https://s3-us-west-2.amazonaws.com/oss-avatars/dispatcher.png"/>](http://indatus.com/company/careers)
+<!--[<img src="https://s3-us-west-2.amazonaws.com/oss-avatars/dispatcher.png"/>](http://indatus.com/company/careers)-->
 
 
 Dispatcher allows you to schedule your artisan commands within your [Laravel](http://laravel.com) project, eliminating the need to touch the crontab when deploying.  It also allows commands to run per environment and keeps your scheduling logic where it should be, in your version control.
 
-<!--<img align="left" height="300" src="https://s3-us-west-2.amazonaws.com/oss-avatars/dispatcher_round_readme.png">-->
+<img align="left" height="300" src="https://s3-us-west-2.amazonaws.com/oss-avatars/dispatcher_round_readme.png">
 
 ```php
 use Indatus\Dispatcher\Scheduling\ScheduledCommand;
@@ -69,7 +69,7 @@ By Ben Kuhl at the [Laravel Louisville meetup](http://laravel-louisville.github.
 Requires:
 
  * PHP 5.3+ or [HHVM](http://hhvm.com/)
- * [Laravel](http://laravel.com) 4+
+ * [Laravel](http://laravel.com) 4.1+
 
 You can install the library via [Composer](http://getcomposer.org) by adding the following line to the **require** block of your *composer.json* file:
 
