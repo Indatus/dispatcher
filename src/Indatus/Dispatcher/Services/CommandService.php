@@ -50,13 +50,16 @@ class CommandService
 
             //determine if the command is enabled
             if ($command->isEnabled()) {
+                if ($this->runnableInCurrentMaintenanceSetting($command)) {
+                    if ($this->runnableInEnvironment($command)) {
+                        $scheduler = $queueItem->getScheduler();
 
-                if ($this->runnableInEnvironment($command)) {
-                    $scheduler = $queueItem->getScheduler();
-
-                    $backgroundProcessRunner->run($command, $scheduler->getArguments(), $scheduler->getOptions(), $debugger);
+                        $backgroundProcessRunner->run($command, $scheduler->getArguments(), $scheduler->getOptions(), $debugger);
+                    } else {
+                        $debugger->commandNotRun($command, 'Command is not configured to run in '.App::environment());
+                    }
                 } else {
-                    $debugger->commandNotRun($command, 'Command is not configured to run in '.App::environment());
+                    $debugger->commandNotRun($command, 'Command is not configured to run while application is in maintenance mode');
                 }
             } else {
                 $debugger->commandNotRun($command, 'Command is disabled');
@@ -85,6 +88,22 @@ class CommandService
         }
 
         return false;
+    }
+
+    /**
+     * Determine if application is in maintenance mode and if scheduled command can run
+     *
+     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command
+     *
+     * @return bool
+     */
+    public function runnableInCurrentMaintenanceSetting(ScheduledCommandInterface $command)
+    {
+        if (App::isDownForMaintenance()) {
+            return $command->runInMaintenanceMode();
+        }
+
+        return true;
     }
 
     /**
