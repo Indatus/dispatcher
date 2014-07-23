@@ -28,11 +28,5 @@
         "psr-0": {
             "Indatus\\Dispatcher\\": "src/"
         }
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git://github.com/orchestral/phpseclib.git"
-        }
-    ]
+    }
 }
