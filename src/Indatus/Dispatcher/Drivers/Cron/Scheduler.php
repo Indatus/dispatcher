@@ -122,7 +122,30 @@ class Scheduler extends Schedulable
     }
 
     /**
-     * Run once a week at midnight in the morning of the first day of the month
+     * Run once every other week at midnight on Sunday morning
+     * @param $weekOfYear ISO 8601 week of year.
+     *
+     * `$scheduler->fortnightly(Carbon::now()->weekOfYear);`
+     *
+     * @return $this
+     */
+    public function fortnightly($weekOfYear)
+    {
+        if ($weekOfYear % 2 == 0) {
+            $this->setScheduleMinute(0);
+            $this->setScheduleHour(0);
+            $this->setScheduleDayOfMonth(self::ANY);
+            $this->setScheduleMonth(self::ANY);
+            $this->setScheduleDayOfWeek("0");
+        } else {
+            return $this->never();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Run once a week at midnight on Sunday morning
      *
      * @return $this
      */
@@ -164,6 +187,22 @@ class Scheduler extends Schedulable
         $this->setScheduleHour(self::ANY);
         $this->setScheduleDayOfMonth(self::ANY);
         $this->setScheduleMonth(self::ANY);
+        $this->setScheduleDayOfWeek(self::ANY);
+
+        return $this;
+    }
+
+    /**
+     * Valid cron syntax that will never run. Feb 31st?!
+     * @see http://stackoverflow.com/a/13938099
+     * @return $this
+     */
+    public function never()
+    {
+        $this->setScheduleMinute(0);
+        $this->setScheduleHour(0);
+        $this->setScheduleDayOfMonth(31);
+        $this->setScheduleMonth(2);
         $this->setScheduleDayOfWeek(self::ANY);
 
         return $this;

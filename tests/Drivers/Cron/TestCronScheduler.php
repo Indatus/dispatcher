@@ -50,6 +50,18 @@ class TestCronScheduler extends TestCase
         $this->assertEquals($this->scheduler->getSchedule(), '0 0 1 '.Scheduler::ANY.' '.Scheduler::ANY);
     }
 
+    public function testFortnightly()
+    {
+        $this->assertInstanceOf($this->schedulerClass, $this->scheduler->fortnightly(32));
+        $this->assertEquals($this->scheduler->getSchedule(), '0 0 '.Scheduler::ANY.' '.Scheduler::ANY.' 0');
+    }
+
+    public function testFortnightlyOffWeek()
+    {
+        $this->assertInstanceOf($this->schedulerClass, $this->scheduler->fortnightly(33));
+        $this->assertEquals($this->scheduler->getSchedule(), '0 0 31 2 '.Scheduler::ANY);
+    }
+
     public function testWeekly()
     {
         $this->assertInstanceOf($this->schedulerClass, $this->scheduler->weekly());
@@ -66,6 +78,12 @@ class TestCronScheduler extends TestCase
     {
         $this->assertInstanceOf($this->schedulerClass, $this->scheduler->hourly());
         $this->assertEquals($this->scheduler->getSchedule(), '0 '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY);
+    }
+
+    public function testNever()
+    {
+        $this->assertInstanceOf($this->schedulerClass, $this->scheduler->never());
+        $this->assertEquals($this->scheduler->getSchedule(), '0 0 31 2 '.Scheduler::ANY);
     }
 
     public function testMinutes()
