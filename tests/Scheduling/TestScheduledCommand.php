@@ -41,4 +41,9 @@ class TestScheduledCommand extends TestCase
         $this->assertEquals('*', $this->scheduledCommand->environment());
     }
 
+    public function testDefaultRunInMaintenanceMode()
+    {
+        $this->assertFalse($this->scheduledCommand->runInMaintenanceMode());
+    }
+
 } 

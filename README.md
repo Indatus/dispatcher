@@ -42,6 +42,7 @@ class MyCommand extends ScheduledCommand {
   * [Scheduling Existing Commands](#scheduling-commands)
   * [Running Commands As Users](#commands-as-users)
   * [Environment-Specific Commands](#environment-commands)
+  * [Running Commands In Maintenance Mode](#maintenance-mode)
   * [Advanced Scheduling](#advanced-scheduling)
 * [Drivers](#drivers)
   * [Cron](#Cron)
@@ -155,6 +156,20 @@ You may override `environment()` to ensure your command is only scheduled in spe
     public function environment()
     {
         return ['development','staging'];
+    }
+```
+
+<a name="maintenance-mode" />
+### Maintenance Mode
+
+By default, cron commands will *not* run when application is in Maintenance Mode. This will prevent all sorts of weird output that might occur if a cron command is run while you are migrating a database or doing a composer update.
+
+You may override `runInMaintenanceMode()` to force your command to still be run while the application is in maintenance mode.
+
+```php
+    public function runInMaintenanceMode()
+    {
+        return true;
     }
 ```
 

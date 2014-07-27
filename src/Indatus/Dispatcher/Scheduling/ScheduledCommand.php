@@ -42,4 +42,14 @@ abstract class ScheduledCommand extends Command implements ScheduledCommandInter
         return '*';
     }
 
+    /**
+     * Should this command be allowed to run when application is in maintenance mode
+     *
+     * @return boolean Defaults to false
+     */
+    public function runInMaintenanceMode()
+    {
+        return false;
+    }
+
 }
