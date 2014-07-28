@@ -9,6 +9,7 @@
  * file that was distributed with this source code.
  */
 
+use App;
 use Indatus\Dispatcher\Scheduling\Schedulable;
 
 class Scheduler extends Schedulable
@@ -123,15 +124,15 @@ class Scheduler extends Schedulable
 
     /**
      * Run once every other week at midnight on Sunday morning
-     * @param $weekOfYear ISO 8601 week of year.
-     *
-     * `$scheduler->fortnightly(Carbon::now()->weekOfYear);`
      *
      * @return $this
      */
-    public function fortnightly($weekOfYear)
+    public function everyOtherWeek()
     {
-        if ($weekOfYear % 2 == 0) {
+        $carbon = App::make('Carbon');
+        $weeks = 2;
+
+        if ($carbon->now()->weekOfYear % $weeks == 0) {
             $this->setScheduleMinute(0);
             $this->setScheduleHour(0);
             $this->setScheduleDayOfMonth(self::ANY);
