@@ -3,6 +3,7 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
+use Mockery as m;
 use Indatus\Dispatcher\Drivers\Cron\Scheduler;
 
 class TestCronScheduler extends TestCase
@@ -50,6 +51,28 @@ class TestCronScheduler extends TestCase
         $this->assertEquals($this->scheduler->getSchedule(), '0 0 1 '.Scheduler::ANY.' '.Scheduler::ANY);
     }
 
+    public function testEveryOtherWeekEven()
+    {
+        $carbon = m::mock();
+        $carbon->shouldReceive('now')->andReturn($carbon);
+        $carbon->weekOfYear = 32;
+        App::instance('Carbon', $carbon);
+
+        $this->assertInstanceOf($this->schedulerClass, $this->scheduler->everyOtherWeek());
+        $this->assertEquals($this->scheduler->getSchedule(), '0 0 '.Scheduler::ANY.' '.Scheduler::ANY.' 0');
+    }
+
+    public function testEveryOtherWeekOdd()
+    {
+        $carbon = m::mock();
+        $carbon->shouldReceive('now')->andReturn($carbon);
+        $carbon->weekOfYear = 33;
+        App::instance('Carbon', $carbon);
+
+        $this->assertInstanceOf($this->schedulerClass, $this->scheduler->everyOtherWeek());
+        $this->assertEquals($this->scheduler->getSchedule(), '0 0 31 2 '.Scheduler::ANY);
+    }
+
     public function testWeekly()
     {
         $this->assertInstanceOf($this->schedulerClass, $this->scheduler->weekly());
@@ -66,6 +89,12 @@ class TestCronScheduler extends TestCase
     {
         $this->assertInstanceOf($this->schedulerClass, $this->scheduler->hourly());
         $this->assertEquals($this->scheduler->getSchedule(), '0 '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY);
+    }
+
+    public function testNever()
+    {
+        $this->assertInstanceOf($this->schedulerClass, $this->scheduler->never());
+        $this->assertEquals($this->scheduler->getSchedule(), '0 0 31 2 '.Scheduler::ANY);
     }
 
     public function testMinutes()

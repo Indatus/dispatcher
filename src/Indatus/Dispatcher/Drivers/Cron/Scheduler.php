@@ -9,6 +9,7 @@
  * file that was distributed with this source code.
  */
 
+use App;
 use Indatus\Dispatcher\Scheduling\Schedulable;
 
 class Scheduler extends Schedulable
@@ -122,7 +123,30 @@ class Scheduler extends Schedulable
     }
 
     /**
-     * Run once a week at midnight in the morning of the first day of the month
+     * Run once every other week at midnight on Sunday morning
+     *
+     * @return $this
+     */
+    public function everyOtherWeek()
+    {
+        $carbon = App::make('Carbon');
+        $weeks = 2;
+
+        if ($carbon->now()->weekOfYear % $weeks == 0) {
+            $this->setScheduleMinute(0);
+            $this->setScheduleHour(0);
+            $this->setScheduleDayOfMonth(self::ANY);
+            $this->setScheduleMonth(self::ANY);
+            $this->setScheduleDayOfWeek("0");
+        } else {
+            return $this->never();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Run once a week at midnight on Sunday morning
      *
      * @return $this
      */
@@ -164,6 +188,22 @@ class Scheduler extends Schedulable
         $this->setScheduleHour(self::ANY);
         $this->setScheduleDayOfMonth(self::ANY);
         $this->setScheduleMonth(self::ANY);
+        $this->setScheduleDayOfWeek(self::ANY);
+
+        return $this;
+    }
+
+    /**
+     * Valid cron syntax that will never run. Feb 31st?!
+     * @see http://stackoverflow.com/a/13938099
+     * @return $this
+     */
+    public function never()
+    {
+        $this->setScheduleMinute(0);
+        $this->setScheduleHour(0);
+        $this->setScheduleDayOfMonth(31);
+        $this->setScheduleMonth(2);
         $this->setScheduleDayOfWeek(self::ANY);
 
         return $this;
