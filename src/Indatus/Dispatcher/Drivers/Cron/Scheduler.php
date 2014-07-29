@@ -129,20 +129,7 @@ class Scheduler extends Schedulable
      */
     public function everyOtherWeek()
     {
-        $carbon = App::make('Carbon');
-        $weeks = 2;
-
-        if ($carbon->now()->weekOfYear % $weeks == 0) {
-            $this->setScheduleMinute(0);
-            $this->setScheduleHour(0);
-            $this->setScheduleDayOfMonth(self::ANY);
-            $this->setScheduleMonth(self::ANY);
-            $this->setScheduleDayOfWeek("0");
-        } else {
-            return $this->never();
-        }
-
-        return $this;
+        return $this->weekly(2);
     }
 
     /**
@@ -150,13 +137,20 @@ class Scheduler extends Schedulable
      *
      * @return $this
      */
-    public function weekly()
+    public function weekly($weeks=1)
     {
-        $this->setScheduleMinute(0);
-        $this->setScheduleHour(0);
-        $this->setScheduleDayOfMonth(self::ANY);
-        $this->setScheduleMonth(self::ANY);
-        $this->setScheduleDayOfWeek(0);
+        /** @var \Carbon\Carbon $carbon */
+        $carbon = App::make('Carbon');
+
+        if ($carbon->now()->weekOfYear % $weeks == 0) {
+            $this->setScheduleMinute(0);
+            $this->setScheduleHour(0);
+            $this->setScheduleDayOfMonth(self::ANY);
+            $this->setScheduleMonth(self::ANY);
+            $this->setScheduleDayOfWeek(0);
+        } else {
+            return $this->never();
+        }
 
         return $this;
     }

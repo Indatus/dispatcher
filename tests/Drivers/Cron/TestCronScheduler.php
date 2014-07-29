@@ -75,6 +75,17 @@ class TestCronScheduler extends TestCase
 
     public function testWeekly()
     {
+        $carbon = m::mock();
+        $carbon->shouldReceive('now')->andReturn($carbon);
+        App::instance('Carbon', $carbon);
+
+        $carbon->weekOfYear = 33;
+
+        $this->assertInstanceOf($this->schedulerClass, $this->scheduler->weekly());
+        $this->assertEquals($this->scheduler->getSchedule(), '0 0 '.Scheduler::ANY.' '.Scheduler::ANY.' 0');
+
+        $carbon->weekOfYear = 34;
+
         $this->assertInstanceOf($this->schedulerClass, $this->scheduler->weekly());
         $this->assertEquals($this->scheduler->getSchedule(), '0 0 '.Scheduler::ANY.' '.Scheduler::ANY.' 0');
     }
