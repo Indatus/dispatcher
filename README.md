@@ -64,6 +64,8 @@ class MyCommand extends ScheduledCommand {
 
 By Ben Kuhl at the [Laravel Louisville meetup](http://laravel-louisville.github.io/meetup/) ([@lurvul](https://twitter.com/lurvul)): [Video](http://vimeo.com/94212203) - [Slides](http://bkuhl.github.io/dispatcher-slides)
 
+By Jefferey Way at [Laracasts](https://www.laracasts.com): [Recurring Tasks the Laravel Way](https://laracasts.com/lessons/recurring-tasks-the-laravel-way)
+
 <a name="installation" />
 ## Installation
 
