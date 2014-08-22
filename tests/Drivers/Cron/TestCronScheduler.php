@@ -200,12 +200,20 @@ class TestCronScheduler extends TestCase
         $this->assertEquals($args, $scheduler->getArguments());
     }
 
+
     public function testOpts()
     {
         $opts = array(
             'testOpt',
             'option' => 'value'
         );
+
+        $expectedOpts = array(
+            'testOpt',
+            'option' => 'value',
+            'env' => 'testing'
+        );
+
         $args = array(
             'testArgument'
         );
@@ -214,14 +222,49 @@ class TestCronScheduler extends TestCase
         $scheduler = $this->scheduler->args($args)->opts($opts)->everyWeekday();
         $this->assertInstanceOf($this->schedulerClass, $scheduler);
         $this->assertEquals($args, $scheduler->getArguments());
-        $this->assertEquals($opts, $scheduler->getOptions());
+        $this->assertEquals($expectedOpts, $scheduler->getOptions());
         $this->assertNotEquals($scheduler->getSchedule(), $this->defaultSchedule);
 
         /** @var \Indatus\Dispatcher\Drivers\Cron\Scheduler $scheduler */
         $scheduler = $this->scheduler->opts($opts)->args($args);
         $this->assertInstanceOf($this->schedulerClass, $scheduler);
         $this->assertEquals($args, $scheduler->getArguments());
-        $this->assertEquals($opts, $scheduler->getOptions());
+        $this->assertEquals($expectedOpts, $scheduler->getOptions());
+
+        //be sure schedule reset, if not then we didn't get a fresh SchedulerClass
+        $this->assertEquals($scheduler->getSchedule(), $this->defaultSchedule);
+    }
+
+    public function testOptsWithSpecificEnvironmentSet()
+    {
+        $opts = array(
+            'testOpt',
+            'option' => 'value',
+            'env' => 'a_fancy_environment'
+        );
+
+        $expectedOpts = array(
+            'testOpt',
+            'option' => 'value',
+            'env' => 'a_fancy_environment'
+        );
+
+        $args = array(
+            'testArgument'
+        );
+
+        /** @var \Indatus\Dispatcher\Drivers\Cron\Scheduler $scheduler */
+        $scheduler = $this->scheduler->args($args)->opts($opts)->everyWeekday();
+        $this->assertInstanceOf($this->schedulerClass, $scheduler);
+        $this->assertEquals($args, $scheduler->getArguments());
+        $this->assertEquals($expectedOpts, $scheduler->getOptions());
+        $this->assertNotEquals($scheduler->getSchedule(), $this->defaultSchedule);
+
+        /** @var \Indatus\Dispatcher\Drivers\Cron\Scheduler $scheduler */
+        $scheduler = $this->scheduler->opts($opts)->args($args);
+        $this->assertInstanceOf($this->schedulerClass, $scheduler);
+        $this->assertEquals($args, $scheduler->getArguments());
+        $this->assertEquals($expectedOpts, $scheduler->getOptions());
 
         //be sure schedule reset, if not then we didn't get a fresh SchedulerClass
         $this->assertEquals($scheduler->getSchedule(), $this->defaultSchedule);
