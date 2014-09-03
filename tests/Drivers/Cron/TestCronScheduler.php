@@ -67,7 +67,7 @@ class TestCronScheduler extends TestCase
         $carbon = m::mock();
         $carbon->shouldReceive('now')->andReturn($carbon);
         $carbon->weekOfYear = 33;
-        App::instance('Carbon', $carbon);
+        App::instance('Carbon\Carbon', $carbon);
 
         $this->assertInstanceOf($this->schedulerClass, $this->scheduler->everyOtherWeek());
         $this->assertEquals($this->scheduler->getSchedule(), '0 0 31 2 '.Scheduler::ANY);
