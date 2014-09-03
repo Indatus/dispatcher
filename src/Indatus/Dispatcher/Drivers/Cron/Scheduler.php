@@ -140,7 +140,7 @@ class Scheduler extends Schedulable
     public function weekly($weeks=1)
     {
         /** @var \Carbon\Carbon $carbon */
-        $carbon = App::make('Carbon');
+        $carbon = App::make('Carbon\Carbon');
 
         if ($carbon->now()->weekOfYear % $weeks == 0) {
             $this->setScheduleMinute(0);
