@@ -11,13 +11,13 @@
 
 use Config;
 use Illuminate\Console\Command;
-use Illuminate\Foundation\Console\CommandMakeCommand;
+use Illuminate\Foundation\Console\ConsoleMakeCommand;
 
 /**
  * View a summary for all scheduled artisan commands
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
-class Make extends CommandMakeCommand
+class Make extends ConsoleMakeCommand
 {
 
     /**
@@ -66,7 +66,7 @@ class Make extends CommandMakeCommand
     /**
      * Get our own stub
      */
-    private function getStub()
+    protected function getStub()
     {
         return file_get_contents(__DIR__.DIRECTORY_SEPARATOR.'stubs'.DIRECTORY_SEPARATOR.'command.stub');
     }
