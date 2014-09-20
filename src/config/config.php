@@ -9,5 +9,12 @@
      *                      Scheduler and SchedulerService classes.
      *
      */
-    'driver' => 'cron'
+    'driver' => 'cron',
+
+    /**
+     * Customize the path to your PHP executable.  If null, Dispatcher
+     * detects whether you're running HHVM or standard PHP and builds the
+     * executable path accordingly.
+     */
+    'executable' => null
 );
