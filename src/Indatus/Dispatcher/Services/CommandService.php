@@ -16,6 +16,7 @@ use Indatus\Dispatcher\Debugger;
 use Indatus\Dispatcher\OptionReader;
 use Indatus\Dispatcher\Scheduling\ScheduledCommand;
 use Indatus\Dispatcher\Scheduling\ScheduledCommandInterface;
+use Config;
 
 class CommandService
 {
@@ -151,9 +152,22 @@ class CommandService
         /** @var \Indatus\Dispatcher\Platform $platform */
         $platform = App::make('Indatus\Dispatcher\Platform');
 
-        $commandPieces = array('php');
-        if ($platform->isHHVM()) {
-            $commandPieces = array('hhvm');
+        //load executable path
+        $executablePath = Config::get('dispatcher::executable');
+        if (!is_null($executablePath)) {
+            $commandPieces = array($executablePath);
+        } else {
+            $commandPieces = array();
+
+            if ($platform->isUnix()) {
+                $commandPieces[] = '/usr/bin/env';
+            }
+
+            if ($platform->isHHVM()) {
+                $commandPieces[] = 'hhvm';
+            } else {
+                $commandPieces[] = 'php';
+            }
         }
 
         $commandPieces[] = base_path().'/artisan';
@@ -170,9 +184,6 @@ class CommandService
         if ($platform->isUnix()) {
             $commandPieces[] = '> /dev/null'; //don't show output, errors can be viewed in the Laravel log
             $commandPieces[] = '&'; //run in background
-
-            //for linux, use environment variable
-            array_unshift($commandPieces, '/usr/bin/env');
 
             //run the command as a different user
             if (is_string($scheduledCommand->user())) {

@@ -253,6 +253,28 @@ class TestCommandService extends TestCase
                 )));
     }
 
+    public function testGetRunCommandExecutable()
+    {
+        $executablePath = '/path/to/executable';
+        Config::shouldReceive('get')->with('dispatcher::executable')->andReturn($executablePath);
+        $this->app->instance('Indatus\Dispatcher\Platform', m::mock('Indatus\Dispatcher\Platform', function ($m) {
+                    $m->shouldReceive('isUnix')->andReturn(true);
+                    $m->shouldReceive('isWindows')->andReturn(false);
+                }));
+
+        $commandName = 'test:command';
+        $scheduledCommand = $this->mockCommand();
+        $scheduledCommand->shouldReceive('getName')->andReturn($commandName);
+        $scheduledCommand->shouldReceive('user')->andReturn(false);
+        $this->assertEquals($this->commandService->getRunCommand($scheduledCommand), implode(' ', array(
+                    $executablePath,
+                    base_path().'/artisan',
+                    $commandName,
+                    '> /dev/null',
+                    '&'
+                )));
+    }
+
     public function testGetRunCommandHHVM()
     {
         $this->app->instance('Indatus\Dispatcher\Platform', m::mock('Indatus\Dispatcher\Platform', function ($m) {
