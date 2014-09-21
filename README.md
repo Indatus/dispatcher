@@ -66,7 +66,12 @@ By Ben Kuhl at the [Laravel Louisville meetup](http://laravel-louisville.github.
 <a name="installation" />
 ## Installation
 
-Requires:
+v2+ Requires:
+
+ * PHP 5.4+ or [HHVM](http://hhvm.com/)
+ * [Laravel](http://laravel.com) 5+
+
+v1+ Requires:
 
  * PHP 5.3+ or [HHVM](http://hhvm.com/)
  * [Laravel](http://laravel.com) 4+
