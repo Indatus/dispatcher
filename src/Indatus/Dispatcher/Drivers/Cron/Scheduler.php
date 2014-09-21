@@ -53,13 +53,13 @@ class Scheduler extends Schedulable
      */
     public function getSchedule()
     {
-        return implode(' ', array(
+        return implode(' ', [
                 $this->getScheduleMinute(),
                 $this->getScheduleHour(),
                 $this->getScheduleDayOfMonth(),
                 $this->getScheduleMonth(),
                 $this->getScheduleDayOfWeek()
-            ));
+            ]);
     }
 
     /**

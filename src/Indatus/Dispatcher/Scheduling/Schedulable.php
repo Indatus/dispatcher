@@ -19,10 +19,10 @@ abstract class Schedulable
     protected $configResolver;
 
     /** @var array $arguments */
-    protected $arguments = array();
+    protected $arguments = [];
 
     /** @var array $options */
-    protected $options = array();
+    protected $options = [];
 
     /** @var bool Instantiate a new instance when using args() or opts() */
     protected $instantiateNew = true;

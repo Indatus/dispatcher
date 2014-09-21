@@ -63,11 +63,11 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 	 */
 	public function provides()
 	{
-        return array(
+        return [
             'command.scheduled.summary',
             'command.scheduled.make',
             'command.scheduled.run'
-        );
+        ];
 	}
 
     /**
