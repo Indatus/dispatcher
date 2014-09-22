@@ -8,7 +8,7 @@ class TestCase extends Orchestra\Testbench\TestCase
 
     protected function getPackageProviders()
     {
-        return array('Indatus\Dispatcher\ServiceProvider');
+        return ['Indatus\Dispatcher\ServiceProvider'];
     }
 
     /**
@@ -18,13 +18,13 @@ class TestCase extends Orchestra\Testbench\TestCase
      */
     protected function getPackagePath()
     {
-        return realpath(implode(DIRECTORY_SEPARATOR, array(
+        return realpath(implode(DIRECTORY_SEPARATOR, [
             __DIR__,
             '..',
             'src',
             'Indatus',
             'Dispatcher'
-        )));
+        ]));
     }
 
 } 

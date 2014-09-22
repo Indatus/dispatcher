@@ -1,4 +1,4 @@
-<?php return array(
+<?php return [
     /**
      * The schedule driver to use:
      *
@@ -17,4 +17,4 @@
      * executable path accordingly.
      */
     'executable' => null
-);
+];

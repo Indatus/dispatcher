@@ -115,7 +115,7 @@ class TestCronScheduler extends TestCase
         $this->assertEquals($this->scheduler->getSchedule(), $minutes.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY);
 
         //test that we can specify arrays of times
-        $this->scheduler->minutes(array($minutes, $minutes+1));
+        $this->scheduler->minutes([$minutes, $minutes+1]);
         $this->assertEquals($this->scheduler->getSchedule(), $minutes.','.($minutes+1).' '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY);
     }
 
@@ -142,7 +142,7 @@ class TestCronScheduler extends TestCase
         $this->assertEquals($this->scheduler->getSchedule(), Scheduler::ANY.' '.$hours.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY);
 
         //test that we can specify arrays of times
-        $this->scheduler->hours(array($hours, $hours+1));
+        $this->scheduler->hours([$hours, $hours+1]);
         $this->assertEquals($this->scheduler->getSchedule(), Scheduler::ANY.' '.$hours.','.($hours+1).' '.Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY);
     }
 
@@ -161,7 +161,7 @@ class TestCronScheduler extends TestCase
         $this->assertEquals($this->scheduler->getSchedule(), Scheduler::ANY.' '.Scheduler::ANY.' '.$daysOfTheMonth.' '.Scheduler::ANY.' '.Scheduler::ANY);
 
         //test that we can specify arrays of times
-        $this->scheduler->daysOfTheMonth(array($daysOfTheMonth, $daysOfTheMonth+1));
+        $this->scheduler->daysOfTheMonth([$daysOfTheMonth, $daysOfTheMonth+1]);
         $this->assertEquals($this->scheduler->getSchedule(), Scheduler::ANY.' '.Scheduler::ANY.' '.$daysOfTheMonth.','.($daysOfTheMonth+1).' '.Scheduler::ANY.' '.Scheduler::ANY);
     }
 
@@ -172,7 +172,7 @@ class TestCronScheduler extends TestCase
         $this->assertEquals($this->scheduler->getSchedule(), Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.$months.' '.Scheduler::ANY);
 
         //test that we can specify arrays of times
-        $this->scheduler->months(array($months, $months+1));
+        $this->scheduler->months([$months, $months+1]);
         $this->assertEquals($this->scheduler->getSchedule(), Scheduler::ANY.' '.Scheduler::ANY.' '.Scheduler::ANY.' '.$months.','.($months+1).' '.Scheduler::ANY);
     }
 
@@ -192,7 +192,7 @@ class TestCronScheduler extends TestCase
 
     public function testArgs()
     {
-        $args = array('testArgument');
+        $args = ['testArgument'];
 
         /** @var \Indatus\Dispatcher\Drivers\Cron\Scheduler $scheduler */
         $scheduler = $this->scheduler->args($args);
@@ -203,10 +203,13 @@ class TestCronScheduler extends TestCase
 
     public function testOpts()
     {
-        $opts = array(
+        $opts = [
             'testOpt',
             'option' => 'value'
-        );
+        ];
+        $args = [
+
+        ];
 
         $expectedOpts = array(
             'testOpt',
@@ -237,21 +240,21 @@ class TestCronScheduler extends TestCase
 
     public function testOptsWithSpecificEnvironmentSet()
     {
-        $opts = array(
+        $opts = [
             'testOpt',
             'option' => 'value',
             'env' => 'a_fancy_environment'
-        );
+        ];
 
-        $expectedOpts = array(
+        $expectedOpts = [
             'testOpt',
             'option' => 'value',
             'env' => 'a_fancy_environment'
-        );
+        ];
 
-        $args = array(
+        $args = [
             'testArgument'
-        );
+        ];
 
         /** @var \Indatus\Dispatcher\Drivers\Cron\Scheduler $scheduler */
         $scheduler = $this->scheduler->args($args)->opts($opts)->everyWeekday();
