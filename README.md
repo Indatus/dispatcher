@@ -42,6 +42,7 @@ class MyCommand extends ScheduledCommand {
   * [Scheduling Existing Commands](#scheduling-commands)
   * [Running Commands As Users](#commands-as-users)
   * [Environment-Specific Commands](#environment-commands)
+  * [Running Commands In Maintenance Mode](#maintenance-mode)
   * [Advanced Scheduling](#advanced-scheduling)
 * [Drivers](#drivers)
   * [Cron](#Cron)
@@ -63,6 +64,8 @@ class MyCommand extends ScheduledCommand {
 
 By Ben Kuhl at the [Laravel Louisville meetup](http://laravel-louisville.github.io/meetup/) ([@lurvul](https://twitter.com/lurvul)): [Video](http://vimeo.com/94212203) - [Slides](http://bkuhl.github.io/dispatcher-slides)
 
+By Jefferey Way at [Laracasts](https://www.laracasts.com): [Recurring Tasks the Laravel Way](https://laracasts.com/lessons/recurring-tasks-the-laravel-way)
+
 <a name="installation" />
 ## Installation
 
@@ -74,7 +77,7 @@ v2+ Requires:
 v1+ Requires:
 
  * PHP 5.3+ or [HHVM](http://hhvm.com/)
- * [Laravel](http://laravel.com) 4+
+ * [Laravel](http://laravel.com) 4.1+
 
 You can install the library via [Composer](http://getcomposer.org) by adding the following line to the **require** block of your *composer.json* file:
 
@@ -160,6 +163,20 @@ You may override `environment()` to ensure your command is only scheduled in spe
     public function environment()
     {
         return ['development','staging'];
+    }
+```
+
+<a name="maintenance-mode" />
+### Maintenance Mode
+
+By default, cron commands will *not* run when application is in Maintenance Mode. This will prevent all sorts of weird output that might occur if a cron command is run while you are migrating a database or doing a composer update.
+
+You may override `runInMaintenanceMode()` to force your command to still be run while the application is in maintenance mode.
+
+```php
+    public function runInMaintenanceMode()
+    {
+        return true;
     }
 ```
 

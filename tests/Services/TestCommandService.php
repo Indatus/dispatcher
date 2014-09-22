@@ -100,6 +100,36 @@ class TestCommandService extends TestCase
         $this->assertNull($commandService->runDue($debugger));
     }
 
+    public function testLogNotRunnableInMaintenanceMode()
+    {
+        $scheduledCommand = $this->mockCommand();
+        $scheduledCommand->shouldReceive('isEnabled')->once()->andReturn(true);
+
+        $scheduler = m::mock('Indatus\Dispatcher\Scheduling\Schedulable');
+        $queue = m::mock('Indatus\Dispatcher\Queue',
+            function ($m) use ($scheduledCommand, $scheduler) {
+                $item = m::mock('Indatus\Dispatcher\QueueItem');
+                $item->shouldReceive('getCommand')->once()->andReturn($scheduledCommand);
+                $m->shouldReceive('flush')->once()->andReturn(array($item));
+            });
+        $scheduleService = m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService');
+        $scheduleService->shouldReceive('getQueue')->once()->andReturn($queue);
+        $this->app->instance('Indatus\Dispatcher\Services\ScheduleService', $scheduleService);
+
+        $commandService = m::mock('Indatus\Dispatcher\Services\CommandService[runnableInCurrentMaintenanceSetting,run]',
+            array($scheduleService),
+            function ($m) use ($scheduledCommand, $scheduler) {
+                $m->shouldReceive('runnableInCurrentMaintenanceSetting')->andReturn(false);
+            });
+
+        $debugger = m::mock('Indatus\Dispatcher\Debugger');
+        $debugger->shouldReceive('commandNotRun')->once()->with($scheduledCommand, 'Command is not configured to run while application is in maintenance mode');
+        $debugger->shouldReceive('log');
+        $debugger->shouldReceive('commandRun');
+
+        $this->assertNull($commandService->runDue($debugger));
+    }
+
     public function testLogNotRunnableInEnvironment()
     {
         $scheduledCommand = $this->mockCommand();
@@ -160,6 +190,33 @@ class TestCommandService extends TestCase
 
         App::shouldReceive('environment')->andReturn('amazonAWS');
         $this->assertFalse($this->commandService->runnableInEnvironment($scheduledCommand));
+    }
+
+    public function testNotRunnableInCurrentMaintenanceSetting()
+    {
+        $scheduledCommand = $this->mockCommand();
+        $scheduledCommand->shouldReceive('runInMaintenanceMode')->once()->andReturn(false);
+
+        App::shouldReceive('isDownForMaintenance')->andReturn(true);
+        $this->assertFalse($this->commandService->runnableInCurrentMaintenanceSetting($scheduledCommand));
+    }
+
+    public function testRunnableInCurrentMaintenanceSetting()
+    {
+        $scheduledCommand = $this->mockCommand();
+        $scheduledCommand->shouldReceive('runInMaintenanceMode')->once()->andReturn(true);
+
+        App::shouldReceive('isDownForMaintenance')->andReturn(true);
+        $this->assertTrue($this->commandService->runnableInCurrentMaintenanceSetting($scheduledCommand));
+    }
+
+    public function testChecksForMaintenanceMode()
+    {
+        $scheduledCommand = $this->mockCommand();
+        $scheduledCommand->shouldReceive('runInMaintenanceMode')->never();
+
+        App::shouldReceive('isDownForMaintenance')->andReturn(false);
+        $this->assertTrue($this->commandService->runnableInCurrentMaintenanceSetting($scheduledCommand));
     }
 
     public function testPrepareArguments()

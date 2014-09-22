@@ -120,6 +120,7 @@ abstract class Schedulable
     public function setOptions($options)
     {
         $this->options = $options;
+        $this->setEnvironmentOption();
     }
 
     /**
@@ -133,5 +134,20 @@ abstract class Schedulable
         $scheduler = $this->configResolver->resolveSchedulerClass();
 
         return $scheduler;
+    }
+
+    /**
+     * Propagate scheduled:run environment
+     * to scheduled commands, only if 'env' option was not specified
+     */
+    private function setEnvironmentOption()
+    {
+        if(!array_key_exists('env', $this->options))
+        {
+            $this->options = array_merge(
+                $this->options,
+                array('env' => App::environment())
+            );
+        }
     }
 }
