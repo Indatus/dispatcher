@@ -69,15 +69,14 @@ By Jefferey Way at [Laracasts](https://www.laracasts.com): [Recurring Tasks the 
 <a name="installation" />
 ## Installation
 
-Requires:
-
+**Requirements**
  * PHP 5.3+ or [HHVM](http://hhvm.com/)
  * [Laravel](http://laravel.com) 4.1+
 
 You can install the library via [Composer](http://getcomposer.org) by adding the following line to the **require** block of your *composer.json* file:
 
 ````
-"indatus/dispatcher": "dev-master"
+"indatus/dispatcher": "1.*"
 ````
 
 Next run `composer update`.
