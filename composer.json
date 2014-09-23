@@ -1,6 +1,6 @@
 {
     "name": "indatus/dispatcher",
-    "description": "Schedule your artisan commands within your application's source codephpuni",
+    "description": "Schedule your artisan commands within your application's source code",
     "keywords": ["laravel", "artisan", "dispatcher", "schedule", "cron"],
     "type": "library",
     "license": "MIT",
@@ -17,7 +17,7 @@
         "mtdowling/cron-expression" : "~1.0.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.1",
+        "phpunit/phpunit": "~4.0",
         "mockery/mockery": "~0.9",
         "orchestra/testbench": "3.0.x"
     },
@@ -27,6 +27,11 @@
         ],
         "psr-0": {
             "Indatus\\Dispatcher\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
         }
     },
     "minimum-stability": "dev"
