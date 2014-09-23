@@ -11,6 +11,7 @@
 
 use App;
 use Config;
+use Illuminate\Foundation\Application;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -77,22 +78,21 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     private function registerCommands()
     {
         //scheduled:summary
-        $this->app->bindShared('command.scheduled.summary', function() {
-            return App::make('Indatus\Dispatcher\Commands\ScheduleSummary');
+        $this->app->bindShared('command.scheduled.summary', function(Application $app) {
+            return $app->make('Indatus\Dispatcher\Commands\ScheduleSummary');
         });
-        $this->commands('command.scheduled.summary');
 
         //scheduled:make
-        $this->app->bindShared('command.scheduled.make', function() {
-            return App::make('Indatus\Dispatcher\Commands\Make');
+        $this->app->bindShared('command.scheduled.make', function(Application $app) {
+            return $app->make('Indatus\Dispatcher\Commands\Make');
         });
-        $this->commands('command.scheduled.make');
 
         //scheduled:run
-        $this->app->bindShared('command.scheduled.run', function() {
-            return App::make('Indatus\Dispatcher\Commands\Run');
+        $this->app->bindShared('command.scheduled.run', function(Application $app) {
+            return $app->make('Indatus\Dispatcher\Commands\Run');
         });
-        $this->commands('command.scheduled.run');
+
+        $this->commands($this->provides());
     }
 
 }
