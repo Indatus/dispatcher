@@ -10,8 +10,8 @@
  */
 
 use Config;
-use Illuminate\Console\Command;
 use Illuminate\Foundation\Console\ConsoleMakeCommand;
+use App;
 
 /**
  * View a summary for all scheduled artisan commands
@@ -35,12 +35,11 @@ class Make extends ConsoleMakeCommand
     protected $description = 'Create a new scheduled artisan command';
 
     /**
-     * @param string $file
-     * @param string $stub
+     * @param string $name
      * @codeCoverageIgnore
      */
-    protected function writeCommand($file, $stub) {
-        return parent::writeCommand($file, $this->extendStub($stub));
+    protected function buildClass($name) {
+        return $this->extendStub(parent::buildClass($name));
     }
 
     /**
@@ -50,24 +49,20 @@ class Make extends ConsoleMakeCommand
      */
     protected function extendStub($stub)
     {
-        $replacements = array(
+        /** @var \Illuminate\Filesystem\Filesystem $files */
+        $files = App::make('Illuminate\Filesystem\Filesystem');
+        $content = $files->get(__DIR__.DIRECTORY_SEPARATOR.'stubs'.DIRECTORY_SEPARATOR.'command.stub');
+
+        $replacements = [
             'use Illuminate\Console\Command' => "use Indatus\\Dispatcher\\Scheduling\\ScheduledCommand;\n".
                 "use Indatus\\Dispatcher\\Scheduling\\Schedulable;\n".
                 "use Indatus\\Dispatcher\\Drivers\\".ucwords(Config::get('dispatcher::driver'))."\\Scheduler",
             'extends Command {' => 'extends ScheduledCommand {',
-            'parent::__construct();' => $this->getStub()
-        );
+            'parent::__construct();' => $content
+        ];
 
         $stub = str_replace(array_keys($replacements), array_values($replacements), $stub);
 
         return $stub;
-    }
-
-    /**
-     * Get our own stub
-     */
-    protected function getStub()
-    {
-        return file_get_contents(__DIR__.DIRECTORY_SEPARATOR.'stubs'.DIRECTORY_SEPARATOR.'command.stub');
     }
 } 
