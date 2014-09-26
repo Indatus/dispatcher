@@ -77,17 +77,17 @@ class TestCronScheduleService extends TestCase
                         $m->shouldReceive('getScheduleDayOfMonth');
                         $m->shouldReceive('getScheduleMonth');
                         $m->shouldReceive('getScheduleDayOfWeek');
-                        $m->shouldReceive('getArguments')->twice()->andReturn(array());
-                        $m->shouldReceive('getOptions')->twice()->andReturn(array());
+                        $m->shouldReceive('getArguments')->twice()->andReturn([]);
+                        $m->shouldReceive('getOptions')->twice()->andReturn([]);
                     });
 
                 $m->shouldReceive('getName')->once();
                 $m->shouldReceive('user')->once();
                 $m->shouldReceive('environment')->twice();
-                $m->shouldReceive('schedule')->once()->andReturn(array(
+                $m->shouldReceive('schedule')->once()->andReturn([
                         $scheduler,
                         $scheduler
-                    ));
+                    ]);
             });
         $scheduledCommand = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand', function ($m) use ($table) {
                 $table->shouldReceive('addRow')->once();
@@ -107,12 +107,12 @@ class TestCronScheduleService extends TestCase
             });
         $this->app->instance('Indatus\Dispatcher\Table', $table);
         $scheduleService = m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService[getScheduledCommands]',
-            array(),
+            [],
             function ($m) use ($scheduledCommand, $scheduledCommandWithMultipleSchedulers) {
-                $m->shouldReceive('getScheduledCommands')->once()->andReturn(array(
+                $m->shouldReceive('getScheduledCommands')->once()->andReturn([
                         $scheduledCommandWithMultipleSchedulers,
                         $scheduledCommand
-                    ));
+                    ]);
             });
         $scheduleService->printSummary();
     }

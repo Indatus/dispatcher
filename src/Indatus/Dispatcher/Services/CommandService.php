@@ -128,7 +128,7 @@ class CommandService
      */
     public function prepareOptions(array $options)
     {
-        $optionPieces = array();
+        $optionPieces = [];
         foreach ($options as $opt => $value) {
             //if it's an array of options, throw them in there as well
             if (is_array($value)) {
@@ -165,8 +165,8 @@ class CommandService
      */
     public function getRunCommand(
         ScheduledCommandInterface $scheduledCommand,
-        array $arguments = array(),
-        array $options = array())
+        array $arguments = [],
+        array $options = [])
     {
         /** @var \Indatus\Dispatcher\Platform $platform */
         $platform = App::make('Indatus\Dispatcher\Platform');
@@ -174,9 +174,9 @@ class CommandService
         //load executable path
         $executablePath = Config::get('dispatcher::executable');
         if (!is_null($executablePath)) {
-            $commandPieces = array($executablePath);
+            $commandPieces = [$executablePath];
         } else {
-            $commandPieces = array();
+            $commandPieces = [];
 
             if ($platform->isUnix()) {
                 $commandPieces[] = '/usr/bin/env';

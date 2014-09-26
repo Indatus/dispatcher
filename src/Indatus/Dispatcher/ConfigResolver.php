@@ -24,15 +24,15 @@ class ConfigResolver
     {
         try {
             return App::make(
-                Config::get('dispatcher::driver').'\\Scheduler', array(
+                Config::get('dispatcher::driver').'\\Scheduler', [
                     $this
-                )
+                ]
             );
         } catch (\ReflectionException $e) {
             return App::make(
-                'Indatus\Dispatcher\Drivers\\'.$this->getDriver().'\\Scheduler', array(
+                'Indatus\Dispatcher\Drivers\\'.$this->getDriver().'\\Scheduler', [
                     $this
-                )
+                ]
             );
         }
     }

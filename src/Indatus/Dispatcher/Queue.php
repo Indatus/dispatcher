@@ -12,7 +12,7 @@
 class Queue
 {
     /** @var QueueItem[] */
-    protected $queue = array();
+    protected $queue = [];
 
     /**
      * Add an item to the queue
@@ -41,7 +41,7 @@ class Queue
     public function flush()
     {
         $queue = $this->queue;
-        $this->queue = array();
+        $this->queue = [];
 
         return $queue;
     }

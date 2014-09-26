@@ -42,17 +42,6 @@ class TestMake extends TestCase
         $this->assertFileExists($this->getStubPath('command.stub'));
     }
 
-    public function testStub()
-    {
-        //force visibility for testing
-        $class = new ReflectionClass('Indatus\Dispatcher\Commands\Make');
-        $method = $class->getMethod('getStub');
-        $method->setAccessible(true);
-
-        $stubContents = file_get_contents($this->getStubPath('command.stub'));
-        $this->assertEquals($stubContents, $method->invoke($this->makeFactory(), 'getStub'));
-    }
-
     public function testExtendStub()
     {
         //force visibility for testing
@@ -62,13 +51,13 @@ class TestMake extends TestCase
 
         $stubContents = file_get_contents($this->getStubPath('command.stub'));
 
-        $replacements = array(
+        $replacements = [
             'use Illuminate\Console\Command' => "use Indatus\\Dispatcher\\Scheduling\\ScheduledCommand;\n".
                 "use Indatus\\Dispatcher\\Scheduling\\Schedulable;\n".
                 "use Indatus\\Dispatcher\\Drivers\\".ucwords(Config::get('dispatcher::driver'))."\\Scheduler",
             'extends Command {' => 'extends ScheduledCommand {',
             'parent::__construct();' => $stubContents
-        );
+        ];
 
         $delimeter = '*****';
         $extendedStub = $method->invoke($this->makeFactory(), implode($delimeter, array_keys($replacements)));
@@ -78,12 +67,12 @@ class TestMake extends TestCase
 
     private function getStubPath($filename)
     {
-        return implode(DIRECTORY_SEPARATOR, array(
+        return implode(DIRECTORY_SEPARATOR, [
                 $this->getPackagePath(),
                 'Commands',
                 'stubs',
                 $filename
-            ));
+            ]);
     }
 
     private function makeFactory()

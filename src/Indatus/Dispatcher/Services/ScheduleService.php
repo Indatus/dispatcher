@@ -37,7 +37,7 @@ abstract class ScheduleService
      */
     public function getScheduledCommands()
     {
-        $scheduledCommands = array();
+        $scheduledCommands = [];
         foreach (Artisan::all() as $command) {
             if ($command instanceOf ScheduledCommandInterface) {
                 $scheduledCommands[] = $command;
@@ -69,7 +69,7 @@ abstract class ScheduleService
             //could be multiple schedules based on arguments
             $schedules = $command->schedule($scheduler);
             if (!is_array($schedules)) {
-                $schedules = array($schedules);
+                $schedules = [$schedules];
             }
 
             $willBeRun = false;
