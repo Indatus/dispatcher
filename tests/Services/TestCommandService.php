@@ -279,8 +279,7 @@ class TestCommandService extends TestCase
         $scheduledCommand->shouldReceive('getName')->andReturn($commandName);
         $scheduledCommand->shouldReceive('user')->andReturn(false);
         $this->assertEquals($this->commandService->getRunCommand($scheduledCommand), implode(' ', array(
-                    '/usr/bin/env',
-                    'php',
+                    PHP_BINARY,
                     base_path().'/artisan',
                     $commandName,
                     '> /dev/null',
@@ -303,32 +302,10 @@ class TestCommandService extends TestCase
         $this->assertEquals($this->commandService->getRunCommand($scheduledCommand), implode(' ', array(
                     'START',
                     '/B',
-                    'php',
+                    PHP_BINARY,
                     base_path().'/artisan',
                     $commandName,
                     '> NULL'
-                )));
-    }
-
-    public function testGetRunCommandExecutable()
-    {
-        $executablePath = '/path/to/executable';
-        Config::shouldReceive('get')->with('dispatcher::executable')->andReturn($executablePath);
-        $this->app->instance('Indatus\Dispatcher\Platform', m::mock('Indatus\Dispatcher\Platform', function ($m) {
-                    $m->shouldReceive('isUnix')->andReturn(true);
-                    $m->shouldReceive('isWindows')->andReturn(false);
-                }));
-
-        $commandName = 'test:command';
-        $scheduledCommand = $this->mockCommand();
-        $scheduledCommand->shouldReceive('getName')->andReturn($commandName);
-        $scheduledCommand->shouldReceive('user')->andReturn(false);
-        $this->assertEquals($this->commandService->getRunCommand($scheduledCommand), implode(' ', array(
-                    $executablePath,
-                    base_path().'/artisan',
-                    $commandName,
-                    '> /dev/null',
-                    '&'
                 )));
     }
 
@@ -368,8 +345,7 @@ class TestCommandService extends TestCase
                 )
             ),
             implode(' ', array(
-                    '/usr/bin/env',
-                    'php',
+                    PHP_BINARY,
                     base_path().'/artisan',
                     $commandName,
                     'option',
@@ -394,8 +370,7 @@ class TestCommandService extends TestCase
                 )
             ),
             implode(' ', array(
-                    '/usr/bin/env',
-                    'php',
+                    PHP_BINARY,
                     base_path().'/artisan',
                     $commandName,
                     '--option="value"',
@@ -414,8 +389,7 @@ class TestCommandService extends TestCase
         $scheduledCommand->shouldReceive('user')->andReturn($user);
         $this->assertEquals($this->commandService->getRunCommand($scheduledCommand), implode(' ', array(
                     'sudo -u '.$user,
-                    '/usr/bin/env',
-                    'php',
+                    PHP_BINARY,
                     base_path().'/artisan',
                     $commandName,
                     '> /dev/null',

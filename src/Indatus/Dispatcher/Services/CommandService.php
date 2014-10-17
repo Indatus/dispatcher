@@ -171,22 +171,11 @@ class CommandService
         /** @var \Indatus\Dispatcher\Platform $platform */
         $platform = App::make('Indatus\Dispatcher\Platform');
 
-        //load executable path
-        $executablePath = Config::get('dispatcher::executable');
-        if (!is_null($executablePath)) {
-            $commandPieces = [$executablePath];
+        $commandPieces = [];
+        if ($platform->isHHVM()) {
+            $commandPieces[] = '/usr/bin/env hhvm';
         } else {
-            $commandPieces = [];
-
-            if ($platform->isUnix()) {
-                $commandPieces[] = '/usr/bin/env';
-            }
-
-            if ($platform->isHHVM()) {
-                $commandPieces[] = 'hhvm';
-            } else {
-                $commandPieces[] = 'php';
-            }
+            $commandPieces[] = PHP_BINARY;
         }
 
         $commandPieces[] = base_path().'/artisan';
