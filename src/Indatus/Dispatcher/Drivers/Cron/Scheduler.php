@@ -147,7 +147,7 @@ class Scheduler extends Schedulable
             $this->setScheduleHour(0);
             $this->setScheduleDayOfMonth(self::ANY);
             $this->setScheduleMonth(self::ANY);
-            $this->setScheduleDayOfWeek(0);
+            $this->setScheduleDayOfWeek(self::SUNDAY);
         } else {
             return $this->never();
         }
@@ -197,7 +197,7 @@ class Scheduler extends Schedulable
         $this->setScheduleMinute(0);
         $this->setScheduleHour(0);
         $this->setScheduleDayOfMonth(31);
-        $this->setScheduleMonth(2);
+        $this->setScheduleMonth(self::FEBRUARY);
         $this->setScheduleDayOfWeek(self::ANY);
 
         return $this;
