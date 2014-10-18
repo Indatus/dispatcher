@@ -137,7 +137,7 @@ class Scheduler extends Schedulable
      *
      * @return $this
      */
-    public function weekly($weeks=1)
+    public function weekly($weeks = 1)
     {
         /** @var \Carbon\Carbon $carbon */
         $carbon = App::make('Carbon\Carbon');
