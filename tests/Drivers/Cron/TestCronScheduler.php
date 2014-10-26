@@ -210,15 +210,15 @@ class TestCronScheduler extends TestCase
 
         ];
 
-        $expectedOpts = array(
+        $expectedOpts = [
             'testOpt',
             'option' => 'value',
             'env' => 'testing',
-        );
+        ];
 
-        $args = array(
+        $args = [
             'testArgument',
-        );
+        ];
 
         /** @var \Indatus\Dispatcher\Drivers\Cron\Scheduler $scheduler */
         $scheduler = $this->scheduler->args($args)->opts($opts)->everyWeekday();

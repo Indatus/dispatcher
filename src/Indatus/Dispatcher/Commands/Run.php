@@ -51,9 +51,9 @@ class Run extends Command
      */
     protected function getOptions()
     {
-        return array(
-            array('debug', 'd', InputOption::VALUE_NONE, 'Output debug information about why commands do/don\'t run.'),
-        );
+        return [
+            ['debug', 'd', InputOption::VALUE_NONE, 'Output debug information about why commands do/don\'t run.'],
+        ];
     }
 
     /**
@@ -64,15 +64,15 @@ class Run extends Command
     public function fire()
     {
         /** @var \Indatus\Dispatcher\OptionReader $optionReader */
-        $optionReader = App::make('Indatus\Dispatcher\OptionReader', array(
+        $optionReader = App::make('Indatus\Dispatcher\OptionReader', [
                 $this->option(),
-            ));
+            ]);
 
         /** @var \Indatus\Dispatcher\Debugger $debugger */
-        $debugger = App::make('Indatus\Dispatcher\Debugger', array(
+        $debugger = App::make('Indatus\Dispatcher\Debugger', [
                 $optionReader,
                 $this->getOutput(),
-            ));
+            ]);
 
         $this->commandService->runDue($debugger);
     }

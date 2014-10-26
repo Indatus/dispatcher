@@ -144,7 +144,7 @@ abstract class Schedulable
         if (!array_key_exists('env', $this->options)) {
             $this->options = array_merge(
                 $this->options,
-                array('env' => App::environment())
+                ['env' => App::environment()]
             );
         }
     }

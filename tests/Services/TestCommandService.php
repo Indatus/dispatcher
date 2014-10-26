@@ -259,7 +259,7 @@ class TestCommandService extends TestCase
             'option' => [
                 'value1',
                 'value2',
-            ]
+            ],
         ];
         $commandService = $this->getMockForAbstractClass('Indatus\Dispatcher\Services\CommandService',
             [

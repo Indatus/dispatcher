@@ -45,5 +45,4 @@ class TestBackgroundProcessService extends TestCase
     {
         $this->assertFalse($this->backgroundProcessService->isRoot());
     }
-
 }
