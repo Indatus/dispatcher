@@ -39,4 +39,9 @@ class TestBackgroundProcessService extends TestCase
         $this->assertFalse($this->backgroundProcessService->canRunAsUser());
     }
 
+    public function testIsRoot()
+    {
+        $this->assertFalse($this->backgroundProcessService->isRoot());
+    }
+
 } 
