@@ -15,8 +15,8 @@ use Indatus\Dispatcher\Scheduling\Schedulable;
 use Indatus\Dispatcher\Scheduling\ScheduledCommandInterface;
 use Log;
 
-class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
-
+class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService
+{
     /** @var \Indatus\Dispatcher\Table */
     protected $table;
 
@@ -46,10 +46,21 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
     {
         $this->table = App::make('Indatus\Dispatcher\Table');
 
-        $this->table->setHeaders(['Environment(s)', 'Name', 'Args/Opts', 'Minute', 'Hour', 'Day of Month', 'Month', 'Day of Week', 'Run as']);
+        $headers = [
+            'Environment(s)',
+            'Name',
+            'Args/Opts',
+            'Minute',
+            'Hour',
+            'Day of Month',
+            'Month',
+            'Day of Week',
+            'Run as',
+        ];
+
+        $this->table->setHeaders($headers);
         /** @var \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command */
         foreach ($this->getScheduledCommands() as $command) {
-
             /** @var \Indatus\Dispatcher\Scheduling\Schedulable $scheduler */
             $scheduler = $command->schedule(App::make('Indatus\Dispatcher\Scheduling\Schedulable'));
 
@@ -57,7 +68,6 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
             if (!is_array($scheduler)) {
                 $this->printCommand($command, $scheduler);
             } else {
-
                 if ($this->printCommandLabel($command)) {
                     /** @var \Indatus\Dispatcher\Scheduling\Schedulable $schedule */
                     foreach ($scheduler as $schedule) {
@@ -81,7 +91,7 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
                 $scheduler->getScheduleDayOfMonth(),
                 $scheduler->getScheduleMonth(),
                 $scheduler->getScheduleDayOfWeek(),
-                $command->user()
+                $command->user(),
             ]);
     }
 
@@ -96,7 +106,7 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
                 '',
                 '',
                 '',
-                $command->user()
+                $command->user(),
             ]);
         return true;
     }
@@ -105,16 +115,19 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService {
     {
         $commandService = App::make('Indatus\Dispatcher\Services\CommandService');
 
+        $arguments = $commandService->prepareArguments($scheduler->getArguments());
+        $options = $commandService->prepareOptions($scheduler->getOptions());
+
         $this->table->addRow([
                 '',
                 '',
-                trim($commandService->prepareArguments($scheduler->getArguments()).' '.$commandService->prepareOptions($scheduler->getOptions())),
+                trim($arguments).' '.$options,
                 $scheduler->getScheduleMinute(),
                 $scheduler->getScheduleHour(),
                 $scheduler->getScheduleDayOfMonth(),
                 $scheduler->getScheduleMonth(),
                 $scheduler->getScheduleDayOfWeek(),
-                ''
+                '',
             ]);
     }
-} 
+}

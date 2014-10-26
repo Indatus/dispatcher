@@ -13,20 +13,17 @@ use App;
 use Illuminate\Console\Command;
 use Indatus\Dispatcher\Commands\Run;
 use Indatus\Dispatcher\Debugger;
-use Indatus\Dispatcher\OptionReader;
 use Indatus\Dispatcher\Scheduling\ScheduledCommand;
 use Indatus\Dispatcher\Scheduling\ScheduledCommandInterface;
-use Config;
 
 class CommandService
 {
-
     /**
      * @var \Indatus\Dispatcher\Services\ScheduleService
      */
     private $scheduleService;
 
-    function __construct(ScheduleService $scheduleService)
+    public function __construct(ScheduleService $scheduleService)
     {
         $this->scheduleService = $scheduleService;
     }
@@ -45,7 +42,6 @@ class CommandService
         $queue = $this->scheduleService->getQueue($debugger);
 
         foreach ($queue->flush() as $queueItem) {
-
             /** @var \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command */
             $command = $queueItem->getCommand();
 
@@ -55,12 +51,23 @@ class CommandService
                     if ($this->runnableInEnvironment($command)) {
                         $scheduler = $queueItem->getScheduler();
 
-                        $backgroundProcessRunner->run($command, $scheduler->getArguments(), $scheduler->getOptions(), $debugger);
+                        $backgroundProcessRunner->run(
+                            $command,
+                            $scheduler->getArguments(),
+                            $scheduler->getOptions(),
+                            $debugger
+                        );
                     } else {
-                        $debugger->commandNotRun($command, 'Command is not configured to run in '.App::environment());
+                        $debugger->commandNotRun(
+                            $command,
+                            'Command is not configured to run in '.App::environment()
+                        );
                     }
                 } else {
-                    $debugger->commandNotRun($command, 'Command is not configured to run while application is in maintenance mode');
+                    $debugger->commandNotRun(
+                        $command,
+                        'Command is not configured to run while application is in maintenance mode'
+                    );
                 }
             } else {
                 $debugger->commandNotRun($command, 'Command is disabled');
@@ -158,16 +165,16 @@ class CommandService
      * Get a command to run this application
      *
      * @param \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $scheduledCommand
-     * @param array $arguments
-     * @param array $options
+     * @param array                                                    $arguments
+     * @param array                                                    $options
      *
      * @return string
      */
     public function getRunCommand(
         ScheduledCommandInterface $scheduledCommand,
         array $arguments = [],
-        array $options = [])
-    {
+        array $options = []
+    ) {
         /** @var \Indatus\Dispatcher\Platform $platform */
         $platform = App::make('Indatus\Dispatcher\Platform');
 
@@ -197,7 +204,7 @@ class CommandService
             if (is_string($scheduledCommand->user())) {
                 array_unshift($commandPieces, 'sudo -u '.$scheduledCommand->user());
             }
-        } elseif($platform->isWindows()) {
+        } elseif ($platform->isWindows()) {
             $commandPieces[] = '> NULL'; //don't show output, errors can be viewed in the Laravel log
 
             //run in background on windows
@@ -207,5 +214,4 @@ class CommandService
 
         return implode(' ', $commandPieces);
     }
-
 }

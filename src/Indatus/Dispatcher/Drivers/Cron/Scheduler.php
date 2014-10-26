@@ -14,7 +14,6 @@ use Indatus\Dispatcher\Scheduling\Schedulable;
 
 class Scheduler extends Schedulable
 {
-
     /**
      * @var string Any of the contextual time frame
      */
@@ -66,11 +65,11 @@ class Scheduler extends Schedulable
     /**
      * Manually set a command's execution schedule
      *
-     * @param mixed $minute
-     * @param mixed $hour
-     * @param mixed $dayOfMonth
-     * @param mixed $month
-     * @param mixed $dayOfWeek
+     * @param  mixed $minute
+     * @param  mixed $hour
+     * @param  mixed $dayOfMonth
+     * @param  mixed $month
+     * @param  mixed $dayOfWeek
      * @return $this
      */
     public function setSchedule($minute, $hour, $dayOfMonth, $month, $dayOfWeek)
@@ -205,7 +204,7 @@ class Scheduler extends Schedulable
 
     /**
      * Set the minutes under which this command will run
-     * @param mixed $minutesIntoTheHour
+     * @param  mixed $minutesIntoTheHour
      * @return $this
      */
     public function minutes($minutesIntoTheHour)
@@ -234,7 +233,7 @@ class Scheduler extends Schedulable
 
     /**
      * Set the hours under which this command will run
-     * @param mixed $hoursIntoTheDay
+     * @param  mixed $hoursIntoTheDay
      * @return $this
      */
     public function hours($hoursIntoTheDay)
@@ -258,7 +257,7 @@ class Scheduler extends Schedulable
 
     /**
      * Set the days of the month under which this command will run
-     * @param mixed $hoursIntoTheDay
+     * @param  mixed $hoursIntoTheDay
      * @return $this
      */
     public function daysOfTheMonth($hoursIntoTheDay)
@@ -270,7 +269,7 @@ class Scheduler extends Schedulable
 
     /**
      * Set the months under which this command will run
-     * @param mixed $monthsIntoTheYear
+     * @param  mixed $monthsIntoTheYear
      * @return $this
      */
     public function months($monthsIntoTheYear)
@@ -294,7 +293,7 @@ class Scheduler extends Schedulable
 
     /**
      * Set the days of the week under which this command will run
-     * @param mixed $daysOfTheWeek
+     * @param  mixed $daysOfTheWeek
      * @return $this
      */
     public function daysOfTheWeek($daysOfTheWeek)
@@ -433,4 +432,4 @@ class Scheduler extends Schedulable
     {
         return $this->getSchedule();
     }
-} 
+}

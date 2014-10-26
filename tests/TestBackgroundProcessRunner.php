@@ -8,7 +8,6 @@ use Mockery as m;
 
 class TestBackgroundProcessRunner extends TestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -30,4 +29,4 @@ class TestBackgroundProcessRunner extends TestCase
         $backgroundProcessRunner = new BackgroundProcessRunner($commandService);
         $this->assertTrue($backgroundProcessRunner->run($scheduledCommand));
     }
-} 
+}

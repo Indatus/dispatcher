@@ -16,7 +16,7 @@ class Debugger
     /** @var \Indatus\Dispatcher\OptionReader */
     protected $optionReader;
 
-    function __construct(OptionReader $optionReader, OutputInterface $output)
+    public function __construct(OptionReader $optionReader, OutputInterface $output)
     {
         $this->output = $output;
         $this->optionReader = $optionReader;
@@ -28,7 +28,8 @@ class Debugger
      * @param ScheduledCommandInterface $command
      * @param                           $reason
      */
-    public function commandNotRun(ScheduledCommandInterface $command, $reason) {
+    public function commandNotRun(ScheduledCommandInterface $command, $reason)
+    {
         if ($this->optionReader->isDebugMode()) {
             $this->output->writeln('     <comment>'.$command->getName().'</comment>: '.$reason);
         }
@@ -40,7 +41,8 @@ class Debugger
      * @param ScheduledCommandInterface $command
      * @param                           $runCommand
      */
-    public function commandRun(ScheduledCommandInterface $command, $runCommand) {
+    public function commandRun(ScheduledCommandInterface $command, $runCommand)
+    {
         if ($this->optionReader->isDebugMode()) {
             $this->output->writeln('     <info>'.$command->getName().'</info>: '.$runCommand);
         }

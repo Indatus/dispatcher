@@ -10,37 +10,35 @@
  */
 
 use App;
-use Config;
 use Illuminate\Foundation\Application;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
+    /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @var bool
+     */
+    protected $defer = true;
 
-	/**
-	 * Indicates if loading of the provider is deferred.
-	 *
-	 * @var bool
-	 */
-	protected $defer = true;
+    /**
+     * Bootstrap the application events.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->package('indatus/dispatcher');
+    }
 
-	/**
-	 * Bootstrap the application events.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
-		$this->package('indatus/dispatcher');
-	}
-
-	/**
-	 * Register the service provider.
-	 *
+    /**
+     * Register the service provider.
+     *
      * @codeCoverageIgnore
-	 * @return void
-	 */
-	public function register()
-	{
+     * @return void
+     */
+    public function register()
+    {
         /** @var \Indatus\Dispatcher\ConfigResolver $resolver */
         $resolver = App::make('\Indatus\Dispatcher\ConfigResolver');
 
@@ -55,21 +53,21 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         });
 
         $this->registerCommands();
-	}
+    }
 
-	/**
-	 * Get the services provided by the provider.
-	 *
-	 * @return array
-	 */
-	public function provides()
-	{
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
         return [
             'command.scheduled.summary',
             'command.scheduled.make',
             'command.scheduled.run'
         ];
-	}
+    }
 
     /**
      * Register artisan commands
@@ -78,21 +76,20 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     private function registerCommands()
     {
         //scheduled:summary
-        $this->app->bindShared('command.scheduled.summary', function(Application $app) {
+        $this->app->bindShared('command.scheduled.summary', function (Application $app) {
             return $app->make('Indatus\Dispatcher\Commands\ScheduleSummary');
         });
 
         //scheduled:make
-        $this->app->bindShared('command.scheduled.make', function(Application $app) {
+        $this->app->bindShared('command.scheduled.make', function (Application $app) {
             return $app->make('Indatus\Dispatcher\Commands\Make');
         });
 
         //scheduled:run
-        $this->app->bindShared('command.scheduled.run', function(Application $app) {
+        $this->app->bindShared('command.scheduled.run', function (Application $app) {
             return $app->make('Indatus\Dispatcher\Commands\Run');
         });
 
         $this->commands($this->provides());
     }
-
 }
