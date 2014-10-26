@@ -3,13 +3,11 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Indatus\Dispatcher\BackgroundProcess;
 use Indatus\Dispatcher\ServiceProvider;
 use Mockery as m;
 
 class TestServiceProvider extends TestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -31,4 +29,4 @@ class TestServiceProvider extends TestCase
         $this->assertContains('command.scheduled.make', $provider->provides());
         $this->assertContains('command.scheduled.run', $provider->provides());
     }
-} 
+}

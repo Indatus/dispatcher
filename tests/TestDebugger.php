@@ -3,13 +3,11 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Indatus\Dispatcher\Scheduler;
-use Mockery as m;
 use Indatus\Dispatcher\Debugger;
+use Mockery as m;
 
 class TestDebugger extends TestCase
 {
-
     protected $output;
 
     protected $optionReader;
@@ -77,5 +75,4 @@ class TestDebugger extends TestCase
 
         $debugger->log($message);
     }
-
 }

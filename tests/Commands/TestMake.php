@@ -8,7 +8,6 @@ use Mockery as m;
 
 class TestMake extends TestCase
 {
-
     /**
      * @var Indatus\Dispatcher\Commands\Make
      */
@@ -56,7 +55,7 @@ class TestMake extends TestCase
                 "use Indatus\\Dispatcher\\Scheduling\\Schedulable;\n".
                 "use Indatus\\Dispatcher\\Drivers\\".ucwords(Config::get('dispatcher::driver'))."\\Scheduler",
             'extends Command {' => 'extends ScheduledCommand {',
-            'parent::__construct();' => $stubContents
+            'parent::__construct();' => $stubContents,
         ];
 
         $delimeter = '*****';
@@ -79,5 +78,4 @@ class TestMake extends TestCase
     {
         return new Make(m::mock('Illuminate\Filesystem\Filesystem'));
     }
-
-} 
+}

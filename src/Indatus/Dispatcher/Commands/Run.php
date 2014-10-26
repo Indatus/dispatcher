@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
+use App;
 use Illuminate\Console\Command;
 use Indatus\Dispatcher\Services\CommandService;
 use Symfony\Component\Console\Input\InputOption;
-use App;
 
 /**
  * Run any commands that should be run
@@ -20,7 +20,6 @@ use App;
  */
 class Run extends Command
 {
-
     /** @var \Indatus\Dispatcher\Services\CommandService|null  */
     private $commandService = null;
 
@@ -66,15 +65,15 @@ class Run extends Command
     {
         /** @var \Indatus\Dispatcher\OptionReader $optionReader */
         $optionReader = App::make('Indatus\Dispatcher\OptionReader', array(
-                $this->option()
+                $this->option(),
             ));
 
         /** @var \Indatus\Dispatcher\Debugger $debugger */
         $debugger = App::make('Indatus\Dispatcher\Debugger', array(
                 $optionReader,
-                $this->getOutput()
+                $this->getOutput(),
             ));
 
         $this->commandService->runDue($debugger);
     }
-} 
+}

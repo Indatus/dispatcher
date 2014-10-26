@@ -18,9 +18,11 @@
         "laravel/framework": "~5.0"
     },
     "require-dev": {
+        "orchestra/testbench": "3.0.*",
         "phpunit/phpunit": "~4.0",
         "mockery/mockery": "~0.9",
-        "orchestra/testbench": "3.0.*"
+        "fabpot/php-cs-fixer": "~1.0",
+        "squizlabs/php_codesniffer": "~1.5"
     },
     "autoload": {
         "classmap": [

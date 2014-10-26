@@ -10,8 +10,8 @@
  *
  * @codeCoverageIgnore
  */
-class Platform {
-
+class Platform
+{
     /**
      * @var int
      */
@@ -61,5 +61,4 @@ class Platform {
     {
         return defined('HHVM_VERSION');
     }
-
 }

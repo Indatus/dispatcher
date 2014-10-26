@@ -19,7 +19,6 @@ use Indatus\Dispatcher\Services\ScheduleService;
  */
 class ScheduleSummary extends Command
 {
-
     /** @var \Indatus\Dispatcher\Services\ScheduleService|null  */
     private $scheduleService = null;
 
@@ -53,4 +52,4 @@ class ScheduleSummary extends Command
     {
         $this->scheduleService->printSummary();
     }
-} 
+}

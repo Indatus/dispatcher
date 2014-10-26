@@ -3,8 +3,8 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Mockery as m;
 use Indatus\Dispatcher\Drivers\Cron\Scheduler;
+use Mockery as m;
 
 class TestCronScheduler extends TestCase
 {
@@ -200,12 +200,11 @@ class TestCronScheduler extends TestCase
         $this->assertEquals($args, $scheduler->getArguments());
     }
 
-
     public function testOpts()
     {
         $opts = [
             'testOpt',
-            'option' => 'value'
+            'option' => 'value',
         ];
         $args = [
 
@@ -214,11 +213,11 @@ class TestCronScheduler extends TestCase
         $expectedOpts = array(
             'testOpt',
             'option' => 'value',
-            'env' => 'testing'
+            'env' => 'testing',
         );
 
         $args = array(
-            'testArgument'
+            'testArgument',
         );
 
         /** @var \Indatus\Dispatcher\Drivers\Cron\Scheduler $scheduler */
@@ -243,17 +242,17 @@ class TestCronScheduler extends TestCase
         $opts = [
             'testOpt',
             'option' => 'value',
-            'env' => 'a_fancy_environment'
+            'env' => 'a_fancy_environment',
         ];
 
         $expectedOpts = [
             'testOpt',
             'option' => 'value',
-            'env' => 'a_fancy_environment'
+            'env' => 'a_fancy_environment',
         ];
 
         $args = [
-            'testArgument'
+            'testArgument',
         ];
 
         /** @var \Indatus\Dispatcher\Drivers\Cron\Scheduler $scheduler */
@@ -272,5 +271,4 @@ class TestCronScheduler extends TestCase
         //be sure schedule reset, if not then we didn't get a fresh SchedulerClass
         $this->assertEquals($scheduler->getSchedule(), $this->defaultSchedule);
     }
-
-} 
+}

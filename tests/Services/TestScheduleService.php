@@ -113,5 +113,4 @@ class TestScheduleService extends TestCase
             $queue
         );
     }
-
-} 
+}

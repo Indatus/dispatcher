@@ -5,7 +5,6 @@
 
 abstract class TestCase extends Orchestra\Testbench\TestCase
 {
-
     protected function getPackageProviders()
     {
         return ['Indatus\Dispatcher\ServiceProvider'];
@@ -26,5 +25,4 @@ abstract class TestCase extends Orchestra\Testbench\TestCase
             'Dispatcher'
         ]));
     }
-
 }

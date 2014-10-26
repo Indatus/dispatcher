@@ -8,7 +8,6 @@ use Mockery as m;
 
 class TestConfig extends TestCase
 {
-
     public function tearDown()
     {
         parent::tearDown();
@@ -25,5 +24,4 @@ class TestConfig extends TestCase
         $serviceProvider = App::make('Indatus\Dispatcher\Scheduling\Schedulable');
         $this->assertInstanceOf('Indatus\Dispatcher\Drivers\Cron\Scheduler', $serviceProvider);
     }
-
 }

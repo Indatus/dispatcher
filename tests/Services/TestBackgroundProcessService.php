@@ -3,8 +3,8 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Mockery as m;
 use Indatus\Dispatcher\Services\BackgroundProcessService;
+use Mockery as m;
 
 class TestBackgroundProcessService extends TestCase
 {
@@ -38,5 +38,4 @@ class TestBackgroundProcessService extends TestCase
 
         $this->assertFalse($this->backgroundProcessService->canRunAsUser());
     }
-
-} 
+}
