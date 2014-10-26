@@ -4,4 +4,5 @@ composer.phar
 build
 tests/coverage
 tests/meta
+phpunit.xml
 .idea
