@@ -56,7 +56,7 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService
             'Month',
             'Day of Week',
             'Run as',
-        ]
+        ];
 
         $this->table->setHeaders($headers);
         /** @var \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command */
