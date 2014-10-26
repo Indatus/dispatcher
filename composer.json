@@ -14,12 +14,13 @@
     "require": {
         "php": ">=5.4",
         "wp-cli/php-cli-tools": "v0.9.4-patch46",
-        "mtdowling/cron-expression" : "~1.0.3"
+        "mtdowling/cron-expression": "~1.0.3",
+        "laravel/framework": "~5.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0",
         "mockery/mockery": "~0.9",
-        "orchestra/testbench": "3.0.x"
+        "orchestra/testbench": "3.0.*"
     },
     "autoload": {
         "classmap": [
@@ -34,5 +35,6 @@
             "dev-master": "2.0.x-dev"
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
