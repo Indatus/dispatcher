@@ -18,7 +18,7 @@ class TestBackgroundProcessService extends TestCase
     {
         parent::setUp();
 
-        $this->backgroundProcessService = m::mock('Indatus\Dispatcher\Services\BackgroundProcessService[isRoot]');
+        $this->backgroundProcessService = new BackgroundProcessService();
 
         $this->platform = m::mock('Indatus\Dispatcher\Platform');
         $this->app->instance('Indatus\Dispatcher\Platform', $this->platform);
@@ -26,6 +26,8 @@ class TestBackgroundProcessService extends TestCase
 
     public function testCantRunAsUserOnLinux()
     {
+        $this->backgroundProcessService = m::mock('Indatus\Dispatcher\Services\BackgroundProcessService[isRoot]');
+
         $this->platform->shouldReceive('isWindows')->andReturn(false);
         $this->backgroundProcessService->shouldReceive('isRoot')->andReturn(true);
 

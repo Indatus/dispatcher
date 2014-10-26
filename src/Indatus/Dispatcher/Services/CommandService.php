@@ -196,6 +196,9 @@ class CommandService
             $commandPieces[] = $this->prepareOptions($options);
         }
 
+        //always pass environment
+        $commandPieces[] = '--env='.App::environment();
+
         if ($platform->isUnix()) {
             $commandPieces[] = '> /dev/null'; //don't show output, errors can be viewed in the Laravel log
             $commandPieces[] = '&'; //run in background
