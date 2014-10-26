@@ -14,7 +14,6 @@ use Config;
 
 class ConfigResolver
 {
-
     /**
      * Resolve a class based on the driver configuration
      *
@@ -23,17 +22,9 @@ class ConfigResolver
     public function resolveSchedulerClass()
     {
         try {
-            return App::make(
-                Config::get('dispatcher::driver').'\\Scheduler', [
-                    $this
-                ]
-            );
+            return App::make(Config::get('dispatcher::driver').'\\Scheduler', [$this]);
         } catch (\ReflectionException $e) {
-            return App::make(
-                'Indatus\Dispatcher\Drivers\\'.$this->getDriver().'\\Scheduler', [
-                    $this
-                ]
-            );
+            return App::make('Indatus\Dispatcher\Drivers\\'.$this->getDriver().'\\Scheduler', [$this]);
         }
     }
 
@@ -60,5 +51,4 @@ class ConfigResolver
     {
         return ucwords(strtolower(Config::get('dispatcher::driver')));
     }
-
 }

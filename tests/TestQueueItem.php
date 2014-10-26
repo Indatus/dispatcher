@@ -8,7 +8,6 @@ use Mockery as m;
 
 class TestQueueItem extends TestCase
 {
-
     public function tearDown()
     {
         parent::tearDown();
@@ -26,4 +25,4 @@ class TestQueueItem extends TestCase
         $queueItem->setScheduler($scheduler);
         $this->assertEquals($scheduler, $queueItem->getScheduler());
     }
-} 
+}

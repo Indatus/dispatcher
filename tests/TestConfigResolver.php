@@ -9,7 +9,6 @@ use Mockery as m;
 
 class TestConfigResolver extends TestCase
 {
-
     public function tearDown()
     {
         parent::tearDown();
@@ -53,5 +52,4 @@ class TestConfigResolver extends TestCase
             $resolver->resolveServiceClass()
         );
     }
-
 }

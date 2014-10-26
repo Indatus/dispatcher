@@ -86,7 +86,7 @@ class TestCronScheduleService extends TestCase
                 $m->shouldReceive('environment')->twice();
                 $m->shouldReceive('schedule')->once()->andReturn([
                         $scheduler,
-                        $scheduler
+                        $scheduler,
                     ]);
             });
         $scheduledCommand = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand', function ($m) use ($table) {
@@ -111,9 +111,9 @@ class TestCronScheduleService extends TestCase
             function ($m) use ($scheduledCommand, $scheduledCommandWithMultipleSchedulers) {
                 $m->shouldReceive('getScheduledCommands')->once()->andReturn([
                         $scheduledCommandWithMultipleSchedulers,
-                        $scheduledCommand
+                        $scheduledCommand,
                     ]);
             });
         $scheduleService->printSummary();
     }
-} 
+}

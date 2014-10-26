@@ -7,7 +7,6 @@ use Mockery as m;
 
 class TestQueue extends TestCase
 {
-
     public function tearDown()
     {
         parent::tearDown();
@@ -25,4 +24,4 @@ class TestQueue extends TestCase
         $this->assertEquals([$item], $queue->flush());
         $this->assertEquals(0, $queue->size());
     }
-} 
+}

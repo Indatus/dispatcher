@@ -11,7 +11,6 @@
 
 use App;
 use Indatus\Dispatcher\ConfigResolver;
-use Symfony\Component\Console\Input\ArgvInput;
 
 abstract class Schedulable
 {
@@ -142,8 +141,7 @@ abstract class Schedulable
      */
     private function setEnvironmentOption()
     {
-        if(!array_key_exists('env', $this->options))
-        {
+        if (!array_key_exists('env', $this->options)) {
             $this->options = array_merge(
                 $this->options,
                 array('env' => App::environment())

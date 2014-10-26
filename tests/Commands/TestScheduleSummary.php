@@ -8,7 +8,6 @@ use Mockery as m;
 
 class TestScheduleSummary extends TestCase
 {
-
     /** @var  \Mockery\MockInterface */
     private $scheduleService;
 
@@ -47,5 +46,4 @@ class TestScheduleSummary extends TestCase
             }));
         $scheduleService->fire();
     }
-
-} 
+}

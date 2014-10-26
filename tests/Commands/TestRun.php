@@ -8,7 +8,6 @@ use Mockery as m;
 
 class TestRun extends TestCase
 {
-
     /**
      * @var Indatus\Dispatcher\Commands\Run
      */
@@ -55,5 +54,4 @@ class TestRun extends TestCase
             m::mock('Symfony\Component\Console\Output\OutputInterface')->shouldIgnoreMissing()
         );
     }
-
-} 
+}

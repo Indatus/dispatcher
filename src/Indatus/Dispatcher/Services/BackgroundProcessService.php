@@ -13,7 +13,6 @@ use App;
 
 class BackgroundProcessService
 {
-
     /**
      * Determine if the background process can run as another user
      * @return bool
@@ -33,5 +32,4 @@ class BackgroundProcessService
     {
         return (posix_getuid() === 0);
     }
-
 }

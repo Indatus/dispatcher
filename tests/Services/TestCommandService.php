@@ -222,11 +222,11 @@ class TestCommandService extends TestCase
     public function testPrepareArguments()
     {
         $arguments = array(
-            'argument'
+            'argument',
         );
         $commandService = $this->getMockForAbstractClass('Indatus\Dispatcher\Services\CommandService',
             array(
-                m::mock('Indatus\Dispatcher\Services\ScheduleService')
+                m::mock('Indatus\Dispatcher\Services\ScheduleService'),
             ));
 
         $this->assertEquals(
@@ -239,11 +239,11 @@ class TestCommandService extends TestCase
     {
         $arguments = array(
             'test' => 'argument',
-            'keyOnly'
+            'keyOnly',
         );
         $commandService = $this->getMockForAbstractClass('Indatus\Dispatcher\Services\CommandService',
             array(
-                m::mock('Indatus\Dispatcher\Services\ScheduleService')
+                m::mock('Indatus\Dispatcher\Services\ScheduleService'),
             ));
 
         $this->assertEquals(
@@ -258,12 +258,12 @@ class TestCommandService extends TestCase
             'test' => 'argument',
             'option' => array(
                 'value1',
-                'value2'
-            )
+                'value2',
+            ),
         );
         $commandService = $this->getMockForAbstractClass('Indatus\Dispatcher\Services\CommandService',
             array(
-                m::mock('Indatus\Dispatcher\Services\ScheduleService')
+                m::mock('Indatus\Dispatcher\Services\ScheduleService'),
             ));
 
         $this->assertEquals(
@@ -283,7 +283,7 @@ class TestCommandService extends TestCase
                     base_path().'/artisan',
                     $commandName,
                     '> /dev/null',
-                    '&'
+                    '&',
                 )));
     }
 
@@ -305,7 +305,7 @@ class TestCommandService extends TestCase
                     PHP_BINARY,
                     base_path().'/artisan',
                     $commandName,
-                    '> NULL'
+                    '> NULL',
                 )));
     }
 
@@ -327,7 +327,7 @@ class TestCommandService extends TestCase
                     base_path().'/artisan',
                     $commandName,
                     '> /dev/null',
-                    '&'
+                    '&',
                 )));
     }
 
@@ -341,7 +341,7 @@ class TestCommandService extends TestCase
             $this->commandService->getRunCommand(
                 $scheduledCommand,
                 array(
-                    'option'
+                    'option',
                 )
             ),
             implode(' ', array(
@@ -350,7 +350,7 @@ class TestCommandService extends TestCase
                     $commandName,
                     'option',
                     '> /dev/null',
-                    '&'
+                    '&',
                 )));
     }
 
@@ -366,7 +366,7 @@ class TestCommandService extends TestCase
                 array(),
                 array(
                     'option' => 'value',
-                    'anotherOption'
+                    'anotherOption',
                 )
             ),
             implode(' ', array(
@@ -376,7 +376,7 @@ class TestCommandService extends TestCase
                     '--option="value"',
                     '--anotherOption',
                     '> /dev/null',
-                    '&'
+                    '&',
                 )));
     }
 
@@ -393,15 +393,14 @@ class TestCommandService extends TestCase
                     base_path().'/artisan',
                     $commandName,
                     '> /dev/null',
-                    '&'
+                    '&',
                 )));
     }
 
-    private function mockCommand ($environment = '*')
+    private function mockCommand($environment = '*')
     {
         return $class = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand', function ($m) use ($environment) {
                 $m->shouldReceive('environment')->andReturn($environment);
             });
     }
-
-} 
+}

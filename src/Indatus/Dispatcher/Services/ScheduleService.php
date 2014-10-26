@@ -14,13 +14,10 @@ use Artisan;
 use Indatus\Dispatcher\Debugger;
 use Indatus\Dispatcher\Scheduling\Schedulable;
 use Indatus\Dispatcher\Scheduling\ScheduledCommandInterface;
-use Indatus\Dispatcher\Scheduling\ScheduleException;
-use Indatus\Dispatcher\Table;
 use Symfony\Component\Process\Exception\InvalidArgumentException;
 
 abstract class ScheduleService
 {
-
     /**
      * Determine if a command is due to be run
      *
@@ -39,7 +36,7 @@ abstract class ScheduleService
     {
         $scheduledCommands = [];
         foreach (Artisan::all() as $command) {
-            if ($command instanceOf ScheduledCommandInterface) {
+            if ($command instanceof ScheduledCommandInterface) {
                 $scheduledCommands[] = $command;
             }
         }
@@ -62,7 +59,6 @@ abstract class ScheduleService
 
         /** @var \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command */
         foreach ($this->getScheduledCommands() as $command) {
-
             /** @var \Indatus\Dispatcher\Scheduling\Schedulable $scheduler */
             $scheduler = App::make('Indatus\Dispatcher\Scheduling\Schedulable');
 
@@ -74,8 +70,9 @@ abstract class ScheduleService
 
             $willBeRun = false;
             foreach ($schedules as $schedule) {
-                if (($schedule instanceOf Schedulable) === false) {
-                    throw new \InvalidArgumentException('Schedule for "'.$command->getName().'" is not an instance of Schedulable');
+                if (($schedule instanceof Schedulable) === false) {
+                    $msg = 'Schedule for "'.$command->getName().'" is not an instance of Schedulable';
+                    throw new \InvalidArgumentException($msg);
                 }
 
                 if ($this->isDue($schedule)) {
@@ -105,5 +102,4 @@ abstract class ScheduleService
      * @return void
      */
     abstract public function printSummary();
-
 }

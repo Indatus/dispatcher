@@ -9,12 +9,10 @@
  * file that was distributed with this source code.
  */
 
-use App;
 use Illuminate\Console\Command;
 
 abstract class ScheduledCommand extends Command implements ScheduledCommandInterface
 {
-
     /**
      * Unfortunately, this has to be here for unit testing
      *
@@ -51,5 +49,4 @@ abstract class ScheduledCommand extends Command implements ScheduledCommandInter
     {
         return false;
     }
-
 }

@@ -3,12 +3,11 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Mockery as m;
 use Indatus\Dispatcher\OptionReader;
+use Mockery as m;
 
 class TestOptionReader extends TestCase
 {
-
     public function tearDown()
     {
         parent::tearDown();
@@ -21,8 +20,8 @@ class TestOptionReader extends TestCase
         $this->assertEquals(false, $optionReader->isDebugMode());
 
         $optionReader = new OptionReader([
-            'debug' => true
+            'debug' => true,
         ]);
         $this->assertEquals(true, $optionReader->isDebugMode());
     }
-} 
+}

@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
+use App;
 use Config;
 use Illuminate\Foundation\Console\ConsoleMakeCommand;
-use App;
 
 /**
  * View a summary for all scheduled artisan commands
@@ -19,7 +19,6 @@ use App;
  */
 class Make extends ConsoleMakeCommand
 {
-
     /**
      * The console command name.
      *
@@ -38,7 +37,8 @@ class Make extends ConsoleMakeCommand
      * @param string $name
      * @codeCoverageIgnore
      */
-    protected function buildClass($name) {
+    protected function buildClass($name)
+    {
         return $this->extendStub(parent::buildClass($name));
     }
 
@@ -58,11 +58,11 @@ class Make extends ConsoleMakeCommand
                 "use Indatus\\Dispatcher\\Scheduling\\Schedulable;\n".
                 "use Indatus\\Dispatcher\\Drivers\\".ucwords(Config::get('dispatcher::driver'))."\\Scheduler",
             'extends Command {' => 'extends ScheduledCommand {',
-            'parent::__construct();' => $content
+            'parent::__construct();' => $content,
         ];
 
         $stub = str_replace(array_keys($replacements), array_values($replacements), $stub);
 
         return $stub;
     }
-} 
+}
