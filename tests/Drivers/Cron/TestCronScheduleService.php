@@ -8,10 +8,11 @@ use Mockery as m;
 
 class TestCronScheduleService extends TestCase
 {
-    /**
-     * @var Indatus\Dispatcher\ScheduleService
-     */
+    /** @var ScheduleService */
     private $scheduleService;
+
+    /** @var \Mockery\MockInterface */
+    private $console;
 
     public function setUp()
     {
@@ -20,7 +21,8 @@ class TestCronScheduleService extends TestCase
         $table = m::mock('Indatus\Dispatcher\Table');
         $this->app->instance('Indatus\Dispatcher\Table', $table);
 
-        $this->scheduleService = new ScheduleService();
+        $this->console = m::mock('Illuminate\Contracts\Console\Kernel');
+        $this->scheduleService = new ScheduleService($this->console);
     }
 
     public function tearDown()
@@ -66,7 +68,6 @@ class TestCronScheduleService extends TestCase
                 $m->shouldReceive('setHeaders')->once();
                 $m->shouldReceive('display')->once();
             });
-        $queue = m::mock('Indatus\Dispatcher\Queue');
 
         $scheduledCommandWithMultipleSchedulers = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand', function ($m) use ($table) {
                 $table->shouldReceive('addRow')->times(3);
@@ -107,7 +108,7 @@ class TestCronScheduleService extends TestCase
             });
         $this->app->instance('Indatus\Dispatcher\Table', $table);
         $scheduleService = m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService[getScheduledCommands]',
-            [],
+            [$this->console],
             function ($m) use ($scheduledCommand, $scheduledCommandWithMultipleSchedulers) {
                 $m->shouldReceive('getScheduledCommands')->once()->andReturn([
                         $scheduledCommandWithMultipleSchedulers,

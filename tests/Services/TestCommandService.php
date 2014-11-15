@@ -3,11 +3,7 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Indatus\Dispatcher\Drivers\Cron\ScheduleService;
-use Indatus\Dispatcher\Queue;
-use Indatus\Dispatcher\Scheduler;
 use Indatus\Dispatcher\Services\CommandService;
-use Indatus\Dispatcher\Table;
 use Mockery as m;
 
 class TestCommandService extends TestCase
@@ -21,7 +17,8 @@ class TestCommandService extends TestCase
     {
         parent::setUp();
 
-        $scheduleService = new ScheduleService(new Table(), new Queue());
+        $scheduleService = m::mock('Indatus\Dispatcher\Services\ScheduleService');
+        $scheduleService->shouldDeferMissing();
         $this->commandService = new CommandService($scheduleService);
 
         //default all commands to unix
