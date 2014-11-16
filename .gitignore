@@ -3,7 +3,5 @@ composer.phar
 .DS_Store
 build
 tests/coverage
-coverage
 tests/meta
-phpunit.xml
 .idea

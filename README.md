@@ -37,6 +37,7 @@ class MyCommand extends ScheduledCommand {
 * [Features](#features)
 * [Tutorial](#tutorial)
 * [Installation](#installation)
+  * [Upgrading from 1.4 to 2.0@dev](#upgrading-1.4-2)
 * [Usage](#usage)
   * [Generating New Scheduled Commands](#new-commands)
   * [Scheduling Existing Commands](#scheduling-commands)
@@ -93,6 +94,14 @@ If you are adding this to `/etc/cron.d` you'll need to specify a user immediatel
 
 > You may add this to any user's Crontab, but only the root crontab can run commands as other users.
 
+<a name="upgrading-1.4-2" />
+### Upgrading from 1.4 to 2.0@dev
+
+In all scheduled commands...
+
+ * Replace `use Indatus\Dispatcher\Drivers\Cron\Scheduler` with `use Indatus\Dispatcher\Drivers\DateTime\Scheduler`
+ * Replaced uses of `Scheduler::[DAY_OF_WEEK]` with `Day::[DAY_OF_WEEK]` and `Scheduler::[MONTH_OF_YEAR]` with `Month::[MONTH_OF_YEAR]`
+ * `executable` config option has been removed.  Dispatcher now inherits the [path to the binary](http://php.net/manual/en/reserved.constants.php#constant.php-bindir) that was initially used to run `scheduled:run`
 
 <a name="usage" />
 ## Usage
