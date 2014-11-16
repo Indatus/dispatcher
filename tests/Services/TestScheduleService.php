@@ -4,26 +4,25 @@
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Artisan;
-use Indatus\Dispatcher\Table;
+use Indatus\Dispatcher\Drivers\DateTime\ScheduleService;
 use Mockery as m;
 use TestCase;
 
 class TestScheduleService extends TestCase
 {
-    /**
-     * @var ScheduleService
-     */
+    /** @var ScheduleService */
     private $scheduleService;
+
+    /** @var \Mockery\MockInterface */
+    private $console;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->scheduleService = m::mock('Indatus\Dispatcher\Services\ScheduleService[isDue]');
+        $this->console = m::mock('Illuminate\Contracts\Console\Kernel');
 
-        $scheduler = m::mock('Indatus\Dispatcher\Scheduling\Schedulable');
-        $this->app->instance('Indatus\Dispatcher\Scheduling\Schedulable', $scheduler);
+        $this->scheduleService = new ScheduleService($this->console);
     }
 
     public function testGetScheduledCommands()
@@ -32,7 +31,7 @@ class TestScheduleService extends TestCase
                 $m->shouldReceive('schedule')->andReturn(m::mock('Indatus\Dispatcher\Scheduling\Schedulable'));
             })];
 
-        Artisan::shouldReceive('all')->once()->andReturn($scheduledCommands);
+        $this->console->shouldReceive('all')->once()->andReturn($scheduledCommands);
 
         $this->assertSameSize($scheduledCommands, $this->scheduleService->getScheduledCommands());
     }
@@ -40,7 +39,7 @@ class TestScheduleService extends TestCase
     public function testGetQueue()
     {
         $scheduleService = m::mock('Indatus\Dispatcher\Services\ScheduleService[getScheduledCommands,isDue]', [
-                new Table()
+                $this->console
             ], function ($m) {
                 $command = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand');
                 $scheduler = m::mock('Indatus\Dispatcher\Scheduling\Schedulable');
@@ -65,7 +64,7 @@ class TestScheduleService extends TestCase
     {
         $command = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand');
         $scheduleService = m::mock('Indatus\Dispatcher\Services\ScheduleService[getScheduledCommands,isDue]', [
-                new Table()
+                $this->console
             ], function ($m) use (&$command) {
                 $scheduler = m::mock('Indatus\Dispatcher\Scheduling\Schedulable');
                 $command->shouldReceive('schedule')->once()
@@ -93,7 +92,7 @@ class TestScheduleService extends TestCase
     public function testGetQueueException()
     {
         $scheduleService = m::mock('Indatus\Dispatcher\Services\ScheduleService[getScheduledCommands,isDue]', [
-                new Table()
+                $this->console
             ], function ($m) {
                 $command = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand');
                 $command->shouldReceive('schedule')->once()

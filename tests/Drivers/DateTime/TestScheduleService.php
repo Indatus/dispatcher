@@ -23,6 +23,9 @@ class TestScheduleService extends TestCase
     /** @var \Indatus\Dispatcher\Drivers\DateTime\Scheduler */
     private $scheduler;
 
+    /** @var \Mockery\MockInterface */
+    private $console;
+
     public function setUp()
     {
         parent::setUp();
@@ -36,7 +39,8 @@ class TestScheduleService extends TestCase
         $this->logger = m::mock('Illuminate\Contracts\Logging\Log');
         $this->app->instance('Illuminate\Contracts\Logging\Log', $this->logger);
 
-        $this->scheduleService = new ScheduleService();
+        $this->console = m::mock('Illuminate\Contracts\Console\Kernel');
+        $this->scheduleService = new ScheduleService($this->console);
     }
 
     public function testIsNotDue()
@@ -116,7 +120,7 @@ class TestScheduleService extends TestCase
             });
         $this->app->instance('Indatus\Dispatcher\Table', $table);
         $scheduleService = m::mock('Indatus\Dispatcher\Drivers\DateTime\ScheduleService[getScheduledCommands]',
-            [$this->logger],
+            [$this->console],
             function ($m) use ($scheduledCommand, $scheduledCommandWithMultipleSchedulers) {
                 $m->shouldReceive('getScheduledCommands')->once()->andReturn([
                         $scheduledCommandWithMultipleSchedulers,

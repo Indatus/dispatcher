@@ -10,14 +10,21 @@
  */
 
 use App;
-use Artisan;
+use Illuminate\Contracts\Console\Kernel;
 use Indatus\Dispatcher\Debugger;
 use Indatus\Dispatcher\Scheduling\Schedulable;
 use Indatus\Dispatcher\Scheduling\ScheduledCommandInterface;
-use Symfony\Component\Process\Exception\InvalidArgumentException;
 
 abstract class ScheduleService
 {
+    /** @var Kernel */
+    protected $console;
+
+    public function __construct(Kernel $console)
+    {
+        $this->console = $console;
+    }
+
     /**
      * Determine if a command is due to be run
      *
@@ -35,7 +42,7 @@ abstract class ScheduleService
     public function getScheduledCommands()
     {
         $scheduledCommands = [];
-        foreach (Artisan::all() as $command) {
+        foreach ($this->console->all() as $command) {
             if ($command instanceof ScheduledCommandInterface) {
                 $scheduledCommands[] = $command;
             }
