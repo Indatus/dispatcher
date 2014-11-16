@@ -10,27 +10,17 @@
  */
 
 use App;
-use Indatus\Dispatcher\ConfigResolver;
-use Symfony\Component\Console\Input\ArgvInput;
 
 abstract class Schedulable
 {
-    /** @var \Indatus\Dispatcher\ConfigResolver $configResolver */
-    protected $configResolver;
-
     /** @var array $arguments */
-    protected $arguments = array();
+    protected $arguments = [];
 
     /** @var array $options */
-    protected $options = array();
+    protected $options = [];
 
     /** @var bool Instantiate a new instance when using args() or opts() */
     protected $instantiateNew = true;
-
-    public function __construct(ConfigResolver $configResolver)
-    {
-        $this->configResolver = $configResolver;
-    }
 
     /**
      * Define arguments for this schedule when it runs.
@@ -41,13 +31,19 @@ abstract class Schedulable
      */
     public function args(array $arguments)
     {
+        // provide a new instance of the scheduler class if this
+        // is the first method that was called.  This allows for
+        // $scheduler->opts() to return a new instance of the
+        // scheduler when it's first called
         if (count($this->options) == 0) {
-            $scheduler = $this->getNewSchedulerClass();
+            $scheduler = App::make(get_called_class());
             $scheduler->setArguments($arguments);
+
             return $scheduler;
         }
 
         $this->setArguments($arguments);
+
         return $this;
     }
 
@@ -82,13 +78,19 @@ abstract class Schedulable
      */
     public function opts(array $options)
     {
+        // provide a new instance of the scheduler class if this
+        // is the first method that was called.  This allows for
+        // $scheduler->opts() to return a new instance of the
+        // scheduler when it's first called
         if (count($this->arguments) == 0) {
-            $scheduler = $this->getNewSchedulerClass();
+            $scheduler = App::make(get_called_class());
             $scheduler->setOptions($options);
+
             return $scheduler;
         }
 
         $this->setOptions($options);
+
         return $this;
     }
 
@@ -112,18 +114,20 @@ abstract class Schedulable
     public function setOptions($options)
     {
         $this->options = $options;
+        $this->setEnvironmentOption();
     }
 
     /**
-     * Get a scheduler class
-     *
-     * @return $this|Schedulable
+     * Propagate scheduled:run environment
+     * to scheduled commands, only if 'env' option was not specified
      */
-    public function getNewSchedulerClass()
+    private function setEnvironmentOption()
     {
-        /** @var \Indatus\Dispatcher\Scheduling\Schedulable $scheduler */
-        $scheduler = $this->configResolver->resolveSchedulerClass();
-
-        return $scheduler;
+        if (!array_key_exists('env', $this->options)) {
+            $this->options = array_merge(
+                $this->options,
+                ['env' => App::environment()]
+            );
+        }
     }
 }

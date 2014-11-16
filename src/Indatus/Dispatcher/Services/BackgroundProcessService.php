@@ -13,23 +13,6 @@ use App;
 
 class BackgroundProcessService
 {
-
-    /**
-     * @var \Indatus\Dispatcher\Services\ScheduleService
-     */
-    private $scheduleService;
-
-    /**
-     * @var \Indatus\Dispatcher\Services\CommandService
-     */
-    private $commandService;
-
-    function __construct(ScheduleService $scheduleService, CommandService $commandService)
-    {
-        $this->scheduleService = $scheduleService;
-        $this->commandService = $commandService;
-    }
-
     /**
      * Determine if the background process can run as another user
      * @return bool
@@ -45,9 +28,8 @@ class BackgroundProcessService
      * Is the current command being run as root?
      * @return bool
      */
-    private function isRoot()
+    public function isRoot()
     {
         return (posix_getuid() === 0);
     }
-
 }

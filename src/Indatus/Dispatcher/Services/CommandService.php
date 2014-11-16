@@ -10,17 +10,18 @@
  */
 
 use App;
-use Indatus\Dispatcher\Scheduling\ScheduledCommand;
+use Illuminate\Console\Command;
+use Indatus\Dispatcher\Debugger;
+use Indatus\Dispatcher\Scheduling\ScheduledCommandInterface;
 
 class CommandService
 {
-
     /**
-     * @var /Indatus\Dispatcher\Services\ScheduleService
+     * @var \Indatus\Dispatcher\Services\ScheduleService
      */
     private $scheduleService;
 
-    function __construct(ScheduleService $scheduleService)
+    public function __construct(ScheduleService $scheduleService)
     {
         $this->scheduleService = $scheduleService;
     }
@@ -28,20 +29,46 @@ class CommandService
     /**
      * Run all commands that are due to be run
      */
-    public function runDue()
+    public function runDue(Debugger $debugger)
     {
+        $debugger->log('Running commands...');
+
         /** @var \Indatus\Dispatcher\BackgroundProcessRunner $backgroundProcessRunner */
         $backgroundProcessRunner = App::make('Indatus\Dispatcher\BackgroundProcessRunner');
 
         /** @var \Indatus\Dispatcher\Queue $queue */
-        $queue = $this->scheduleService->getQueue();
+        $queue = $this->scheduleService->getQueue($debugger);
+
         foreach ($queue->flush() as $queueItem) {
+            /** @var \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command */
             $command = $queueItem->getCommand();
 
-            if ($command->isEnabled() && $this->runnableInEnvironment($command)) {
-                $scheduler = $queueItem->getScheduler();
+            //determine if the command is enabled
+            if ($command->isEnabled()) {
+                if ($this->runnableInCurrentMaintenanceSetting($command)) {
+                    if ($this->runnableInEnvironment($command)) {
+                        $scheduler = $queueItem->getScheduler();
 
-                $backgroundProcessRunner->run($command, $scheduler->getArguments(), $scheduler->getOptions());
+                        $backgroundProcessRunner->run(
+                            $command,
+                            $scheduler->getArguments(),
+                            $scheduler->getOptions(),
+                            $debugger
+                        );
+                    } else {
+                        $debugger->commandNotRun(
+                            $command,
+                            'Command is not configured to run in '.App::environment()
+                        );
+                    }
+                } else {
+                    $debugger->commandNotRun(
+                        $command,
+                        'Command is not configured to run while application is in maintenance mode'
+                    );
+                }
+            } else {
+                $debugger->commandNotRun($command, 'Command is disabled');
             }
         }
     }
@@ -49,11 +76,11 @@ class CommandService
     /**
      * Determine if a scheduled command is in the correct environment
      *
-     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommand $command
+     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command
      *
      * @return bool
      */
-    public function runnableInEnvironment(ScheduledCommand $command)
+    public function runnableInEnvironment(ScheduledCommandInterface $command)
     {
         $environment = $command->environment();
 
@@ -67,6 +94,22 @@ class CommandService
         }
 
         return false;
+    }
+
+    /**
+     * Determine if application is in maintenance mode and if scheduled command can run
+     *
+     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $command
+     *
+     * @return bool
+     */
+    public function runnableInCurrentMaintenanceSetting(ScheduledCommandInterface $command)
+    {
+        if (App::isDownForMaintenance()) {
+            return $command->runInMaintenanceMode();
+        }
+
+        return true;
     }
 
     /**
@@ -90,7 +133,7 @@ class CommandService
      */
     public function prepareOptions(array $options)
     {
-        $optionPieces = array();
+        $optionPieces = [];
         foreach ($options as $opt => $value) {
             //if it's an array of options, throw them in there as well
             if (is_array($value)) {
@@ -119,22 +162,29 @@ class CommandService
     /**
      * Get a command to run this application
      *
-     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommand $scheduledCommand
-     * @param array $arguments
-     * @param array $options
+     * @param \Indatus\Dispatcher\Scheduling\ScheduledCommandInterface $scheduledCommand
+     * @param array                                                    $arguments
+     * @param array                                                    $options
      *
      * @return string
      */
     public function getRunCommand(
-        ScheduledCommand $scheduledCommand,
-        array $arguments = array(),
-        array $options = array())
-    {
-        $commandPieces = array(
-            'php',
-            base_path().'/artisan',
-            $scheduledCommand->getName()
-        );
+        ScheduledCommandInterface $scheduledCommand,
+        array $arguments = [],
+        array $options = []
+    ) {
+        /** @var \Indatus\Dispatcher\Platform $platform */
+        $platform = App::make('Indatus\Dispatcher\Platform');
+
+        $commandPieces = [];
+        if ($platform->isHHVM()) {
+            $commandPieces[] = '/usr/bin/env hhvm';
+        } else {
+            $commandPieces[] = PHP_BINARY;
+        }
+
+        $commandPieces[] = base_path().'/artisan';
+        $commandPieces[] = $scheduledCommand->getName();
 
         if (count($arguments) > 0) {
             $commandPieces[] = $this->prepareArguments($arguments);
@@ -144,15 +194,25 @@ class CommandService
             $commandPieces[] = $this->prepareOptions($options);
         }
 
-        $commandPieces[] = '&'; //run in background
-        $commandPieces[] = '> /dev/null 2>&1'; //don't show output, errors can be viewed in the Laravel log
+        //always pass environment
+        $commandPieces[] = '--env='.App::environment();
 
-        //run the command as a different user
-        if (is_string($scheduledCommand->user())) {
-            array_unshift($commandPieces, 'sudo -u '.$scheduledCommand->user());
+        if ($platform->isUnix()) {
+            $commandPieces[] = '> /dev/null'; //don't show output, errors can be viewed in the Laravel log
+            $commandPieces[] = '&'; //run in background
+
+            //run the command as a different user
+            if (is_string($scheduledCommand->user())) {
+                array_unshift($commandPieces, 'sudo -u '.$scheduledCommand->user());
+            }
+        } elseif ($platform->isWindows()) {
+            $commandPieces[] = '> NULL'; //don't show output, errors can be viewed in the Laravel log
+
+            //run in background on windows
+            array_unshift($commandPieces, '/B');
+            array_unshift($commandPieces, 'START');
         }
 
         return implode(' ', $commandPieces);
     }
-
 }

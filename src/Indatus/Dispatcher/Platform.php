@@ -7,10 +7,11 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
+ * @codeCoverageIgnore
  */
-
-class Platform {
-
+class Platform
+{
     /**
      * @var int
      */
@@ -22,25 +23,12 @@ class Platform {
     const WINDOWS = 1;
 
     /**
-     * @var int
-     */
-    private $currentOS;
-
-    public function __construct() {
-        if ($this->getPlatform() == self::WINDOWS) {
-            $this->currentOS = self::WINDOWS;
-        } else {
-            $this->currentOS = self::UNIX;
-        }
-    }
-
-    /**
      * Determine if the current OS is Windows
      * @return bool
      */
     public function isWindows()
     {
-        return $this->currentOS == self::WINDOWS;
+        return $this->getPlatform() == self::WINDOWS;
     }
 
     /**
@@ -49,11 +37,11 @@ class Platform {
      */
     public function isUnix()
     {
-        return $this->currentOS == self::UNIX;
+        return $this->getPlatform() == self::UNIX;
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
     private function getPlatform()
     {
@@ -64,4 +52,13 @@ class Platform {
         }
     }
 
+    /**
+     * Determine if we're running in HHVM
+     *
+     * @return bool
+     */
+    public function isHHVM()
+    {
+        return defined('HHVM_VERSION');
+    }
 }

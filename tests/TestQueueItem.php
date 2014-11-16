@@ -1,20 +1,14 @@
-<?php
+<?php namespace Indatus\Dispatcher;
+
 /**
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Indatus\Dispatcher\QueueItem;
 use Mockery as m;
+use TestCase;
 
 class TestQueueItem extends TestCase
 {
-
-    public function tearDown()
-    {
-        parent::tearDown();
-        m::close();
-    }
-
     public function testQueue()
     {
         $command = m::mock('Indatus\Dispatcher\Scheduling\Command');
@@ -26,4 +20,4 @@ class TestQueueItem extends TestCase
         $queueItem->setScheduler($scheduler);
         $this->assertEquals($scheduler, $queueItem->getScheduler());
     }
-} 
+}

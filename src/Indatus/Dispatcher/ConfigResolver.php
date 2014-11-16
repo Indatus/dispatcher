@@ -10,10 +10,23 @@
  */
 
 use App;
-use Config;
+use Illuminate\Contracts\Config\Repository;
+use Illuminate\Contracts\Foundation\Application;
+use ReflectionException;
 
 class ConfigResolver
 {
+    /** @var Repository */
+    protected $config;
+
+    /** @var Application */
+    protected $app;
+
+    public function __construct(Repository $config, Application $app)
+    {
+        $this->config = $config;
+        $this->app = $app;
+    }
 
     /**
      * Resolve a class based on the driver configuration
@@ -23,17 +36,9 @@ class ConfigResolver
     public function resolveSchedulerClass()
     {
         try {
-            return App::make(
-                Config::get('dispatcher::driver').'\\Scheduler', array(
-                    $this
-                )
-            );
-        } catch (\ReflectionException $e) {
-            return App::make(
-                'Indatus\Dispatcher\Drivers\\'.$this->getDriver().'\\Scheduler', array(
-                    $this
-                )
-            );
+            return $this->app->make($this->getDriver().'\\Scheduler', [$this]);
+        } catch (ReflectionException $e) {
+            return $this->app->make('Indatus\Dispatcher\Drivers\\'.$this->getDriver().'\\Scheduler', [$this]);
         }
     }
 
@@ -45,9 +50,9 @@ class ConfigResolver
     public function resolveServiceClass()
     {
         try {
-            return App::make(Config::get('dispatcher::driver').'\\ScheduleService');
-        } catch (\ReflectionException $e) {
-            return App::make('Indatus\Dispatcher\Drivers\\'.$this->getDriver().'\\ScheduleService');
+            return $this->app->make($this->getDriver().'\\ScheduleService');
+        } catch (ReflectionException $e) {
+            return $this->app->make('Indatus\Dispatcher\Drivers\\'.$this->getDriver().'\\ScheduleService');
         }
     }
 
@@ -58,7 +63,6 @@ class ConfigResolver
      */
     public function getDriver()
     {
-        return ucwords(strtolower(Config::get('dispatcher::driver')));
+        return $this->config->get('dispatcher::driver');
     }
-
 }

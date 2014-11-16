@@ -1,28 +1,23 @@
-<?php
+<?php namespace Indatus\Dispatcher;
+
 /**
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
 use Mockery as m;
+use TestCase;
 
 class TestQueue extends TestCase
 {
-
-    public function tearDown()
-    {
-        parent::tearDown();
-        m::close();
-    }
-
     public function testQueue()
     {
         $item = m::mock('Indatus\Dispatcher\QueueItem');
 
-        $queue = new Indatus\Dispatcher\Queue();
+        $queue = new Queue();
         $this->assertEquals(0, $queue->size());
         $queue->add($item);
         $this->assertEquals(1, $queue->size());
-        $this->assertEquals(array($item), $queue->flush());
+        $this->assertEquals([$item], $queue->flush());
         $this->assertEquals(0, $queue->size());
     }
-} 
+}

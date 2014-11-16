@@ -9,12 +9,10 @@
  * file that was distributed with this source code.
  */
 
-use App;
 use Illuminate\Console\Command;
 
 abstract class ScheduledCommand extends Command implements ScheduledCommandInterface
 {
-
     /**
      * Unfortunately, this has to be here for unit testing
      *
@@ -42,4 +40,13 @@ abstract class ScheduledCommand extends Command implements ScheduledCommandInter
         return '*';
     }
 
+    /**
+     * Should this command be allowed to run when application is in maintenance mode
+     *
+     * @return boolean Defaults to false
+     */
+    public function runInMaintenanceMode()
+    {
+        return false;
+    }
 }

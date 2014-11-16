@@ -1,10 +1,11 @@
-<?php
+<?php namespace Indatus\Dispatcher\Scheduling;
+
 /**
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Indatus\Dispatcher\Drivers\Cron\Scheduler;
 use Mockery as m;
+use TestCase;
 
 class TestScheduledCommand extends TestCase
 {
@@ -18,17 +19,6 @@ class TestScheduledCommand extends TestCase
         parent::setUp();
 
         $this->scheduledCommand = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand[schedule]');
-
-        $this->app->instance(
-            'Indatus\Dispatcher\Scheduling\Schedulable',
-            new Scheduler(App::make('Indatus\Dispatcher\ConfigResolver'))
-        );
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-        m::close();
     }
 
     public function testDefaultUser()
@@ -41,4 +31,8 @@ class TestScheduledCommand extends TestCase
         $this->assertEquals('*', $this->scheduledCommand->environment());
     }
 
-} 
+    public function testDefaultRunInMaintenanceMode()
+    {
+        $this->assertFalse($this->scheduledCommand->runInMaintenanceMode());
+    }
+}

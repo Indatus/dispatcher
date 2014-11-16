@@ -9,11 +9,13 @@
  * file that was distributed with this source code.
  */
 
-/**
- * Table class, only here so we can unit test our app correctly
- * @author Ben Kuhl <bkuhl@indatus.com>
- * @package Indatus\Dispatcher
- */
-class Table extends \cli\Table implements TableInterface
+class Day
 {
+    const SUNDAY = 0;
+    const MONDAY = 1;
+    const TUESDAY = 2;
+    const WEDNESDAY = 3;
+    const THURSDAY = 4;
+    const FRIDAY = 5;
+    const SATURDAY = 6;
 }
