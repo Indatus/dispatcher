@@ -37,7 +37,7 @@ class MyCommand extends ScheduledCommand {
 * [Features](#features)
 * [Tutorial](#tutorial)
 * [Installation](#installation)
-  * [Upgrading from 1.4 to 2.0@dev](#upgrading-1.4-2)
+  * [Upgrading from 1.4 to 2.0](#upgrading-1.4-2.0)
 * [Usage](#usage)
   * [Generating New Scheduled Commands](#new-commands)
   * [Scheduling Existing Commands](#scheduling-commands)
@@ -73,12 +73,12 @@ By Jefferey Way at [Laracasts](https://www.laracasts.com): [Recurring Tasks the 
 
 | Requirements                  | 1.4.*                         | 2.*                               |
 |-------------------------------|-------------------------------|-----------------------------------|
-| [Laravel](http://laravel.com) | 4.1+                          | 5.0+                              |
-| PHP                           | 5.3+                          | 5.4+                              |
-| [HHVM](http://hhvm.com)       | √                             | √                                 |
-| Install with Composer...      | 1.*                           | 2.0.*@dev                         |
+| [Laravel](http://laravel.com) | 4.1/4.2                       | 5.x                               |
+| [PHP](https://php.net)        | 5.3+                          | 5.4+                              |
+| [HHVM](http://hhvm.com)       | 3.3+                          | 3.3+                              |
+| Install with Composer...      | ~1.4                          | ~2.0@dev                          |
 
-Add this line to the providers array in your `app/config/app.php` file :
+Add this line to the providers array in your `config/app.php` file :
 
 ```php
         'Indatus\Dispatcher\ServiceProvider',
@@ -94,8 +94,8 @@ If you are adding this to `/etc/cron.d` you'll need to specify a user immediatel
 
 > You may add this to any user's Crontab, but only the root crontab can run commands as other users.
 
-<a name="upgrading-1.4-2" />
-### Upgrading from 1.4 to 2.0@dev
+<a name="upgrading-1.4-2.0" />
+### Upgrading from 1.4 to 2.0
 
 In all scheduled commands...
 
