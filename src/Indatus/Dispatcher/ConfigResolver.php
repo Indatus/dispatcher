@@ -11,7 +11,7 @@
 
 use App;
 use Illuminate\Contracts\Config\Repository;
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Container\Container;
 use ReflectionException;
 
 class ConfigResolver
@@ -19,13 +19,13 @@ class ConfigResolver
     /** @var Repository */
     protected $config;
 
-    /** @var Application */
-    protected $app;
+    /** @var Container */
+    protected $container;
 
-    public function __construct(Repository $config, Application $app)
+    public function __construct(Repository $config, Container $container)
     {
         $this->config = $config;
-        $this->app = $app;
+        $this->container = $container;
     }
 
     /**
@@ -36,9 +36,9 @@ class ConfigResolver
     public function resolveSchedulerClass()
     {
         try {
-            return $this->app->make($this->getDriver().'\\Scheduler', [$this]);
+            return $this->container->make($this->getDriver().'\\Scheduler', [$this]);
         } catch (ReflectionException $e) {
-            return $this->app->make('Indatus\Dispatcher\Drivers\\'.$this->getDriver().'\\Scheduler', [$this]);
+            return $this->container->make('Indatus\Dispatcher\Drivers\\'.$this->getDriver().'\\Scheduler', [$this]);
         }
     }
 
@@ -50,9 +50,9 @@ class ConfigResolver
     public function resolveServiceClass()
     {
         try {
-            return $this->app->make($this->getDriver().'\\ScheduleService');
+            return $this->container->make($this->getDriver().'\\ScheduleService');
         } catch (ReflectionException $e) {
-            return $this->app->make('Indatus\Dispatcher\Drivers\\'.$this->getDriver().'\\ScheduleService');
+            return $this->container->make('Indatus\Dispatcher\Drivers\\'.$this->getDriver().'\\ScheduleService');
         }
     }
 

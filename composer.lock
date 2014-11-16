@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c3fd0664593c1384f3f09fd5f984420e",
+    "hash": "5b00125d0602525cbd57586b9c562cb9",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -1580,16 +1580,16 @@
         },
         {
             "name": "wp-cli/php-cli-tools",
-            "version": "v0.9.4-patch46",
+            "version": "v0.10.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-cli/php-cli-tools.git",
-                "reference": "02d5ed4cdbab911df91bf06062c8b2705fb0919a"
+                "reference": "98db6782166ad41c13935548d4b0f53f8b9177da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-cli/php-cli-tools/zipball/02d5ed4cdbab911df91bf06062c8b2705fb0919a",
-                "reference": "02d5ed4cdbab911df91bf06062c8b2705fb0919a",
+                "url": "https://api.github.com/repos/wp-cli/php-cli-tools/zipball/98db6782166ad41c13935548d4b0f53f8b9177da",
+                "reference": "98db6782166ad41c13935548d4b0f53f8b9177da",
                 "shasum": ""
             },
             "require": {
@@ -1613,15 +1613,20 @@
                     "name": "James Logsdon",
                     "email": "jlogsdon@php.net",
                     "role": "Developer"
+                },
+                {
+                    "name": "Daniel Bachhuber",
+                    "email": "daniel@handbuilt.co",
+                    "role": "Maintainer"
                 }
             ],
             "description": "Console utilities for PHP",
-            "homepage": "http://github.com/jlogsdon/php-cli-tools",
+            "homepage": "http://github.com/wp-cli/php-cli-tools",
             "keywords": [
                 "cli",
                 "console"
             ],
-            "time": "2014-02-01 23:11:00"
+            "time": "2014-11-12 15:44:16"
         }
     ],
     "packages-dev": [
@@ -1802,12 +1807,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/testbench.git",
-                "reference": "a38009e63276db1adc9c2b2ce07d0f202ebeb585"
+                "reference": "813a559b7cf3cc2c521daf5303ec695c3d1d0be8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/testbench/zipball/a38009e63276db1adc9c2b2ce07d0f202ebeb585",
-                "reference": "a38009e63276db1adc9c2b2ce07d0f202ebeb585",
+                "url": "https://api.github.com/repos/orchestral/testbench/zipball/813a559b7cf3cc2c521daf5303ec695c3d1d0be8",
+                "reference": "813a559b7cf3cc2c521daf5303ec695c3d1d0be8",
                 "shasum": ""
             },
             "require": {
@@ -1855,7 +1860,7 @@
                 "orchestral",
                 "testing"
             ],
-            "time": "2014-11-11 10:16:30"
+            "time": "2014-11-16 09:13:50"
         },
         {
             "name": "phpunit/php-code-coverage",
