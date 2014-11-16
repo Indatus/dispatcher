@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-use App;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
 use ReflectionException;
