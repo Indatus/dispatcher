@@ -78,6 +78,8 @@ By Jefferey Way at [Laracasts](https://www.laracasts.com): [Recurring Tasks the 
 | [HHVM](http://hhvm.com)       | 3.3+                          | 3.3+                              |
 | Install with Composer...      | ~1.4                          | ~2.0@dev                          |
 
+> If you're using **Laravel 4** view the [readme in the 1.4 branch](https://github.com/Indatus/dispatcher/tree/1.4)
+
 Add this line to the providers array in your `config/app.php` file :
 
 ```php
@@ -101,7 +103,7 @@ In all scheduled commands...
 
  * Replace `use Indatus\Dispatcher\Drivers\Cron\Scheduler` with `use Indatus\Dispatcher\Drivers\DateTime\Scheduler`
  * Replaced uses of `Scheduler::[DAY_OF_WEEK]` with `Day::[DAY_OF_WEEK]` and `Scheduler::[MONTH_OF_YEAR]` with `Month::[MONTH_OF_YEAR]`
- * `executable` config option has been removed.  Dispatcher now inherits the [path to the binary](http://php.net/manual/en/reserved.constants.php#constant.php-bindir) that was initially used to run `scheduled:run`
+ * `executable` config option has been removed.  Dispatcher now inherits the [path to the binary](http://php.net/manual/en/reserved.constants.php#constant.php-binary) that was initially used to run `scheduled:run`
 
 <a name="usage" />
 ## Usage
@@ -147,7 +149,7 @@ use Indatus\Dispatcher\Drivers\DateTime\Scheduler;
     }
 ```
 
-For details and examples on how to schedule, see the [DateTime Driver](#DateTime).
+For details and examples on how to schedule, see the [DateTime Driver](#datetime).
 
 <a name="commands-as-users" />
 ### Running Commands As Users
