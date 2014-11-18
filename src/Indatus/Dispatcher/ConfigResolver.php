@@ -62,6 +62,6 @@ class ConfigResolver
      */
     public function getDriver()
     {
-        return $this->config->get('dispatcher::driver');
+        return ucfirst($this->config->get('dispatcher::driver'));
     }
 }
