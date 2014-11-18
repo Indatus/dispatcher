@@ -37,6 +37,8 @@ class MyCommand extends ScheduledCommand {
 * [Features](#features)
 * [Tutorial](#tutorial)
 * [Installation](#installation)
+  * [For Laravel 4 (see 1.4 branch)](https://github.com/Indatus/dispatcher/tree/1.4#installation)
+  * [For Laravel 5](#installation)
   * [Upgrading from 1.4 to 2.0](#upgrading-1.4-2.0)
 * [Usage](#usage)
   * [Generating New Scheduled Commands](#new-commands)
