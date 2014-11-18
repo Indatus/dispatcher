@@ -52,4 +52,9 @@ class TestConfigResolver extends TestCase
             $this->configResolver->resolveServiceClass()
         );
     }
+
+    public function testDriverCasing()
+    {
+        $this->assertEquals('dateTime', $this->configResolver->getDriver());
+    }
 }
