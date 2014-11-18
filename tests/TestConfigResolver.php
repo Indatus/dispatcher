@@ -55,6 +55,6 @@ class TestConfigResolver extends TestCase
 
     public function testDriverCasing()
     {
-        $this->assertEquals('dateTime', $this->configResolver->getDriver());
+        $this->assertEquals('DateTime', $this->configResolver->getDriver());
     }
 }
