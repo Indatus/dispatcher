@@ -1,55 +1,55 @@
-<?php
+<?php namespace Indatus\Dispatcher;
+
 /**
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Indatus\Dispatcher\ConfigResolver;
-use Indatus\Dispatcher\Scheduler;
-use Mockery as m;
+use App;
+use Config;
+use TestCase;
 
 class TestConfigResolver extends TestCase
 {
-    public function tearDown()
+    /** @var ConfigResolver */
+    protected $configResolver;
+
+    public function setUp()
     {
-        parent::tearDown();
-        m::close();
+        parent::setUp();
+        $this->configResolver = App::make('Indatus\Dispatcher\ConfigResolver');
     }
 
     public function testLoadingSchedulerPackagedDriver()
     {
-        $resolver = new ConfigResolver();
         $this->assertInstanceOf(
-            'Indatus\Dispatcher\Drivers\Cron\Scheduler',
-            $resolver->resolveSchedulerClass()
+            'Indatus\Dispatcher\Drivers\DateTime\Scheduler',
+            $this->configResolver->resolveSchedulerClass()
         );
     }
 
     public function testLoadingServiceCustomDriver()
     {
-        Config::shouldReceive('get')->andReturn('cron');
-        $resolver = new ConfigResolver();
+        Config::shouldReceive('get')->andReturn('dateTime')->once();
         $this->assertInstanceOf(
             'Indatus\Dispatcher\Scheduling\Schedulable',
-            $resolver->resolveSchedulerClass()
+            $this->configResolver->resolveSchedulerClass()
         );
     }
 
     public function testLoadingServicePackagedDriver()
     {
-        $resolver = new ConfigResolver();
         $this->assertInstanceOf(
             'Indatus\Dispatcher\Services\ScheduleService',
-            $resolver->resolveServiceClass()
+            $this->configResolver->resolveServiceClass()
         );
     }
 
     public function testLoadingSchedulerCustomDriver()
     {
-        Config::shouldReceive('get')->andReturn('cron');
-        $resolver = new ConfigResolver();
+        Config::shouldReceive('get')->andReturn('dateTime')->once();
         $this->assertInstanceOf(
             'Indatus\Dispatcher\Services\ScheduleService',
-            $resolver->resolveServiceClass()
+            $this->configResolver->resolveServiceClass()
         );
     }
 }

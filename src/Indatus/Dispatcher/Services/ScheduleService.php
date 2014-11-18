@@ -14,7 +14,6 @@ use Illuminate\Contracts\Console\Kernel;
 use Indatus\Dispatcher\Debugger;
 use Indatus\Dispatcher\Scheduling\Schedulable;
 use Indatus\Dispatcher\Scheduling\ScheduledCommandInterface;
-use Symfony\Component\Process\Exception\InvalidArgumentException;
 
 abstract class ScheduleService
 {

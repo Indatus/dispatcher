@@ -1,11 +1,12 @@
 <?php
+
 /**
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
 abstract class TestCase extends Orchestra\Testbench\TestCase
 {
-    protected function getPackageProviders()
+    protected function getPackageProviders($app)
     {
         return ['Indatus\Dispatcher\ServiceProvider'];
     }

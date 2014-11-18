@@ -10,13 +10,9 @@
  */
 
 use App;
-use Indatus\Dispatcher\ConfigResolver;
 
 abstract class Schedulable
 {
-    /** @var \Indatus\Dispatcher\ConfigResolver $configResolver */
-    protected $configResolver;
-
     /** @var array $arguments */
     protected $arguments = [];
 
@@ -25,11 +21,6 @@ abstract class Schedulable
 
     /** @var bool Instantiate a new instance when using args() or opts() */
     protected $instantiateNew = true;
-
-    public function __construct(ConfigResolver $configResolver)
-    {
-        $this->configResolver = $configResolver;
-    }
 
     /**
      * Define arguments for this schedule when it runs.
@@ -45,12 +36,14 @@ abstract class Schedulable
         // $scheduler->opts() to return a new instance of the
         // scheduler when it's first called
         if (count($this->options) == 0) {
-            $scheduler = $this->getNewSchedulerClass();
+            $scheduler = App::make(get_called_class());
             $scheduler->setArguments($arguments);
+
             return $scheduler;
         }
 
         $this->setArguments($arguments);
+
         return $this;
     }
 
@@ -90,12 +83,14 @@ abstract class Schedulable
         // $scheduler->opts() to return a new instance of the
         // scheduler when it's first called
         if (count($this->arguments) == 0) {
-            $scheduler = $this->getNewSchedulerClass();
+            $scheduler = App::make(get_called_class());
             $scheduler->setOptions($options);
+
             return $scheduler;
         }
 
         $this->setOptions($options);
+
         return $this;
     }
 
@@ -120,19 +115,6 @@ abstract class Schedulable
     {
         $this->options = $options;
         $this->setEnvironmentOption();
-    }
-
-    /**
-     * Get a scheduler class
-     *
-     * @return $this|Schedulable
-     */
-    public function getNewSchedulerClass()
-    {
-        /** @var \Indatus\Dispatcher\Scheduling\Schedulable $scheduler */
-        $scheduler = $this->configResolver->resolveSchedulerClass();
-
-        return $scheduler;
     }
 
     /**

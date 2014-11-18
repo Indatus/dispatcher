@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-use Indatus\Dispatcher\Scheduling\ScheduledCommand;
 use Indatus\Dispatcher\Scheduling\ScheduledCommandInterface;
 use Indatus\Dispatcher\Services\CommandService;
 

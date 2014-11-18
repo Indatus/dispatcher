@@ -1,15 +1,17 @@
-<?php
+<?php namespace Indatus\Dispatcher\Services;
+
 /**
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Indatus\Dispatcher\Services\CommandService;
+use App;
 use Mockery as m;
+use TestCase;
 
 class TestCommandService extends TestCase
 {
     /**
-     * @var Indatus\Dispatcher\Services\CommandService
+     * @var \Indatus\Dispatcher\Services\CommandService
      */
     private $commandService;
 
@@ -17,7 +19,7 @@ class TestCommandService extends TestCase
     {
         parent::setUp();
 
-        $scheduleService = m::mock('Indatus\Dispatcher\Services\ScheduleService');
+        $scheduleService = m::mock('Indatus\Dispatcher\Drivers\DateTime\ScheduleService');
         $scheduleService->shouldDeferMissing();
         $this->commandService = new CommandService($scheduleService);
 
@@ -27,12 +29,6 @@ class TestCommandService extends TestCase
                     $m->shouldReceive('isWindows')->andReturn(false);
                     $m->shouldReceive('isHHVM')->andReturn(false);
                 }));
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-        m::close();
     }
 
     public function testRunDue()
@@ -52,7 +48,7 @@ class TestCommandService extends TestCase
                 $item->shouldReceive('getScheduler')->once()->andReturn($scheduler);
                 $m->shouldReceive('flush')->once()->andReturn([$item]);
             });
-        $scheduleService = m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService');
+        $scheduleService = m::mock('Indatus\Dispatcher\Services\ScheduleService');
         $scheduleService->shouldReceive('getQueue')->once()->andReturn($queue);
         $this->app->instance('Indatus\Dispatcher\Services\ScheduleService', $scheduleService);
 
@@ -82,7 +78,7 @@ class TestCommandService extends TestCase
                 $item->shouldReceive('getCommand')->once()->andReturn($scheduledCommand);
                 $m->shouldReceive('flush')->once()->andReturn([$item]);
             });
-        $scheduleService = m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService');
+        $scheduleService = m::mock('Indatus\Dispatcher\Services\ScheduleService');
         $scheduleService->shouldReceive('getQueue')->once()->andReturn($queue);
         $this->app->instance('Indatus\Dispatcher\Services\ScheduleService', $scheduleService);
 
@@ -109,7 +105,7 @@ class TestCommandService extends TestCase
                 $item->shouldReceive('getCommand')->once()->andReturn($scheduledCommand);
                 $m->shouldReceive('flush')->once()->andReturn([$item]);
             });
-        $scheduleService = m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService');
+        $scheduleService = m::mock('Indatus\Dispatcher\Services\ScheduleService');
         $scheduleService->shouldReceive('getQueue')->once()->andReturn($queue);
         $this->app->instance('Indatus\Dispatcher\Services\ScheduleService', $scheduleService);
 
@@ -139,7 +135,7 @@ class TestCommandService extends TestCase
                 $item->shouldReceive('getCommand')->once()->andReturn($scheduledCommand);
                 $m->shouldReceive('flush')->once()->andReturn([$item]);
             });
-        $scheduleService = m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService');
+        $scheduleService = m::mock('Indatus\Dispatcher\Services\ScheduleService');
         $scheduleService->shouldReceive('getQueue')->once()->andReturn($queue);
         $this->app->instance('Indatus\Dispatcher\Services\ScheduleService', $scheduleService);
 

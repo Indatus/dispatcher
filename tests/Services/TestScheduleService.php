@@ -1,12 +1,12 @@
-<?php
+<?php namespace Indatus\Dispatcher\Services;
+
 /**
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Indatus\Dispatcher\Drivers\Cron\ScheduleService;
-use Indatus\Dispatcher\Scheduler;
-use Indatus\Dispatcher\Table;
+use Indatus\Dispatcher\Drivers\DateTime\ScheduleService;
 use Mockery as m;
+use TestCase;
 
 class TestScheduleService extends TestCase
 {
@@ -23,12 +23,6 @@ class TestScheduleService extends TestCase
         $this->console = m::mock('Illuminate\Contracts\Console\Kernel');
 
         $this->scheduleService = new ScheduleService($this->console);
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-        m::close();
     }
 
     public function testGetScheduledCommands()

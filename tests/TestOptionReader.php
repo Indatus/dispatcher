@@ -1,19 +1,13 @@
-<?php
+<?php namespace Indatus\Dispatcher;
+
 /**
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Indatus\Dispatcher\OptionReader;
-use Mockery as m;
+use TestCase;
 
 class TestOptionReader extends TestCase
 {
-    public function tearDown()
-    {
-        parent::tearDown();
-        m::close();
-    }
-
     public function testDebugMode()
     {
         $optionReader = new OptionReader([]);

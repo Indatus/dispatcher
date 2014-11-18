@@ -29,6 +29,18 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public function boot()
     {
         $this->package('indatus/dispatcher');
+
+        $resolver = $this->app->make('\Indatus\Dispatcher\ConfigResolver');
+
+        //load the scheduler of the appropriate driver
+        $this->app->bind('Indatus\Dispatcher\Scheduling\Schedulable', function () use ($resolver) {
+            return $resolver->resolveSchedulerClass();
+        });
+
+        //load the schedule service of the appropriate driver
+        $this->app->bind('Indatus\Dispatcher\Services\ScheduleService', function () use ($resolver) {
+            return $resolver->resolveServiceClass();
+        });
     }
 
     /**
@@ -39,19 +51,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function register()
     {
-        /** @var \Indatus\Dispatcher\ConfigResolver $resolver */
-        $resolver = App::make('\Indatus\Dispatcher\ConfigResolver');
-
-        //load the scheduler of the appropriate driver
-        App::bind('Indatus\Dispatcher\Scheduling\Schedulable', function () use ($resolver) {
-            return $resolver->resolveSchedulerClass();
-        });
-
-        //load the schedule service of the appropriate driver
-        App::bind('Indatus\Dispatcher\Services\ScheduleService', function () use ($resolver) {
-            return $resolver->resolveServiceClass();
-        });
-
         $this->registerCommands();
     }
 

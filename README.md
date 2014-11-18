@@ -10,7 +10,7 @@ Dispatcher allows you to schedule your artisan commands within your [Laravel](ht
 ```php
 use Indatus\Dispatcher\Scheduling\ScheduledCommand;
 use Indatus\Dispatcher\Scheduling\Schedulable;
-use Indatus\Dispatcher\Drivers\Cron\Scheduler;
+use Indatus\Dispatcher\Drivers\DateTime\Scheduler;
 
 class MyCommand extends ScheduledCommand {
 
@@ -37,6 +37,7 @@ class MyCommand extends ScheduledCommand {
 * [Features](#features)
 * [Tutorial](#tutorial)
 * [Installation](#installation)
+  * [Upgrading from 1.4 to 2.0](#upgrading-1.4-2.0)
 * [Usage](#usage)
   * [Generating New Scheduled Commands](#new-commands)
   * [Scheduling Existing Commands](#scheduling-commands)
@@ -45,7 +46,7 @@ class MyCommand extends ScheduledCommand {
   * [Running Commands In Maintenance Mode](#maintenance-mode)
   * [Advanced Scheduling](#advanced-scheduling)
 * [Drivers](#drivers)
-  * [Cron](#Cron)
+  * [DateTime](#datetime)
 * [Custom Drivers](#custom-drivers)
 * [FAQ](#faq)
 
@@ -58,6 +59,7 @@ class MyCommand extends ScheduledCommand {
  * Schedule commands to run with arguments and options
  * Run commands as other users
  * Run commands in certain environments
+ * Use custom drivers for custom scheduling contexts
 
 <a name="tutorial" />
 ## Tutorial
@@ -69,28 +71,37 @@ By Jefferey Way at [Laracasts](https://www.laracasts.com): [Recurring Tasks the 
 <a name="installation" />
 ## Installation
 
-**Requirements**
+| Requirements                  | 1.4.*                         | 2.*                               |
+|-------------------------------|-------------------------------|-----------------------------------|
+| [Laravel](http://laravel.com) | 4.1/4.2                       | 5.x                               |
+| [PHP](https://php.net)        | 5.3+                          | 5.4+                              |
+| [HHVM](http://hhvm.com)       | 3.3+                          | 3.3+                              |
+| Install with Composer...      | ~1.4                          | ~2.0@dev                          |
 
- * PHP 5.3+ or [HHVM](http://hhvm.com/)
- * [Laravel](http://laravel.com) 4.1+
-
-You can install the library via [Composer](http://getcomposer.org) by adding the following line to the **require** block of your *composer.json* file:
-
-````
-"indatus/dispatcher": "1.*"
-````
-
-> For Laravel 5, use `"indatus/dispatcher": "dev-master"`
-
-Next run `composer update`.
-
-Add this line to the providers array in your `app/config/app.php` file :
+Add this line to the providers array in your `config/app.php` file :
 
 ```php
         'Indatus\Dispatcher\ServiceProvider',
 ```
 
-To use with Cron, see the [Cron driver](#Cron) section.
+Add the following to your root Crontab (via `sudo crontab -e`):
+
+```php
+* * * * * php /path/to/artisan scheduled:run 1>> /dev/null 2>&1
+```
+
+If you are adding this to `/etc/cron.d` you'll need to specify a user immediately after `* * * * *`.
+
+> You may add this to any user's Crontab, but only the root crontab can run commands as other users.
+
+<a name="upgrading-1.4-2.0" />
+### Upgrading from 1.4 to 2.0
+
+In all scheduled commands...
+
+ * Replace `use Indatus\Dispatcher\Drivers\Cron\Scheduler` with `use Indatus\Dispatcher\Drivers\DateTime\Scheduler`
+ * Replaced uses of `Scheduler::[DAY_OF_WEEK]` with `Day::[DAY_OF_WEEK]` and `Scheduler::[MONTH_OF_YEAR]` with `Month::[MONTH_OF_YEAR]`
+ * `executable` config option has been removed.  Dispatcher now inherits the [path to the binary](http://php.net/manual/en/reserved.constants.php#constant.php-bindir) that was initially used to run `scheduled:run`
 
 <a name="usage" />
 ## Usage
@@ -114,20 +125,21 @@ Use `php artisan scheduled:make` to generate a new scheduled command, the same w
 
 You may either implement `\Indatus\Dispatcher\Scheduling\ScheduledCommandInterface` or follow the below steps.
 
-1. Extend `\Indatus\Dispatcher\Scheduling\ScheduledCommand`
-2. Add use statements to your command.  If you're using a custom driver you will use a different `Scheduler` class.
+1. Add use statements to your command.  If you're using a custom driver you will use a different `Scheduler` class.
 ```php
 use Indatus\Dispatcher\Scheduling\ScheduledCommand;
 use Indatus\Dispatcher\Scheduling\Schedulable;
-use Indatus\Dispatcher\Drivers\Cron\Scheduler;
+use Indatus\Dispatcher\Drivers\DateTime\Scheduler;
 ```
+2. Extend `\Indatus\Dispatcher\Scheduling\ScheduledCommand`
 3. Implement schedule():
 ```php
 	/**
 	 * When a command should run
 	 *
 	 * @param Scheduler $scheduler
-	 * @return \Indatus\Dispatcher\Scheduling\Schedulable
+	 *
+	 * @return Scheduler
 	 */
 	public function schedule(Schedulable $scheduler)
 	{
@@ -135,7 +147,7 @@ use Indatus\Dispatcher\Drivers\Cron\Scheduler;
     }
 ```
 
-For details and examples on how to schedule, see [Cron](#Cron).
+For details and examples on how to schedule, see the [DateTime Driver](#DateTime).
 
 <a name="commands-as-users" />
 ### Running Commands As Users
@@ -179,8 +191,6 @@ You may override `runInMaintenanceMode()` to force your command to still be run 
 
 <a name="advanced-scheduling" />
 ### Advanced scheduling
-
-> These examples utilize the [cron](#Cron) driver.
 
 You may schedule a given command to to run at multiple times by `schedule()` returning multiple `Schedulable` instances.
 
@@ -227,25 +237,15 @@ You may also schedule a command to run with arguments and options.
 	}
 ```
 
-> Both `args()` and `opts()`, whichever is called first, will internally create a new `Schedulable` instance for you so you don't need to `App::make()`.
+> NOTE: Both `args()` and `opts()`, whichever is called first, will internally create a new `Schedulable` instance for you so you don't need to `App::make()`.
 
 <a name="drivers" />
 ## Drivers
 
-While Cron is the default driver for Dispatcher, it can be used with any scheduling tool that can run artisan commands. See [building custom drivers](#custom-drivers).
+Drivers provide the ability to add additional context to your scheduling.  [Building custom drivers](#custom-drivers) is a great way to customize this context to your application's needs.
 
-<a name="Cron" />
-### Cron (Default)
-
-Add the following to your root Crontab (`sudo crontab -e`):
-
-```php
-* * * * * php /path/to/artisan scheduled:run 1>> /dev/null 2>&1
-```
-
-If you are adding this to `/etc/cron.d` you'll need to specify a user immediately after `* * * * *`.
-
-> If you'd like for scheduled commands to be able to run as different users, be sure to add this to the root Crontab.  Otherwise all commands run as the user whose Crontab you've added this to.
+<a name="datetime" />
+### DateTime (Default)
 
 Examples of how to schedule:
 
@@ -269,20 +269,20 @@ Examples of how to schedule:
     }
 ```
 
-You may also schedule commands via raw Cron expressions
-
 ```php
 	public function schedule(Schedulable $scheduler)
 	{
-        //every other day at 3:15am, 4:15am and 5:15am
-        return $scheduler->setSchedule(15, [3,4,5], '*/2', '*', '*');
+        //the second and third Tuesday of every month at 12am
+        return $scheduler->monthly()->week([2, 3])->daysOfTheWeek(Day::TUESDAY);
     }
 ```
 
 <a name="custom-drivers" />
 ## Custom Drivers
 
-You can build your own drivers or extend a driver that's included.  Create a packagepath such as `\MyApp\ScheduleDriver\` and create two classes:
+Custom drivers allow you to provide application context within scheduling.  For example, an education-based application may contain scheduling methods like `inServiceDays()`, `springBreak()` and `christmasBreak()` where commands are run or don't run during those times.
+
+Create a packagepath such as `\MyApp\ScheduleDriver\` and create two classes:
 
  * `Scheduler` that `implements Indatus\Dispatcher\Scheduling\Schedulable`.  This class should provide a useful interface for programmers to schedule their commands.
  * `ScheduleService` that `extends \Indatus\Dispatcher\Services\ScheduleService`.  This class contains logic on how to determine if a command is due to run.

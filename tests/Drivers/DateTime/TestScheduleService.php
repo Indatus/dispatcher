@@ -1,15 +1,27 @@
-<?php
+<?php namespace Indatus\Dispatcher\Drivers\DateTime;
+
 /**
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Indatus\Dispatcher\Drivers\Cron\ScheduleService;
+use App;
+use Exception;
 use Mockery as m;
+use TestCase;
 
-class TestCronScheduleService extends TestCase
+class TestScheduleService extends TestCase
 {
     /** @var ScheduleService */
     private $scheduleService;
+
+    /** @var \Mockery\MockInterface */
+    private $interpreter;
+
+    /** @var \Mockery\MockInterface */
+    private $logger;
+
+    /** @var \Indatus\Dispatcher\Drivers\DateTime\Scheduler */
+    private $scheduler;
 
     /** @var \Mockery\MockInterface */
     private $console;
@@ -18,44 +30,42 @@ class TestCronScheduleService extends TestCase
     {
         parent::setUp();
 
-        $table = m::mock('Indatus\Dispatcher\Table');
-        $this->app->instance('Indatus\Dispatcher\Table', $table);
+        $this->scheduler = App::make('Indatus\Dispatcher\Drivers\DateTime\Scheduler');
+
+        $this->interpreter = m::mock('Indatus\Dispatcher\Drivers\DateTime\ScheduleInterpreter');
+        $this->interpreter->shouldIgnoreMissing(false);
+        $this->app->instance('Indatus\Dispatcher\Drivers\DateTime\ScheduleInterpreter', $this->interpreter);
+
+        $this->logger = m::mock('Illuminate\Contracts\Logging\Log');
+        $this->app->instance('Illuminate\Contracts\Logging\Log', $this->logger);
 
         $this->console = m::mock('Illuminate\Contracts\Console\Kernel');
         $this->scheduleService = new ScheduleService($this->console);
     }
 
-    public function tearDown()
-    {
-        parent::tearDown();
-        m::close();
-    }
-
     public function testIsNotDue()
     {
-        $scheduler = m::mock('Indatus\Dispatcher\Scheduling\Schedulable', function ($m) {
-            //schedule the cron to run yesterday
-            $dateTime = new DateTime('yesterday');
-            $m->shouldReceive('getSchedule')->once()->andReturn('* * * * '.$dateTime->format('N'));
-        });
-        $this->assertFalse($this->scheduleService->isDue($scheduler));
+        $this->interpreter->shouldReceive('isDue')->once()->andReturn(false);
+
+        $this->assertFalse($this->scheduleService->isDue($this->scheduler));
     }
 
     public function testIsDueException()
     {
-        Log::shouldReceive('error')->once();
-        $scheduler = m::mock('Indatus\Dispatcher\Scheduling\Schedulable', function ($m) {
-                $m->shouldReceive('getSchedule')->once()->andReturn('asdf');
-            });
-        $this->assertFalse($this->scheduleService->isDue($scheduler));
+        $exception = new Exception('uh oh!');
+
+        $this->logger->shouldReceive('error')->once()->with($exception);
+
+        $this->interpreter->shouldReceive('isDue')->once()->andThrow($exception);
+
+        $this->assertFalse($this->scheduleService->isDue($this->scheduler));
     }
 
     public function testIsDue()
     {
-        $scheduler = m::mock('Indatus\Dispatcher\Scheduling\Schedulable', function ($m) {
-                $m->shouldReceive('getSchedule')->once()->andReturn('* * * * *');
-            });
-        $this->assertTrue($this->scheduleService->isDue($scheduler));
+        $this->interpreter->shouldReceive('isDue')->andReturn(true);
+
+        $this->assertTrue($this->scheduleService->isDue($this->scheduler));
     }
 
     /**
@@ -72,12 +82,13 @@ class TestCronScheduleService extends TestCase
         $scheduledCommandWithMultipleSchedulers = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand', function ($m) use ($table) {
                 $table->shouldReceive('addRow')->times(3);
 
-                $scheduler = m::mock('Indatus\Dispatcher\Drivers\Cron\Scheduler', function ($m) {
-                        $m->shouldReceive('getScheduleMinute');
-                        $m->shouldReceive('getScheduleHour');
-                        $m->shouldReceive('getScheduleDayOfMonth');
+                $scheduler = m::mock('Indatus\Dispatcher\Drivers\DateTime\Scheduler', function ($m) {
                         $m->shouldReceive('getScheduleMonth');
+                        $m->shouldReceive('getScheduleWeek');
+                        $m->shouldReceive('getScheduleDayOfMonth');
                         $m->shouldReceive('getScheduleDayOfWeek');
+                        $m->shouldReceive('getScheduleHour');
+                        $m->shouldReceive('getScheduleMinute');
                         $m->shouldReceive('getArguments')->twice()->andReturn([]);
                         $m->shouldReceive('getOptions')->twice()->andReturn([]);
                     });
@@ -93,12 +104,13 @@ class TestCronScheduleService extends TestCase
         $scheduledCommand = m::mock('Indatus\Dispatcher\Scheduling\ScheduledCommand', function ($m) use ($table) {
                 $table->shouldReceive('addRow')->once();
 
-                $scheduler = m::mock('Indatus\Dispatcher\Drivers\Cron\Scheduler', function ($m) {
-                        $m->shouldReceive('getScheduleMinute');
-                        $m->shouldReceive('getScheduleHour');
-                        $m->shouldReceive('getScheduleDayOfMonth');
+                $scheduler = m::mock('Indatus\Dispatcher\Drivers\DateTime\Scheduler', function ($m) {
                         $m->shouldReceive('getScheduleMonth');
+                        $m->shouldReceive('getScheduleWeek');
+                        $m->shouldReceive('getScheduleDayOfMonth');
                         $m->shouldReceive('getScheduleDayOfWeek');
+                        $m->shouldReceive('getScheduleHour');
+                        $m->shouldReceive('getScheduleMinute');
                     });
 
                 $m->shouldReceive('getName')->once();
@@ -107,7 +119,7 @@ class TestCronScheduleService extends TestCase
                 $m->shouldReceive('schedule')->once()->andReturn($scheduler);
             });
         $this->app->instance('Indatus\Dispatcher\Table', $table);
-        $scheduleService = m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService[getScheduledCommands]',
+        $scheduleService = m::mock('Indatus\Dispatcher\Drivers\DateTime\ScheduleService[getScheduledCommands]',
             [$this->console],
             function ($m) use ($scheduledCommand, $scheduledCommandWithMultipleSchedulers) {
                 $m->shouldReceive('getScheduledCommands')->once()->andReturn([

@@ -1,15 +1,16 @@
-<?php
+<?php namespace Indatus\Dispatcher\Commands;
+
 /**
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Indatus\Dispatcher\Commands\Run;
 use Mockery as m;
+use TestCase;
 
 class TestRun extends TestCase
 {
     /**
-     * @var Indatus\Dispatcher\Commands\Run
+     * @var \Indatus\Dispatcher\Commands\Run
      */
     private $command;
 
@@ -21,12 +22,6 @@ class TestRun extends TestCase
             m::mock('Indatus\Dispatcher\Services\CommandService'),
             m::mock('Indatus\Dispatcher\Drivers\Cron\ScheduleService')
         );
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-        m::close();
     }
 
     public function testName()

@@ -1,10 +1,11 @@
-<?php
+<?php namespace Indatus\Dispatcher\Services;
+
 /**
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Indatus\Dispatcher\Services\BackgroundProcessService;
 use Mockery as m;
+use TestCase;
 
 class TestBackgroundProcessService extends TestCase
 {

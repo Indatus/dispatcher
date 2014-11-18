@@ -1,15 +1,18 @@
-<?php
+<?php namespace Indatus\Dispatcher\Commands;
+
 /**
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Indatus\Dispatcher\Commands\Make;
+use Config;
 use Mockery as m;
+use ReflectionClass;
+use TestCase;
 
 class TestMake extends TestCase
 {
     /**
-     * @var Indatus\Dispatcher\Commands\Make
+     * @var \Indatus\Dispatcher\Commands\Make
      */
     private $command;
 

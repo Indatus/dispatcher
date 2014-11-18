@@ -11,9 +11,7 @@
 
 use App;
 use Illuminate\Console\Command;
-use Indatus\Dispatcher\Commands\Run;
 use Indatus\Dispatcher\Debugger;
-use Indatus\Dispatcher\Scheduling\ScheduledCommand;
 use Indatus\Dispatcher\Scheduling\ScheduledCommandInterface;
 
 class CommandService

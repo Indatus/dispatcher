@@ -2,12 +2,12 @@
     /**
      * The schedule driver to use:
      *
-     *   cron               The most common method of scheduling commands.  Uses the basic cron packaged
-     *                      included with any linux environment.
+     *   dateTime           Uses a familiar cron-like syntax to summarize
+     *                      all of the commands schedules.
      *
      *   [packagePath]      Create your own driver by providing a classpath to a package that contains
      *                      Scheduler and SchedulerService classes.
      *
      */
-    'driver' => 'cron'
+    'driver' => 'dateTime'
 ];

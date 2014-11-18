@@ -1,4 +1,4 @@
-<?php namespace Indatus\Dispatcher\Drivers\Cron;
+<?php namespace Indatus\Dispatcher\Drivers\DateTime;
 
 /**
  * This file is part of Dispatcher
@@ -10,10 +10,9 @@
  */
 
 use App;
-use Cron\CronExpression;
+use Exception;
 use Indatus\Dispatcher\Scheduling\Schedulable;
 use Indatus\Dispatcher\Scheduling\ScheduledCommandInterface;
-use Log;
 
 class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService
 {
@@ -29,11 +28,16 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService
      */
     public function isDue(Schedulable $scheduler)
     {
+        /** @var \Indatus\Dispatcher\Drivers\DateTime\ScheduleInterpreter $interpreter */
+        $interpreter = App::make('Indatus\Dispatcher\Drivers\DateTime\ScheduleInterpreter', [$scheduler]);
+
+        /** @var \Illuminate\Contracts\Logging\Log $logger */
+        $logger = App::make('Illuminate\Contracts\Logging\Log');
+
         try {
-            $cron = CronExpression::factory($scheduler->getSchedule());
-            return $cron->isDue();
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
+            return $interpreter->isDue();
+        } catch (Exception $e) {
+            $logger->error($e);
         }
 
         return false;
@@ -50,11 +54,12 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService
             'Environment(s)',
             'Name',
             'Args/Opts',
-            'Minute',
-            'Hour',
-            'Day of Month',
             'Month',
+            'Week',
+            'Day of Month',
             'Day of Week',
+            'Hour',
+            'Minute',
             'Run as',
         ];
 
@@ -86,11 +91,12 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService
                 is_array($command->environment()) ? implode(',', $command->environment()) : $command->environment(),
                 $command->getName(),
                 '',
-                $scheduler->getScheduleMinute(),
-                $scheduler->getScheduleHour(),
-                $scheduler->getScheduleDayOfMonth(),
                 $scheduler->getScheduleMonth(),
+                $scheduler->getScheduleWeek(),
+                $scheduler->getScheduleDayOfMonth(),
                 $scheduler->getScheduleDayOfWeek(),
+                $scheduler->getScheduleHour(),
+                $scheduler->getScheduleMinute(),
                 $command->user(),
             ]);
     }
@@ -106,8 +112,10 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService
                 '',
                 '',
                 '',
+                '',
                 $command->user(),
             ]);
+
         return true;
     }
 
@@ -122,11 +130,12 @@ class ScheduleService extends \Indatus\Dispatcher\Services\ScheduleService
                 '',
                 '',
                 trim($arguments).' '.$options,
-                $scheduler->getScheduleMinute(),
-                $scheduler->getScheduleHour(),
-                $scheduler->getScheduleDayOfMonth(),
                 $scheduler->getScheduleMonth(),
+                $scheduler->getScheduleWeek(),
+                $scheduler->getScheduleDayOfMonth(),
                 $scheduler->getScheduleDayOfWeek(),
+                $scheduler->getScheduleHour(),
+                $scheduler->getScheduleMinute(),
                 '',
             ]);
     }

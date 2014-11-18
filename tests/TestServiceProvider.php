@@ -1,24 +1,14 @@
-<?php
+<?php namespace Indatus\Dispatcher;
+
 /**
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Indatus\Dispatcher\ServiceProvider;
 use Mockery as m;
+use TestCase;
 
 class TestServiceProvider extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-        m::close();
-    }
-
     public function testProviders()
     {
         $provider = new ServiceProvider(m::mock('Illuminate\Foundation\Application'));

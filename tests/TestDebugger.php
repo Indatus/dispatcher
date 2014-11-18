@@ -1,10 +1,11 @@
-<?php
+<?php namespace Indatus\Dispatcher;
+
 /**
  * @author Ben Kuhl <bkuhl@indatus.com>
  */
 
-use Indatus\Dispatcher\Debugger;
 use Mockery as m;
+use TestCase;
 
 class TestDebugger extends TestCase
 {
@@ -15,12 +16,6 @@ class TestDebugger extends TestCase
     protected $scheduledCommand;
 
     protected $commandName = 'my:command';
-
-    public function tearDown()
-    {
-        parent::tearDown();
-        m::close();
-    }
 
     public function setUp()
     {
