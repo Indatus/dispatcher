@@ -8,6 +8,7 @@
  * @package Indatus\Dispatcher\Drivers\PHP
  */
 
+use App;
 use Carbon\Carbon;
 use Cron\CronExpression;
 
@@ -19,9 +20,6 @@ class ScheduleInterpreter
     /** @var Scheduler */
     protected $scheduler;
 
-    /** @var CronExpression */
-    protected $cronExpression;
-
     protected $month        = null;
     protected $week         = null;
     protected $dayOfMonth   = null;
@@ -29,11 +27,10 @@ class ScheduleInterpreter
     protected $hour         = null;
     protected $minute       = null;
 
-    public function __construct(Carbon $now, Scheduler $scheduler, CronExpression $cronExpression)
+    public function __construct(Scheduler $scheduler, Carbon $now)
     {
         $this->now = $now;
         $this->scheduler = $scheduler;
-        $this->cronExpression = $cronExpression;
     }
 
     /**
@@ -43,7 +40,7 @@ class ScheduleInterpreter
      */
     public function isDue()
     {
-        $cron = $this->cronExpression->factory($this->scheduler->getCronSchedule());
+        $cron = App::make('Cron\CronExpression', [$this->scheduler->getCronSchedule()]);
 
         // if a week is defined, so some special weekly stuff
         if ($this->scheduler->getScheduleWeek() !== Scheduler::NONE) {
