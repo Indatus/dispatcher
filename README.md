@@ -77,7 +77,7 @@ Requires:
 You can install the library via [Composer](http://getcomposer.org) by adding the following line to the **require** block of your *composer.json* file:
 
 ````
-"indatus/dispatcher": "dev-master"
+"indatus/dispatcher": "1.4.*@dev"
 ````
 
 Next run `composer update`.
