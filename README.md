@@ -73,6 +73,8 @@ By Jefferey Way at [Laracasts](https://www.laracasts.com): [Recurring Tasks the 
 <a name="installation" />
 ## Installation
 
+> **NOTICE: [Laravel 5 now includes scheduling](http://laravel-news.com/2014/11/laravel-5-scheduler/) out of the box.  This package will no longer be maintained for Laravel 5 and above**
+
 | Requirements                  | 1.4.*                         | 2.*                               |
 |-------------------------------|-------------------------------|-----------------------------------|
 | [Laravel](http://laravel.com) | 4.1/4.2                       | 5.x                               |
