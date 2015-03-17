@@ -283,6 +283,7 @@ class TestCommandService extends TestCase
                     'php',
                     base_path().'/artisan',
                     $commandName,
+                    '--env='.App::environment(),
                     '> /dev/null',
                     '&'
                 )));
@@ -306,6 +307,7 @@ class TestCommandService extends TestCase
                     'php',
                     base_path().'/artisan',
                     $commandName,
+                    '--env='.App::environment(),
                     '> NULL'
                 )));
     }
@@ -327,6 +329,7 @@ class TestCommandService extends TestCase
                     $executablePath,
                     base_path().'/artisan',
                     $commandName,
+                    '--env='.App::environment(),
                     '> /dev/null',
                     '&'
                 )));
@@ -349,6 +352,7 @@ class TestCommandService extends TestCase
                     'hhvm',
                     base_path().'/artisan',
                     $commandName,
+                    '--env='.App::environment(),
                     '> /dev/null',
                     '&'
                 )));
@@ -372,6 +376,7 @@ class TestCommandService extends TestCase
                     'php',
                     base_path().'/artisan',
                     $commandName,
+                    '--env='.App::environment(),
                     'option',
                     '> /dev/null',
                     '&'
@@ -398,6 +403,7 @@ class TestCommandService extends TestCase
                     'php',
                     base_path().'/artisan',
                     $commandName,
+                    '--env='.App::environment(),
                     '--option="value"',
                     '--anotherOption',
                     '> /dev/null',
@@ -418,6 +424,7 @@ class TestCommandService extends TestCase
                     'php',
                     base_path().'/artisan',
                     $commandName,
+                    '--env='.App::environment(),
                     '> /dev/null',
                     '&'
                 )));

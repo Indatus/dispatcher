@@ -192,6 +192,9 @@ class CommandService
         $commandPieces[] = base_path().'/artisan';
         $commandPieces[] = $scheduledCommand->getName();
 
+        //always pass environment
+        $commandPieces[] = '--env='.App::environment();
+
         if (count($arguments) > 0) {
             $commandPieces[] = $this->prepareArguments($arguments);
         }
