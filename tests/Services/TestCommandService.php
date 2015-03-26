@@ -308,7 +308,7 @@ class TestCommandService extends TestCase
                     base_path().'/artisan',
                     $commandName,
                     '--env='.App::environment(),
-                    '> NULL'
+                    '> NUL'
                 )));
     }
 

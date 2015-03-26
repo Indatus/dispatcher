@@ -212,7 +212,7 @@ class CommandService
                 array_unshift($commandPieces, 'sudo -u '.$scheduledCommand->user());
             }
         } elseif($platform->isWindows()) {
-            $commandPieces[] = '> NULL'; //don't show output, errors can be viewed in the Laravel log
+            $commandPieces[] = '> NUL'; //don't show output, errors can be viewed in the Laravel log
 
             //run in background on windows
             array_unshift($commandPieces, '/B');
