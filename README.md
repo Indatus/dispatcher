@@ -14,8 +14,6 @@ use Indatus\Dispatcher\Drivers\DateTime\Scheduler;
 
 class MyCommand extends ScheduledCommand {
 
-    //your command name, description etc.
-
 	public function schedule(Schedulable $scheduler)
 	{
         //every day at 4:17am
