@@ -13,7 +13,6 @@ use Indatus\Dispatcher\Scheduling\Schedulable;
 use Indatus\Dispatcher\Drivers\DateTime\Scheduler;
 
 class MyCommand extends ScheduledCommand {
-
 	public function schedule(Schedulable $scheduler)
 	{
         //every day at 4:17am
@@ -22,7 +21,6 @@ class MyCommand extends ScheduledCommand {
             ->hours(4)
             ->minutes(17);
     }
-
 }
 ```
 
