@@ -291,7 +291,7 @@ Create a packagepath such as `\MyApp\ScheduleDriver\` and create two classes:
 
 Publish the configs using `php artisan config:publish indatus/dispatcher`. Then update your driver configuration to reference the package in which these 2 classes are included (do not include a trailing slash):
 
-```php
+```
     'driver' => '\MyApp\ScheduleDriver'
 ```
 
