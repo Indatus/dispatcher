@@ -1,7 +1,5 @@
 # Dispatcher
 
-<!--[<img src="https://s3-us-west-2.amazonaws.com/oss-avatars/dispatcher.png"/>](http://indatus.com/company/careers)-->
-
 
 Dispatcher allows you to schedule your artisan commands within your [Laravel](http://laravel.com) project, eliminating the need to touch the crontab when deploying.  It also allows commands to run per environment and keeps your scheduling logic where it should be, in your version control.
 
